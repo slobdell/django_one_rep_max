@@ -28,7 +28,9 @@ STATICFILES_DIRS = (
 SECRET_KEY = 'v=hn5+4i10$m@#^#kvljd#^wh86ovx5e6!tucuvlz4-5!o0$_g'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
+if os.getenv("I_AM_IN_DEV_ENV"):
+    DEBUG = True
 
 TEMPLATE_DEBUG = True
 
