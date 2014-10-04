@@ -17,3 +17,32 @@ For RabbitMQ:
 
 To update static files:
     heroku run python manage.py collectstatic --noinput
+
+To run rabbitMQ locally:
+    rabbitmq-server
+
+
+
+Downloading/unpacking pytz>dev (from celery==3.1.16->-r requirements.txt (line 16))
+Cleaning up...
+Exception:
+Traceback (most recent call last):
+  File "/app/.heroku/python/lib/python2.7/site-packages/pip/basecommand.py", line 122, in main
+    status = self.run(options, args)
+  File "/app/.heroku/python/lib/python2.7/site-packages/pip/commands/install.py", line 278, in run
+    requirement_set.prepare_files(finder, force_root_egg_info=self.bundle, bundle=self.bundle)
+  File "/app/.heroku/python/lib/python2.7/site-packages/pip/req.py", line 1197, in prepare_files
+    do_download,
+  File "/app/.heroku/python/lib/python2.7/site-packages/pip/req.py", line 1375, in unpack_url
+    self.session,
+  File "/app/.heroku/python/lib/python2.7/site-packages/pip/download.py", line 582, in unpack_http_url
+    unpack_file(temp_location, location, content_type, link)
+  File "/app/.heroku/python/lib/python2.7/site-packages/pip/util.py", line 625, in unpack_file
+    untar_file(filename, location)
+  File "/app/.heroku/python/lib/python2.7/site-packages/pip/util.py", line 543, in untar_file
+    tar = tarfile.open(filename, mode)
+  File "/app/.heroku/python/lib/python2.7/tarfile.py", line 1678, in open
+    return func(name, filemode, fileobj, **kwargs)
+  File "/app/.heroku/python/lib/python2.7/tarfile.py", line 1744, in bz2open
+    raise CompressionError("bz2 module is not available")
+CompressionError: bz2 module is not available
