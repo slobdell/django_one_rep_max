@@ -107,7 +107,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
-STATIC_ROOT = '/app/staticfiles'
+STATIC_ROOT = 'staticfiles'
 
 # TODO make these secret
 AWS_ACCESS_KEY_ID = "AKIAJQGJ462PV262GGVQ"
