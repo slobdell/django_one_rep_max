@@ -1,5 +1,9 @@
 foreman start web
 
+heroku config:set BUILDPACK_URL=https://github.com/heroku/heroku-buildpack-python
+heroku config:set BUILDPACK_URL=https://github.com/slobdell/heroku-buildpack-python-opencv-scipy
+heroku config:set BUILDPACK_URL=https://github.com/hdachev/heroku-buildpack-opencv
+
 https://devcenter.heroku.com/articles/getting-started-with-python
 
 virtualenv -p /usr/local/bin/python .virtualenv
