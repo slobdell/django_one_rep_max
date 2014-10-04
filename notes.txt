@@ -7,3 +7,9 @@ pip install -r requirements.txt --allow-all-external
 
 
 heroku run python manage.py syncdb
+
+to manage scheduled job runs:
+    heroku addons:open scheduler
+
+For RabbitMQ:
+    Use `heroku addons:docs cloudamqp` to view documentation.

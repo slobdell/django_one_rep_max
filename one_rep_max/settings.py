@@ -29,11 +29,14 @@ SECRET_KEY = 'v=hn5+4i10$m@#^#kvljd#^wh86ovx5e6!tucuvlz4-5!o0$_g'
 
 DEBUG = False
 TEMPLATE_DEBUG = False
-if "I_AM_IN_DEV_ENV" in os.environ:
+if os.environ.get("I_AM_IN_DEV_ENV"):
     DEBUG = True
     TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    ".herokuapp.com",
+    ".onerepmaxcalculator.com"
+]
 
 
 # Application definition
@@ -104,4 +107,5 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
+STATIC_ROOT = 'staticfiles'
 STATIC_URL = '/static/'
