@@ -13,3 +13,7 @@ to manage scheduled job runs:
 
 For RabbitMQ:
     Use `heroku addons:docs cloudamqp` to view documentation.
+
+
+To update static files:
+    heroku run python manage.py collectstatic --noinput
