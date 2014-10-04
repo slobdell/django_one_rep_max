@@ -29,7 +29,7 @@ SECRET_KEY = 'v=hn5+4i10$m@#^#kvljd#^wh86ovx5e6!tucuvlz4-5!o0$_g'
 
 DEBUG = False
 TEMPLATE_DEBUG = False
-if os.environ.get("I_AM_IN_DEV_ENV"):
+if "I_AM_IN_DEV_ENV" in os.environ:
     DEBUG = True
     TEMPLATE_DEBUG = True
 
