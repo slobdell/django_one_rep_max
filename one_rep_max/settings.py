@@ -108,15 +108,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_ROOT = '/app/staticfiles'
-# STATIC_URL = '/static/'
 
 # TODO make these secret
 AWS_ACCESS_KEY_ID = "AKIAJQGJ462PV262GGVQ"
 AWS_SECRET_ACCESS_KEY = "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"
 AWS_STORAGE_BUCKET_NAME = "one-rep-max-static"
 
-STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-
-# TODO handle dev case as well
-STATIC_URL = 'http://' + AWS_STORAGE_BUCKET_NAME + '.s3.amazonaws.com/'
+if os.environ.get("I_AM_IN_DEV_ENV"):
+    STATIC_URL = '/static/'
+else:
+    # THIS WONT WORK FOR COLLECTSTATIC
+    STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+    STATIC_URL = 'http://' + AWS_STORAGE_BUCKET_NAME + '.s3.amazonaws.com/'
