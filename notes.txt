@@ -1,0 +1,7 @@
+foreman start web
+
+https://devcenter.heroku.com/articles/getting-started-with-python
+
+Still not finished pushing heroku
+git push heroku master
+heroku open
