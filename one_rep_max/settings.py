@@ -67,16 +67,24 @@ WSGI_APPLICATION = 'one_rep_max.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'aesg_one_rep_max',
-        'USER': 'aesg',
-        'PASSWORD': 'CombatLoad!@#123',
-        'HOST': '',
-        'PORT': '',
+if os.getenv("I_AM_IN_DEV_ENV"):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'd7rn3c9b5n7j4j',
+            'USER': 'myqawhzmkxqqfo',
+            'PASSWORD': 'denF5Mawx9xpUPIDqT6jRB3Woo',
+            'HOST': 'ec2-23-21-94-137.compute-1.amazonaws.com',
+            'PORT': '5432',
+        }
+    }
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/

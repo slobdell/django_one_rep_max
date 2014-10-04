@@ -2,10 +2,8 @@ foreman start web
 
 https://devcenter.heroku.com/articles/getting-started-with-python
 
-Still not finished pushing heroku
-git push heroku master
-heroku open
-
-
 virtualenv -p /usr/local/bin/python .virtualenv
 pip install -r requirements.txt --allow-all-external
+
+
+heroku run python manage.py syncdb

@@ -1,5 +1,3 @@
-{% load staticfiles %}
-
 <!DOCTYPE html>
 <!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
 <!--[if (gte IE 9)|!(IE)]><!--><html class="no-js" lang="en"> <!--<![endif]-->
@@ -18,10 +16,10 @@
 
 	<!-- CSS
   ================================================== -->
-	<link rel="stylesheet" href="{% static 'css/style.css' %}">
-	<link rel="stylesheet" href="{% static 'css/ico-moon.css' %}">
-	<link rel="stylesheet" href="{% static 'css/flexslider.css' %}">
-	<link rel="stylesheet" href="{% static 'css/swipebox.css' %}">
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/ico-moon.css">
+	<link rel="stylesheet" href="css/flexslider.css">
+	<link rel="stylesheet" href="css/swipebox.css">
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,300,600,700' rel='stylesheet' type='text/css'>
 
 	<!--[if lt IE 9]>
@@ -40,7 +38,7 @@
 	<header>
 		<div class="container">
 			<div class="logo">
-				<a href="#"><img src="{% static 'img/logo.png' %}" alt=""></a>
+				<a href="#"><img src="img/logo.png" alt=""></a>
 			</div>
 			<div class="right">
 				<div class="social-top">
@@ -56,7 +54,7 @@
 				</div>
 				<nav class="main-nav">
 			  		<ul class="nav-bar" id="nav-bar">
-			  			<li class="active has-flyout">
+			  			<li class="has-flyout">
 			  				<a href="index.html">Home</a>
 			  			</li>
 			  			<li class="has-flyout">
@@ -67,7 +65,7 @@
 			      			<li><a href="full-width.html">Full Width/Columns</a></li>
 			      		</ul>
 			  			</li>
-			  			<li class="has-flyout">
+			  			<li class="active has-flyout">
 			  				<a href="#">Portfolio</a>
 			      		<ul class="flyout">
 			      			<li><a href="portfolio-3.html">Portfolio 3</a></li>
@@ -92,133 +90,141 @@
 
 	<!-- Body
 	================================================== -->
-	<div class="flexslider">
-		<ul class="slides">
-			<li>
-				<img src="{% static 'img/ph-slide.jpg' %}" alt="">
-				<div class="flex-caption">
-					Responsive and Customizable
-				</div>
-				<div class="flex-caption-second">
-					Pellentesque arcu neque, convallis aliquet venenatis a, auctor sit amet lacus. Donec ultrices rutrum sem sed facilisis. Curabitur vitae viverra leo. Nullam pulvinar dictum nibh eu mollis. Quisque aliquam felis ac risus imperdiet viverra bibendum nunc accumsan.
-				</div>
-			</li>
-			<li>
-				<img src="{% static 'img/ph-slide.jpg' %}" alt="">
-				<div class="flex-caption">
-					Show off your creativity
-				</div>
-				<div class="flex-caption-second">
-					Pellentesque arcu neque, convallis aliquet venenatis a, auctor sit amet lacus. Donec ultrices rutrum sem sed facilisis. Curabitur vitae viverra leo. Nullam pulvinar dictum nibh eu mollis. Quisque aliquam felis ac risus imperdiet viverra bibendum nunc accumsan.
-				</div>
-			</li>
-			<li>
-				<img src="{% static 'img/ph-slide.jpg' %}" alt="">
-				<div class="flex-caption">
-					Show off your creativity
-				</div>
-				<div class="flex-caption-second">
-					Pellentesque arcu neque, convallis aliquet venenatis a, auctor sit amet lacus. Donec ultrices rutrum sem sed facilisis. Curabitur vitae viverra leo. Nullam pulvinar dictum nibh eu mollis. Quisque aliquam felis ac risus imperdiet viverra bibendum nunc accumsan.
-				</div>
-			</li>
-		</ul>
-	</div>
-	<div class="clearfix"></div>
-	<div class="wrap">
+	<div class="page wrap">
+		<div class="page-header">
+			<div class="container">
+				<h2>Portfolio</h2>
+				<span>A 3 column portfolio page</span>
+			</div>
+		</div>
 		<div class="container">
 			<div class="sixteen columns">
-				<h3 class="title">Our Powers</h3>
-			</div>
-			<div class="clearfix"></div>
-			<div class="services">
-				<div class="four columns">
-					<div class="icon">
-						<i class="icon-screen"></i>
-					</div>
-					<h5>Web Solutions</h5>
-					<p>Vestibulum molestie libero quis est venenatis porta. Proin nunc sem, bibendum vitae euismod eu, vulputate non ante. Vestibulum ante ipsum primis.</p>
+				<div class="filter">
+					<a class="toggle" href="#">Filter</a>
+					<ul class="sort">
+			        	<li><a href="#" data-filter="*">All</a></li>
+			            <li><a href="#" data-filter=".web">Web</a></li>
+			            <li><a href="#" data-filter=".print">Digital</a></li>
+			            <li><a href="#" data-filter=".digital">Photography</a></li>
+			            <li><a href="#" data-filter=".video">Print</a></li>
+					</ul>
 				</div>
-				<div class="four columns">
-					<div class="icon">
-						<i class="icon-stack"></i>
-					</div>
-					<h5>TLC</h5>
-					<p>Vestibulum molestie libero quis est venenatis porta. Proin nunc sem, bibendum vitae euismod eu, vulputate non ante. Vestibulum ante ipsum primis.</p>
-				</div>
-				<div class="four columns">
-					<div class="icon">
-						<i class="icon-laptop"></i>
-					</div>
-					<h5>Portability</h5>
-					<p>Vestibulum molestie libero quis est venenatis porta. Proin nunc sem, bibendum vitae euismod eu, vulputate non ante. Vestibulum ante ipsum primis.</p>
-				</div>
-				<div class="four columns">
-					<div class="icon">
-						<i class="icon-camera"></i>
-					</div>
-					<h5>Creativity</h5>
-					<p>Vestibulum molestie libero quis est venenatis porta. Proin nunc sem, bibendum vitae euismod eu, vulputate non ante. Vestibulum ante ipsum primis.</p>
-				</div>
-				<div class="clearfix"></div>
-			</div>
-			<div class="sixteen columns">
-				<h3 class="title">Recent Works</h3>
 			</div>
 			<div class="clearfix"></div>
 			<div class="portfolio">
-				<div class="four columns">
+				<div class="one-third column web">
 					<div class="item">
 						<div class="image-container">
 							<div class="mask"></div>
-							<img src="{% static 'img/ph-reg.jpg' %}" alt="">
+							<img src="img/ph-reg.jpg" alt="">
 						</div>
-						<a href="{% static 'img/ph-big.jpg' %}" class="zoom box" title="Bridged"><i class="icon-camera"></i></a>
+						<a href="img/ph-big.jpg" class="zoom box" title="Bridged"><i class="icon-camera"></i></a>
 						<a href="#" class="link"><i class="icon-link"></i></a>
 						<div class="item-title"><a href="#">Bridged</a></div>
 						<div class="cats"><a href="#">web</a>, <a href="#">digital</a></div>
 					</div>
 				</div>
-				<div class="four columns">
+				<div class="one-third column digital print">
 					<div class="item">
 						<div class="image-container">
 							<div class="mask"></div>
-							<img src="{% static 'img/ph-reg.jpg' %}" alt="">
+							<img src="img/ph-reg.jpg" alt="">
 						</div>
-						<a href="{% static 'img/ph-big.jpg' %}" class="zoom box" title="The Room"><i class="icon-camera"></i></a>
+						<a href="img/ph-big.jpg" class="zoom box" title="The Room"><i class="icon-camera"></i></a>
 						<a href="#" class="link"><i class="icon-link"></i></a>
 						<div class="item-title"><a href="#">The Room</a></div>
 						<div class="cats"><a href="#">web</a>, <a href="#">digital</a></div>
 					</div>
 				</div>
-				<div class="four columns">
+				<div class="one-third column web video">
 					<div class="item">
 						<div class="image-container">
 							<div class="mask"></div>
-							<img src="{% static 'img/ph-reg.jpg' %}" alt="">
+							<img src="img/ph-reg.jpg" alt="">
 						</div>
-						<a href="{% static 'img/ph-big.jpg' %}" class="zoom box" title="Alley Cat"><i class="icon-camera"></i></a>
+						<a href="img/ph-big.jpg" class="zoom box" title="Alley Cat"><i class="icon-camera"></i></a>
 						<a href="#" class="link"><i class="icon-link"></i></a>
 						<div class="item-title"><a href="#">Alley Cat</a></div>
 						<div class="cats"><a href="#">web</a>, <a href="#">digital</a></div>
 					</div>
 				</div>
-				<div class="four columns">
+				<div class="one-third column web print digital video">
 					<div class="item">
 						<div class="image-container">
 							<div class="mask"></div>
-							<img src="{% static 'img/ph-reg.jpg' %}" alt="">
+							<img src="img/ph-reg.jpg" alt="">
 						</div>
-						<a href="{% static 'img/ph-big.jpg' %}" class="zoom box" title="Autumn Brick"><i class="icon-camera"></i></a>
+						<a href="img/ph-big.jpg" class="zoom box" title="Autumn Brick"><i class="icon-camera"></i></a>
 						<a href="#" class="link"><i class="icon-link"></i></a>
 						<div class="item-title"><a href="#">Autumn Brick</a></div>
 						<div class="cats"><a href="#">web</a>, <a href="#">digital</a></div>
 					</div>
 				</div>
-				<div class="clearfix"></div>
+				<div class="one-third column digital print">
+					<div class="item">
+						<div class="image-container">
+							<div class="mask"></div>
+							<img src="img/ph-reg.jpg" alt="">
+						</div>
+						<a href="img/ph-big.jpg" class="zoom box" title="Lost Vision"><i class="icon-camera"></i></a>
+						<a href="#" class="link"><i class="icon-link"></i></a>
+						<div class="item-title"><a href="#">Lost Vision</a></div>
+						<div class="cats"><a href="#">web</a>, <a href="#">digital</a></div>
+					</div>
+				</div>
+				<div class="one-third column video">
+					<div class="item">
+						<div class="image-container">
+							<div class="mask"></div>
+							<img src="img/ph-reg.jpg" alt="">
+						</div>
+						<a href="img/ph-big.jpg" class="zoom box" title="Illuminate"><i class="icon-camera"></i></a>
+						<a href="#" class="link"><i class="icon-link"></i></a>
+						<div class="item-title"><a href="#">Illuminate</a></div>
+						<div class="cats"><a href="#">web</a>, <a href="#">digital</a></div>
+					</div>
+				</div>
+				<div class="one-third column video web">
+					<div class="item">
+						<div class="image-container">
+							<div class="mask"></div>
+							<img src="img/ph-reg.jpg" alt="">
+						</div>
+						<a href="img/ph-big.jpg" class="zoom box" title="Vertigo"><i class="icon-camera"></i></a>
+						<a href="#" class="link"><i class="icon-link"></i></a>
+						<div class="item-title"><a href="#">Vertigo</a></div>
+						<div class="cats"><a href="#">web</a>, <a href="#">digital</a></div>
+					</div>
+				</div>
+				<div class="one-third column print">
+					<div class="item">
+						<div class="image-container">
+							<div class="mask"></div>
+							<img src="img/ph-reg.jpg" alt="">
+						</div>
+						<a href="img/ph-big.jpg" class="zoom box" title="The City"><i class="icon-camera"></i></a>
+						<a href="#" class="link"><i class="icon-link"></i></a>
+						<div class="item-title"><a href="#">The City</a></div>
+						<div class="cats"><a href="#">web</a>, <a href="#">digital</a></div>
+					</div>
+				</div>
+				<div class="one-third column web">
+					<div class="item">
+						<div class="image-container">
+							<div class="mask"></div>
+							<img src="img/ph-reg.jpg" alt="">
+						</div>
+						<a href="img/ph-big.jpg" class="zoom box" title="Fast and Curious"><i class="icon-camera"></i></a>
+						<a href="#" class="link"><i class="icon-link"></i></a>
+						<div class="item-title"><a href="#">Fast and Curious</a></div>
+						<div class="cats"><a href="#">web</a>, <a href="#">digital</a></div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
-
+	<div class="clearfix"></div>
+	
 	<!-- Footer
 	================================================== -->
 	<footer>
@@ -243,21 +249,21 @@
 		</div>
 		<div class="clearfix"></div>
 	</footer>
-
+	
 	<!-- Javascript/jQuery
 	================================================== -->
-	<script src="{% static 'js/jquery-1.8.3.min.js' %}"></script>
-	<script src="{% static 'js/jquery-ui-1.10.0.custom.min.js' %}"></script>
-	<script src="{% static 'js/jquery.isotope.min.js' %}"></script>
-	<script src="{% static 'js/selectnav.min.js' %}"></script>
-	<script src="{% static 'js/jquery.flexslider-min.js' %}"></script>
-	<script src="{% static 'js/jquery.swipebox.min.js' %}"></script>
-	<script src="{% static 'js/jquery.nicescroll.min.js' %}"></script>
-	<script src="{% static 'js/jflickrfeed.min.js' %}"></script>
-	<script src="{% static 'js/jquery.tweet.js' %}"></script>
+	<script src="js/jquery-1.8.3.min.js"></script>
+	<script src="js/jquery-ui-1.10.0.custom.min.js"></script>
+	<script src="js/jquery.isotope.min.js"></script>
+	<script src="js/selectnav.min.js"></script>
+	<script src="js/jquery.flexslider-min.js"></script>
+	<script src="js/jquery.swipebox.min.js"></script>
+	<script src="js/jquery.nicescroll.min.js"></script>
+	<script src="js/jflickrfeed.min.js"></script>
+	<script src="js/jquery.tweet.js"></script>
 	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
-	<script src="{% static 'js/gmap3.min.js' %}"></script>
-	<script src="{% static 'js/scripts.js' %}"></script>
+	<script src="js/gmap3.min.js"></script>
+	<script src="js/scripts.js"></script>
 
 
 <!-- End Document
