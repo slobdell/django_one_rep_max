@@ -38,7 +38,6 @@ ALLOWED_HOSTS = [
     ".onerepmaxcalculator.com"
 ]
 
-
 # Application definition
 
 INSTALLED_APPS = (
@@ -68,9 +67,6 @@ ROOT_URLCONF = 'one_rep_max.urls'
 
 WSGI_APPLICATION = 'one_rep_max.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 if os.getenv("I_AM_IN_DEV_ENV"):
     DATABASES = {
         'default': {
@@ -94,15 +90,10 @@ else:
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
@@ -117,7 +108,7 @@ AWS_STORAGE_BUCKET_NAME = "one-rep-max-static"
 if os.environ.get("I_AM_IN_DEV_ENV"):
     STATIC_URL = '/static/'
 else:
-    # THIS WONT WORK FOR COLLECTSTATIC
+    # this won't work for collectstatic locally
     STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
     STATIC_URL = 'http://' + AWS_STORAGE_BUCKET_NAME + '.s3.amazonaws.com/'
