@@ -1,10 +1,16 @@
 foreman start web
 
-heroku config:set BUILDPACK_URL=https://github.com/heroku/heroku-buildpack-python
-heroku config:set BUILDPACK_URL=https://github.com/slobdell/heroku-buildpack-python-opencv-scipy
+REBUILD ENTIRELY
+    heroku repo:rebuild -a onerepmax
+
+STANDARD
+    heroku config:set BUILDPACK_URL=https://github.com/heroku/heroku-buildpack-python
+WORKS BUT NO CELERY
+    heroku config:set BUILDPACK_URL=https://github.com/slobdell/heroku-buildpack-python-opencv-scipy
 heroku config:set BUILDPACK_URL=https://github.com/hdachev/heroku-buildpack-opencv
 Latest try:
 https://github.com/ActivKonnect/heroku-buildpack-python-opencv
+heroku config:set BUILDPACK_UR=https://github.com/mutexkid/heroku-buildpack-python-opencv
 
 https://devcenter.heroku.com/articles/getting-started-with-python
 
