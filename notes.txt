@@ -34,3 +34,8 @@ To run rabbitMQ locally:
     rabbitmq-server
 
 used https://github.com/heroku/heroku-repo to rebuild completely
+
+http://celery.readthedocs.org/en/3.0/getting-started/introduction.html
+CELERY
+    START A WORKER
+        celery -A tasks worker --loglevel=info
