@@ -1,1 +1,1 @@
-web: python manage.py collectstatic --noinput; gunicorn one_rep_max.wsgi --log-file -
+web: gunicorn one_rep_max.wsgi --log-file; python manage.py collectstatic --noinput;
