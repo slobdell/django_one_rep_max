@@ -14,6 +14,11 @@ def _send_email_with_data(customer_email, subject, text):
               "text": text})
 
 
+def send_test_email():
+    text = "I am the greatest."
+    _send_email_with_data("scott.lobdell@gmail.com", "WOOOO FUCK YEAH", text)
+
+
 def send_order_email(customer_email, order):
     url_str = "\n".join(order.get_final_image_urls())
     text = "Thanks for your business!  Your pictures can be downloaded for the next week at the following URLs:"

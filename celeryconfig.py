@@ -8,6 +8,7 @@ else:
 
 CELERY_IMPORTS = (
     'one_rep_max.tasks',
+    'one_rep_max.mailgun.tasks',
 )
 
 

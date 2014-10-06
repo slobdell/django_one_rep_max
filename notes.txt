@@ -40,3 +40,4 @@ CELERY
     START A WORKER
         celery -A tasks worker --loglevel=info
         celery -A one_rep_max worker -l info
+        celeryd -l info
