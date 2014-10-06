@@ -3,8 +3,7 @@ from .constants import API_KEY
 
 
 def _send_email_with_data(customer_email, subject, text):
-    # TODO need to add domain stuff in order to unlock more stuff...
-    domain = "sandboxe9b6d6cc30e74befbb13769f0334d1e1.mailgun.org"
+    domain = "onerepmaxcalculator.com"
     return requests.post(
         "https://api.mailgun.net/v2/%s/messages" % domain,
         auth=("api", API_KEY),
