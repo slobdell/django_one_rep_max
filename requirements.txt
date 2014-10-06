@@ -13,3 +13,5 @@ stripe==1.19.0
 requests==2.4.1
 
 celery==2.5.5
+
+git+https://github.com/slobdell/one_rep_max.git
