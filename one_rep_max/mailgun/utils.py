@@ -8,15 +8,16 @@ def _send_email_with_data(customer_email, subject, text):
     return requests.post(
         "https://api.mailgun.net/v2/%s/messages" % domain,
         auth=("api", API_KEY),
-        data={"from": "Airborne Imaging <no-reply@AirborneImaging.com>",
+        data={"from": "One Rep Max Calculator<no-reply@OneRepMaxCalculator.com>",
               "to": customer_email,
               "subject": subject,
               "text": text})
 
 
 def send_test_email():
-    text = "I am the greatest."
-    _send_email_with_data("scott.lobdell@gmail.com", "WOOOO FUCK YEAH", text)
+    text = "This is totally in prod"
+    title = "prod email"
+    _send_email_with_data("scott.lobdell@gmail.com", title, text)
 
 
 def send_order_email(customer_email, order):
