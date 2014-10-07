@@ -8,7 +8,7 @@
 	<!-- Basic Page Needs
   ================================================== -->
 	<meta charset="utf-8">
-	<title>Ease | Premium HTML Portfolio Theme</title>
+    <title>One Rep Max Calculator | Calculate an exact 1RM using computer vision</title>
 	<meta name="description" content="">
 	<meta name="author" content="">
 
@@ -40,20 +40,9 @@
 	<header>
 		<div class="container">
 			<div class="logo">
-				<a href="#"><img src="{% static 'img/logo.png' %}" alt=""></a>
+				<a href="#"><img src="{% static 'img/one_rep_max_logo.png' %}" alt=""></a>
 			</div>
 			<div class="right">
-				<div class="social-top">
-					<ul>
-						<li><a href="#" class="icon-facebook"></a></li>
-						<li><a href="#" class="icon-twitter"></a></li>
-						<li><a href="#" class="icon-google-plus"></a></li>
-						<li><a href="#" class="icon-feed-2"></a></li>
-						<li><a href="#" class="icon-vimeo"></a></li>
-						<li><a href="#" class="icon-flickr"></a></li>
-						<li><a href="#" class="icon-pinterest"></a></li>
-					</ul>
-				</div>
 				<nav class="main-nav">
 			  		<ul class="nav-bar" id="nav-bar">
 			  			<li class="active has-flyout">
@@ -95,14 +84,15 @@
 	<div class="flexslider">
 		<ul class="slides">
 			<li>
-				<img src="{% static 'img/ph-slide.jpg' %}" alt="">
+				<img src="{% static 'img/grip.jpg' %}" alt="">
 				<div class="flex-caption">
-					Responsive and Customizable
+					Estimate a One-Rep-Max Using Computer Vision
 				</div>
 				<div class="flex-caption-second">
-					Pellentesque arcu neque, convallis aliquet venenatis a, auctor sit amet lacus. Donec ultrices rutrum sem sed facilisis. Curabitur vitae viverra leo. Nullam pulvinar dictum nibh eu mollis. Quisque aliquam felis ac risus imperdiet viverra bibendum nunc accumsan.
+                    Your one rep max can accurately be computed with just a video.  If the bar can be tracked, then pixels can be converted to meters, and velocity can be determined.  If velocity is known, the a percent of your one rep max can be established.
 				</div>
 			</li>
+            <!-- add stuff if you want
 			<li>
 				<img src="{% static 'img/ph-slide.jpg' %}" alt="">
 				<div class="flex-caption">
@@ -112,23 +102,47 @@
 					Pellentesque arcu neque, convallis aliquet venenatis a, auctor sit amet lacus. Donec ultrices rutrum sem sed facilisis. Curabitur vitae viverra leo. Nullam pulvinar dictum nibh eu mollis. Quisque aliquam felis ac risus imperdiet viverra bibendum nunc accumsan.
 				</div>
 			</li>
-			<li>
-				<img src="{% static 'img/ph-slide.jpg' %}" alt="">
-				<div class="flex-caption">
-					Show off your creativity
-				</div>
-				<div class="flex-caption-second">
-					Pellentesque arcu neque, convallis aliquet venenatis a, auctor sit amet lacus. Donec ultrices rutrum sem sed facilisis. Curabitur vitae viverra leo. Nullam pulvinar dictum nibh eu mollis. Quisque aliquam felis ac risus imperdiet viverra bibendum nunc accumsan.
-				</div>
-			</li>
+            -->
 		</ul>
 	</div>
 	<div class="clearfix"></div>
 	<div class="wrap">
 		<div class="container">
-			<div class="sixteen columns">
-				<h3 class="title">Our Powers</h3>
-			</div>
+<!-- SBL START -->
+            <div class="six columns bottom">
+                    <div id="toggle" class="bottom">
+                        <div class="toggle">
+                            <h5>How does it work?</h5>
+                            <div class="content">
+                                <p>
+                                    <!-- TODO change the style to have a disc, make the font size smaller -->
+                                    <ul style="font-size: 14px; list-style-type: disc;">
+                                        <li>Upload a stable, head-on video of a proper benchpress</li>
+                                        <li>Your video will spend some time being processed, and you'll be notified via e-mail once complete</li>
+                                        <li>The output video will display a scalar multiplier with each rep that represents how much weight you're capable of lifting</li>
+                                    </ul>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="toggle">
+                        <h5>Why does it work?</h5>
+                            <div class="content">
+                                <p>
+                                    <ul style="font-size: 14px; list-style-type: disc;">
+                                        <li>The barbell in the uploaded video is tracked using computer vision</li>
+                                        <li>Olympic barbells have standard dimensions, so the relative height of your repetition can be extracted</li>
+                                        <li>The average velocity of a repetition can be calculating by using the above height and the time it took for the rep to complete</li>
+                                        <li>Average velocity is strongly correlated to a percent of a one rep maximum</li>
+                                    </ul>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <div class="ten columns bottom">
+                <img style="width: 50%;" src="{% static 'img/facebook_login.png' %}" alt="login with facebook">
+            </div>
+<!-- SBL END-->
 			<div class="clearfix"></div>
 			<div class="services">
 				<div class="four columns">
