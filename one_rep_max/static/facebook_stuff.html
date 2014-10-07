@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Facebook Login JavaScript Example</title>
+<meta charset="UTF-8">
+</head>
+<body>
+<script>
+  function statusChangeCallback(response) {
+    if (response.status === 'connected') {
+        // logged in
+      testAPI();
+    } else if (response.status === 'not_authorized') {
+        // logged into facebook but not app
+      document.getElementById('status').innerHTML = 'Please log ' +
+        'into this app.';
+    } else {
+        // not logged into facebook
+      document.getElementById('status').innerHTML = 'Please log ' +
+        'into Facebook.';
+    }
+  }
+
+  function checkLoginState() {
+    // called when someone finishes with login button
+    FB.getLoginStatus(function(response) {
+      statusChangeCallback(response);
+    });
+  }
+
+
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId      : '644623625654469',
+            xfbml      : true,
+            version    : 'v2.1'
+        });
+
+    FB.getLoginStatus(function(response) {
+        statusChangeCallback(response);
+    });
+
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+
+  function testAPI() {
+    FB.api('/me', function(response) {
+      document.getElementById('status').innerHTML =
+        'Thanks for logging in, ' + response.name + '!';
+    });
+  }
+</script>
+
+<!--
+  Below we include the Login Button social plugin. This button uses
+  the JavaScript SDK to present a graphical Login button that triggers
+  the FB.login() function when clicked.
+-->
+
+<fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+</fb:login-button>
+<br/><br/>
+<a href="javascript:void(0)" onclick="FB.login();">LOGIN WITH FACEBOOK</a>
+
+<div id="status">
+</div>
+Hello
+</body>
+</html>

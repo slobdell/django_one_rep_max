@@ -1,6 +1,6 @@
 /*
 * Ease HTML
-* 
+*
 * Built on modified Skelton grid
 * Skeleton V1.1
 * Copyright 2011, Dave Gamache
@@ -8,7 +8,7 @@
 * Free to use under the MIT license.
 * http://www.opensource.org/licenses/mit-license.php
 * 8/17/2011
-* 
+*
 * Grid 1200px
 * Nicolas Poliquin
 * http://polikin.ca
@@ -1808,4 +1808,8 @@ or wrap each row of columns in a <div class="row"> */
   visibility: hidden;
   width: 0;
   height: 0;
+}
+
+.facebook-button {
+    cursor: pointer;
 }

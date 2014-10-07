@@ -34,6 +34,53 @@
 
 </head>
 <body class="home">
+    <script>
+    /****** FACEBOOK STUFF  *****/
+    function statusChangeCallback(response) {
+        if (response.status === 'connected') {
+            // logged in
+            alert("logged in");
+            testAPI();
+        } else if (response.status === 'not_authorized') {
+            alert("logged into facebook but not app");
+        } else {
+            alert("not logged in");
+        }
+    }
+
+    function checkLoginState() {
+        // called when someone finishes with login button
+        FB.getLoginStatus(function(response) {
+        statusChangeCallback(response);
+        });
+    }
+
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId      : '644623625654469',
+            xfbml      : true,
+            version    : 'v2.1'
+        });
+        FB.getLoginStatus(function(response) {
+            statusChangeCallback(response);
+        });
+    };
+
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+    function testAPI() {
+        FB.api('/me', function(response) {
+            alert("Thanks for logging in, " + response.name + "!");
+        });
+    }
+    /****** END FACEBOOK STUFF  *****/
+    </script>
 
 	<!-- Header
 	================================================== -->
@@ -46,7 +93,7 @@
 				<nav class="main-nav">
 			  		<ul class="nav-bar" id="nav-bar">
 			  			<li class="active has-flyout">
-			  				<a href="index.html">Home</a>
+                            <a href="{% static 'facebook_stuff.html' %}">Home</a>
 			  			</li>
 			  			<li class="has-flyout">
 			  				<a href="#">Pages</a>
@@ -143,7 +190,7 @@
                 <div class="two columns buttom"></div>
                 <div class="five columns bottom">
                     <center><p style="font-size: 14px;">Get Started...</p></center>
-                    <img style="width: 100%;" src="{% static 'img/facebook_login.png' %}" alt="login with facebook">
+<img onclick="FB.login();" class="facebook-button" style="width: 100%;" src="{% static 'img/facebook_login.png' %}" alt="login with facebook">
                 </div>
                 <div class="three columns buttom"></div>
             </div>
