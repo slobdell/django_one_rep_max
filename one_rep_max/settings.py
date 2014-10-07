@@ -68,6 +68,33 @@ ROOT_URLCONF = 'one_rep_max.urls'
 WSGI_APPLICATION = 'one_rep_max.wsgi.application'
 
 if os.getenv("I_AM_IN_DEV_ENV"):
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+            'LOCATION': '127.0.0.1:11211',
+        }
+    }
+else:
+    os.environ['MEMCACHE_SERVERS'] = os.environ.get('MEMCACHIER_SERVERS', '').replace(',', ';')
+    os.environ['MEMCACHE_USERNAME'] = os.environ.get('MEMCACHIER_USERNAME', '')
+    os.environ['MEMCACHE_PASSWORD'] = os.environ.get('MEMCACHIER_PASSWORD', '')
+    CACHES = {
+        'default': {
+            'BACKEND': 'django_pylibmc.memcached.PyLibMCCache',
+            'BINARY': True,
+            'OPTIONS': {
+                'no_block': True,
+                'tcp_nodelay': True,
+                'tcp_keepalive': True,
+                'remove_failed': 4,
+                'retry_timeout': 2,
+                'dead_timeout': 10,
+                '_poll_timeout': 2000
+            }
+        }
+    }
+
+if os.getenv("I_AM_IN_DEV_ENV"):
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
