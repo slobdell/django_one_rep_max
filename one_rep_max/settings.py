@@ -67,6 +67,10 @@ ROOT_URLCONF = 'one_rep_max.urls'
 
 WSGI_APPLICATION = 'one_rep_max.wsgi.application'
 
+'''
+Re add these modules if we want this back:
+pylibmc==1.3.0
+django-pylibmc==0.5.0
 if os.getenv("I_AM_IN_DEV_ENV"):
     CACHES = {
         'default': {
@@ -93,6 +97,7 @@ else:
             }
         }
     }
+'''
 
 if os.getenv("I_AM_IN_DEV_ENV"):
     DATABASES = {
