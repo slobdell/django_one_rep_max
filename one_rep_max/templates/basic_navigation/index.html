@@ -36,9 +36,6 @@
     <script>
     /****** FACEBOOK STUFF  *****/
     function statusChangeCallback(response) {
-        for(var key in response){
-            console.log(key +": " + response[key]);
-        }
         if (response.status === 'connected') {
             // logged in
             alert("logged in");
@@ -78,7 +75,7 @@
     }(document, 'script', 'facebook-jssdk'));
 
     function testAPI() {
-        FB.api('/me', function(response) {
+        FB.api('/v2.1/me', function(response) {
             var facebook_id = response.id;
             alert("Thanks for logging in, " + response.name + "!");
         });
@@ -275,6 +272,7 @@ Upload a Video <i style="margin-left: 10px;" class="icon-film"></i></a>
 		</div>
 		<div class="clearfix"></div>
 	</footer>
+    <div id="fb-root"></div>
 
 	<!-- Javascript/jQuery
 	================================================== -->
@@ -291,8 +289,8 @@ Upload a Video <i style="margin-left: 10px;" class="icon-film"></i></a>
 	<script src="{% static 'js/gmap3.min.js' %}"></script>
 	<script src="{% static 'js/scripts.js' %}"></script>
 
-    <script type="text/javascript" src="{% static 'js/backbone-min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/underscore-min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/backbone-min.js' %}"></script>
 
 
 <!-- End Document
