@@ -920,6 +920,17 @@ a.button.alt {
 }
 a.button.alt:hover {
   background: #ff3333;
+    color: #ccc;
+}
+
+a.button.alt.cancel{
+    border: 4px solid #ccc;
+    color: #ccc;
+}
+a.button.alt.cancel:hover{
+    background: #555;
+    color: #ccc;
+
 }
 
 /* #Footer
