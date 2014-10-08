@@ -35,51 +35,9 @@
     {% include "underscore_templates/main_page.html" %}
     <script>
     /****** FACEBOOK STUFF  *****/
-    function statusChangeCallback(response) {
-        if (response.status === 'connected') {
-            // logged in
-            alert("logged in");
-            testAPI();
-        } else if (response.status === 'not_authorized') {
-            alert("logged into facebook but not app");
-        } else {
-            alert("not logged in");
-        }
-    }
 
-    function checkLoginState() {
-        // called when someone finishes with login button
-        FB.getLoginStatus(function(response) {
-            statusChangeCallback(response);
-        });
-    }
 
-    window.fbAsyncInit = function() {
-        FB.init({
-            appId      : '644623625654469',
-            xfbml      : true,
-            version    : 'v2.1'
-        });
-        // called when page loads
-        FB.getLoginStatus(function(response) {
-            statusChangeCallback(response);
-        });
-    };
 
-    (function(d, s, id){
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) {return;}
-        js = d.createElement(s); js.id = id;
-        js.src = "//connect.facebook.net/en_US/sdk.js";
-        fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
-
-    function testAPI() {
-        FB.api('/v2.1/me', function(response) {
-            var facebook_id = response.id;
-            alert("Thanks for logging in, " + response.name + "!");
-        });
-    }
     /****** END FACEBOOK STUFF  *****/
     </script>
 
@@ -188,14 +146,7 @@
                     </div>
                 </div>
             <div class="ten columns bottom">
-                <div class="two columns buttom"></div>
-                <div class="five columns bottom">
-                    <center><p style="font-size: 14px;">Get Started...</p></center>
-<img onclick="FB.login();" class="facebook-button" style="width: 100%;" src="{% static 'img/facebook_login.png' %}" alt="login with facebook">
-<a style="font-size: 18px;" href="#" class="button large alt">
-Upload a Video <i style="margin-left: 10px;" class="icon-film"></i></a>
-                </div>
-                <div class="three columns buttom"></div>
+                <div id="button-fill-area"></div>
             </div>
 <!-- SBL END-->
 			<div class="clearfix"></div>
@@ -291,6 +242,34 @@ Upload a Video <i style="margin-left: 10px;" class="icon-film"></i></a>
 
     <script type="text/javascript" src="{% static 'js/underscore-min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/backbone-min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/index_router.js' %}"></script>
+    <script>
+    $(document).ready(function(){
+        var indexRouter = new IndexRouter();
+        Backbone.history.start();
+
+        window.fbAsyncInit = function() {
+            FB.init({
+                appId      : '644623625654469',
+                xfbml      : true,
+                version    : 'v2.1'
+            });
+            // called when page loads
+            var callback = function(response){
+                indexRouter.facebookStatusChangeCallback(response);
+            };
+            FB.getLoginStatus(callback);
+        };
+
+        (function(d, s, id){
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {return;}
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    });
+    </script>
 
 
 <!-- End Document
