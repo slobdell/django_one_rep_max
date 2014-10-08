@@ -133,8 +133,8 @@ USE_TZ = True
 STATIC_ROOT = 'staticfiles'
 
 # TODO make these secret
-AWS_ACCESS_KEY_ID = "AKIAJQGJ462PV262GGVQ"
-AWS_SECRET_ACCESS_KEY = "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"
+AWS_ACCESS_KEY_ID = os.environ["AWS_ACCESS_KEY_ID"]
+AWS_SECRET_ACCESS_KEY = os.environ["AWS_SECRET_ACCESS_KEY"]
 AWS_STORAGE_BUCKET_NAME = "one-rep-max-static"
 
 if os.environ.get("I_AM_IN_DEV_ENV"):
