@@ -1,10 +1,11 @@
 
-ClickMeView = Backbone.View.extend({
+FacebookButtonView = Backbone.View.extend({
     el: "#button-fill-area",
     events: {
         "click .facebook-button": "clickFacebookConnect"
     },
     initialize: function(options){
+        this.router = options.router;
         this.template = _.template($("#button_area_facebook").html())
         this.initFacebook();
     },
@@ -17,6 +18,11 @@ ClickMeView = Backbone.View.extend({
         });
     },
     clickFacebookConnect: function(){
+        var self = this;  // not sure if this is necessary
+        var callback = function(response){
+            self.router.facebookStatusChangeCallback(response);
+        }
+        FB.login(callback);
     },
     clickUploadVideo: function(){
     },
@@ -41,7 +47,7 @@ IndexRouter = Backbone.Router.extend({
     initialize: function(options){
     },
     defaultRoute: function(path){
-        var view = new ClickMeView();
+        var view = new FacebookButtonView({router: this});
         view.render();
     },
     facebookStatusChangeCallback: function(response){
