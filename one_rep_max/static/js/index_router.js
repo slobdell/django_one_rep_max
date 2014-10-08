@@ -71,5 +71,10 @@ IndexRouter = Backbone.Router.extend({
             var view = new FacebookButtonView({router: this});
             view.render();
         }
+    },
+    forceStart: function(){
+        /* hacky dev case */
+        var view = new UploadVideoButtonView({router: this});
+        view.render();
     }
 });
