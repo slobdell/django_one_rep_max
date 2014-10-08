@@ -1,4 +1,19 @@
-
+UploadVideoButtonView = Backbone.View.extend({
+    el: "#button-fill-area",
+    events: {
+        "click #upload-video-button": "clickUploadVideo"
+    },
+    initialize: function(options){
+        this.template = _.template($("#button_area_upload").html());
+    },
+    clickUploadVideo: function(){
+        alert("click upload video clicked");
+    },
+    render: function(){
+        this.$el.html(this.template());
+        return this;
+    }
+});
 FacebookButtonView = Backbone.View.extend({
     el: "#button-fill-area",
     events: {
@@ -7,9 +22,6 @@ FacebookButtonView = Backbone.View.extend({
     initialize: function(options){
         this.router = options.router;
         this.template = _.template($("#button_area_facebook").html())
-        this.initFacebook();
-    },
-    initFacebook: function(){
     },
     getFacebookId: function(){
         FB.api('/v2.1/me', function(response) {
@@ -23,8 +35,6 @@ FacebookButtonView = Backbone.View.extend({
             self.router.facebookStatusChangeCallback(response);
         }
         FB.login(callback);
-    },
-    clickUploadVideo: function(){
     },
     render: function(){
         this.$el.html(this.template());
@@ -47,16 +57,19 @@ IndexRouter = Backbone.Router.extend({
     initialize: function(options){
     },
     defaultRoute: function(path){
-        var view = new FacebookButtonView({router: this});
-        view.render();
     },
     facebookStatusChangeCallback: function(response){
         if (response.status === 'connected') {
-            alert("logged in");
+            var view = new UploadVideoButtonView({router: this});
+            view.render();
         } else if (response.status === 'not_authorized') {
-            alert("logged into facebook but not app");
+            // logged into Facebook but not app
+            var view = new FacebookButtonView({router: this});
+            view.render();
         } else {
-            alert("not logged in");
+            // not logged in
+            var view = new FacebookButtonView({router: this});
+            view.render();
         }
     }
 });
