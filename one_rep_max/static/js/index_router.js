@@ -1,18 +1,33 @@
 UploadModalView = Backbone.View.extend({
     el: "#button-fill-area",
     events: {
-        "click #cancel-button": "clickCancelButton"
+        "click #cancel-button": "clickCancelButton",
+        "click .close": "clickClose",
+        "click #choose-file": "clickChooseFile"
     },
     initialize: function(options){
+        this.videoUploaded = false;
         this.template = _.template($("#upload_modal_view").html());
     },
-    clickCancelButton: function(){
+    closeModal: function(){
         this.$("#myModal").modal('hide');
         Backbone.history.navigate("", {trigger: true});
+    },
+    clickCancelButton: function(){
+        this.closeModal();
+    },
+    clickClose: function(){
+        this.closeModal();
+    },
+    clickChooseFile: function(){
+        this.$("#upfile").click();
     },
     render: function(){
         this.$el.html(this.template());
         this.$("#myModal").modal();
+        if (!this.videoUploaded){
+            this.$("#upload-video-button-final").hide();
+        }
         return this;
     }
 });

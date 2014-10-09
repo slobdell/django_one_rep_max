@@ -253,6 +253,9 @@
     <script>
     $(document).ready(function(){
         var indexRouter = new IndexRouter();
+        {% if dev %}
+            indexRouter.forceStart();
+        {% endif %}
         Backbone.history.start();
 
         window.fbAsyncInit = function() {
@@ -275,9 +278,6 @@
             js.src = "//connect.facebook.net/en_US/sdk.js";
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));
-        {% if dev %}
-            indexRouter.forceStart();
-        {% endif %}
     });
     </script>
 
