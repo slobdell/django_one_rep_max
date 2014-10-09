@@ -25,12 +25,12 @@
     <!-- Modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-    <div class="modal-content" style="background: #323232;" >
+<div class="modal-content" style="background: #323232;">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
             <h4 class="modal-title" id="myModalLabel">Upload a Video</h4>
         </div>
-        <div class="modal-body">
+<div class="modal-body" style="max-height: 320px; overflow-y: scroll;">
             <div class="row-fluid">
                 <div class="col-sm-6">
                     <p>Ensure that:</p>
@@ -46,8 +46,11 @@
                 </div>
                 <div class="col-sm-6">
 <form action="." method="POST" enctype="multipart/form-data">
-<input type="file" id="upfile" type="file" value="upload" style="visibility: hidden;" accept="video/*"/>
-<a id="choose-file" style="margin-top: 15%; font-size: 18px;" href="javascript:void(0);" class="button large alt">
+<input type="file" id="upfile" name="upfile" type="file" value="upload" style="visibility: hidden;" accept="video/*"/>
+<p>
+<%= videoName %>
+</p>
+<a id="choose-file" style="font-size: 18px;" href="javascript:void(0);" class="button large alt <% if (videoUploaded) { %>cancel<% } %>">
 Choose File
 </a>
 </form>

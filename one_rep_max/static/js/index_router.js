@@ -3,15 +3,49 @@ UploadModalView = Backbone.View.extend({
     events: {
         "click #cancel-button": "clickCancelButton",
         "click .close": "clickClose",
-        "click #choose-file": "clickChooseFile"
+        "click #choose-file": "clickChooseFile",
+        "change #upfile": "uploadFileChanged",
+        "click #upload-video-button-final": "postData"
     },
     initialize: function(options){
         this.videoUploaded = false;
         this.template = _.template($("#upload_modal_view").html());
+        this.videoName = "";
+        this.formData = new FormData();
+        this.initialOverflow = 'visible';
+        this.initialPosition = 'static';
+        this.clickState = false;
     },
     closeModal: function(){
         this.$("#myModal").modal('hide');
+         $('body').css('overflow', this.initialOverflow);
+         $('body').css('position', this.initialPosition);
         Backbone.history.navigate("", {trigger: true});
+    },
+    postData: function(){
+        $.ajax({
+            url: 'rest/accounts/upload/',
+            data: this.formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            type: 'POST',
+            success: function(data){
+                alert("success");
+            },
+            error: function(data){
+                alert("fail");
+            }
+        });
+    },
+    uploadFileChanged: function(){
+        this.clickState = false;
+        var file = this.$('input[name="upfile"]')[0].files[0];
+        this.videoName = file.name;
+        this.formData = new FormData();
+        this.formData.append('file', file);
+        this.videoUploaded = true;
+        this.render();
     },
     clickCancelButton: function(){
         this.closeModal();
@@ -20,11 +54,20 @@ UploadModalView = Backbone.View.extend({
         this.closeModal();
     },
     clickChooseFile: function(){
+        if(this.clickState){
+            return;
+        }
         this.$("#upfile").click();
     },
     render: function(){
-        this.$el.html(this.template());
+        var renderData = {
+            videoName: this.videoName,
+            videoUploaded: this.videoUploaded
+        }
+        this.$el.html(this.template(renderData));
         this.$("#myModal").modal();
+        $('body').css('overflow','hidden');
+        $('body').css('position','fixed');
         if (!this.videoUploaded){
             this.$("#upload-video-button-final").hide();
         }
