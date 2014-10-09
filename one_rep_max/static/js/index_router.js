@@ -38,13 +38,13 @@ UploadModalView = Backbone.View.extend({
         });
     },
     uploadFileChanged: function(){
+        alert("upload file changed");
         var file = this.$('input[name="upfile"]')[0].files[0];
         this.videoName = file.name;
-        this.videoUploaded = true;
-        this.render();
-        // quick re order test to see if this is causing problems w iphone
         this.formData = new FormData();
         this.formData.append('file', file);
+        this.videoUploaded = true;
+        this.render();
     },
     clickCancelButton: function(){
         this.closeModal();
