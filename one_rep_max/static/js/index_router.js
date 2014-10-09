@@ -17,8 +17,8 @@ UploadModalView = Backbone.View.extend({
     },
     closeModal: function(){
         this.$("#myModal").modal('hide');
-         $('body').css('overflow', this.initialOverflow);
-         $('body').css('position', this.initialPosition);
+        $('body').css('overflow', this.initialOverflow);
+        $('body').css('position', this.initialPosition);
         Backbone.history.navigate("", {trigger: true});
     },
     postData: function(){
@@ -40,10 +40,11 @@ UploadModalView = Backbone.View.extend({
     uploadFileChanged: function(){
         var file = this.$('input[name="upfile"]')[0].files[0];
         this.videoName = file.name;
-        this.formData = new FormData();
-        this.formData.append('file', file);
         this.videoUploaded = true;
         this.render();
+        // quick re order test to see if this is causing problems w iphone
+        this.formData = new FormData();
+        this.formData.append('file', file);
     },
     clickCancelButton: function(){
         this.closeModal();
