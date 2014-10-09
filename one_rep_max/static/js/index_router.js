@@ -14,7 +14,6 @@ UploadModalView = Backbone.View.extend({
         this.formData = new FormData();
         this.initialOverflow = 'visible';
         this.initialPosition = 'static';
-        this.clickState = false;
     },
     closeModal: function(){
         this.$("#myModal").modal('hide');
@@ -39,7 +38,6 @@ UploadModalView = Backbone.View.extend({
         });
     },
     uploadFileChanged: function(){
-        this.clickState = false;
         var file = this.$('input[name="upfile"]')[0].files[0];
         this.videoName = file.name;
         this.formData = new FormData();
@@ -54,9 +52,6 @@ UploadModalView = Backbone.View.extend({
         this.closeModal();
     },
     clickChooseFile: function(){
-        if(this.clickState){
-            return;
-        }
         this.$("#upfile").click();
     },
     render: function(){
