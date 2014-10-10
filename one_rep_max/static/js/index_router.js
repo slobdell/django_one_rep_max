@@ -14,6 +14,8 @@ UploadModalView = Backbone.View.extend({
         this.formData = new FormData();
         this.initialOverflow = 'visible';
         this.initialPosition = 'static';
+        this.maxTimeBetweenClicks = 3000;
+        this.lastClicked =  new Date().getTime() - this.maxTimeBetweenClicks;
     },
     closeModal: function(){
         this.$("#myModal").modal('hide');
@@ -23,7 +25,7 @@ UploadModalView = Backbone.View.extend({
     },
     postData: function(){
         $.ajax({
-            url: 'rest/accounts/upload/',
+            url: '/api/upload_video/',
             data: this.formData,
             cache: false,
             contentType: false,
@@ -38,7 +40,7 @@ UploadModalView = Backbone.View.extend({
         });
     },
     uploadFileChanged: function(){
-        alert("upload file changed");
+        // this doesn't seem to work all the time for iPhone, can't pinpoint why...change event isnt firing
         var file = this.$('input[name="upfile"]')[0].files[0];
         this.videoName = file.name;
         this.formData = new FormData();
@@ -53,6 +55,11 @@ UploadModalView = Backbone.View.extend({
         this.closeModal();
     },
     clickChooseFile: function(){
+        var currentClickTime = new Date().getTime();
+        if (currentClickTime - this.lastClicked < this.maxTimeBetweenClicks){
+            return;
+        }
+        this.lastClicked = currentClickTime;
         this.$("#upfile").click();
     },
     render: function(){
