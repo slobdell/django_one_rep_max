@@ -43,7 +43,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # 'one_rep_max.pictures',
+    'one_rep_max.uploaded_videos',
     # 'one_rep_max.pricing',
     # 'one_rep_max.orders',
     # 'one_rep_max.events'

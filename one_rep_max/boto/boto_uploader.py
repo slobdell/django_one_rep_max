@@ -1,10 +1,13 @@
 import boto
 
 from boto.exception import S3ResponseError
+from django.conf.settings import settings
 
-from .constants import ACCESS_KEY
 from .constants import BUCKET_NAME
-from .constants import SECRET_KEY
+
+ACCESS_KEY = settings.AWS_ACCESS_KEY_ID
+SECRET_KEY = settings.AWS_SECRET_ACCESS_KEY
+
 
 POOL_SIZE = 16
 ASYNC = True
@@ -32,13 +35,17 @@ class BotoUploader(object):
         self.files_uploaded = []
 
     @classmethod
-    def upload_single_file(cls, read_hard_drive_filename, write_amazon_filename):
+    def _make_key(cls, write_amazon_filename):
         connection = cls._get_connection()
         bucket = cls._get_or_create_bucket(connection, BUCKET_NAME)
         key_name = write_amazon_filename
         key = bucket.get_key(key_name)
         if key is None:
             key = bucket.new_key(key_name)
+
+    @classmethod
+    def upload_single_file(cls, read_hard_drive_filename, write_amazon_filename):
+        key = cls._make_key(write_amazon_filename)
         print "Starting upload of %s" % read_hard_drive_filename
         key.set_contents_from_filename(read_hard_drive_filename,
                                        replace=True,
@@ -46,7 +53,16 @@ class BotoUploader(object):
         key.make_public()
 
         cls._remove_file(read_hard_drive_filename)
-        return "%s/%s" % (BUCKET_NAME, key_name)
+        return "%s/%s" % (BUCKET_NAME, write_amazon_filename)
+
+    @classmethod
+    def upload_single_file_from_memory(cls, in_mem_file, write_amazon_filename):
+        key = cls._make_key(write_amazon_filename)
+        key.set_contents_from_file(in_mem_file,
+                                   replace=True,
+                                   reduced_redundancy=False)
+        key.make_public()
+        return "%s/%s" % (BUCKET_NAME, write_amazon_filename)
 
     def progress_reporter(self, bytes_transfered, bytes_sent, filename):
         percent_finished = 0
