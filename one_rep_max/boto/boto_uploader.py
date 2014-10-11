@@ -1,7 +1,7 @@
 import boto
 
 from boto.exception import S3ResponseError
-from django.conf.settings import settings
+from django.conf import settings
 
 from .constants import BUCKET_NAME
 
@@ -42,6 +42,7 @@ class BotoUploader(object):
         key = bucket.get_key(key_name)
         if key is None:
             key = bucket.new_key(key_name)
+        return key
 
     @classmethod
     def upload_single_file(cls, read_hard_drive_filename, write_amazon_filename):

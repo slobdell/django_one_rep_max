@@ -52,6 +52,7 @@ class UploadedVideo(object):
         uploaded_file = cls._wrap(_uploaded_file)
         BotoUploader.upload_single_file_from_memory(file_obj, uploaded_file.amazon_key)
         uploaded_file.mark_uploaded()
+        return uploaded_file
 
     def mark_uploaded(self):
         self._uploaded_video.date_uploaded = datetime.datetime.utcnow()
