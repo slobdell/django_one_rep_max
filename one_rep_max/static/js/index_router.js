@@ -17,6 +17,7 @@ UploadModalView = Backbone.View.extend({
         this.initialPosition = 'static';
         this.maxTimeBetweenClicks = 3000;
         this.lastClicked =  new Date().getTime() - this.maxTimeBetweenClicks;
+        this.clickable = true;
     },
     closeModal: function(){
         this.$("#myModal").modal('hide');
@@ -64,6 +65,7 @@ UploadModalView = Backbone.View.extend({
         this.videoUploaded = true;
         this.render();
         this.$("#choose-file").show();
+        this.clickable = true;
     },
     clickCancelButton: function(){
         this.closeModal();
@@ -76,6 +78,10 @@ UploadModalView = Backbone.View.extend({
         if (currentClickTime - this.lastClicked < this.maxTimeBetweenClicks){
             return;
         }
+        if (!this.clickable){
+            return;
+        }
+        this.clickable = false;
         this.lastClicked = currentClickTime;
         this.$("#upfile").click();
         this.$("#choose-file").hide();
@@ -101,6 +107,7 @@ UploadModalView = Backbone.View.extend({
         var self = this;
         $(document).on('focus', '#myModal', function(e) {
             self.$("#choose-file").show();
+            self.clickable = true;
         });
         return this;
     }
