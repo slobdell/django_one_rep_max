@@ -197,7 +197,6 @@ IndexRouter = Backbone.Router.extend({
                     traditional: true,
                     type: 'POST',
                     success: function(data){
-                        self.finishPostSuccess();
                         self.loggedIn = true;
                         alert("WORKED!");
                     },
