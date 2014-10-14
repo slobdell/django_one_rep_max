@@ -139,12 +139,6 @@ FacebookButtonView = Backbone.View.extend({
         this.router = options.router;
         this.template = _.template($("#button_area_facebook").html())
     },
-    getFacebookId: function(){
-        FB.api('/v2.1/me', function(response) {
-            var facebook_id = response.id;
-            return facebook_id;
-        });
-    },
     clickFacebookConnect: function(){
         var self = this;  // not sure if this is necessary
         var callback = function(response){
@@ -190,7 +184,28 @@ IndexRouter = Backbone.Router.extend({
     },
     facebookStatusChangeCallback: function(response){
         if (response.status === 'connected') {
-            this.loggedIn = true;
+            var self = this;
+            FB.api('/v2.1/me', function(response) {
+                var facebook_id = response.id;
+                $.ajax({
+                    url: '/api/login/',
+                    data: {
+                        facebook_service_id: facebook_id,
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    type: 'POST',
+                    success: function(data){
+                        self.finishPostSuccess();
+                        self.loggedIn = true;
+                        alert("WORKED!");
+                    },
+                    error: function(data){
+                        alert("error");
+                    }
+                });
+            });
         } else if (response.status === 'not_authorized') {
             this.loggedIn = false;
             // logged into Facebook but not app

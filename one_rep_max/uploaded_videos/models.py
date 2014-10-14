@@ -1,4 +1,5 @@
 import datetime
+import mimetypes
 
 from django.db import models
 
@@ -45,7 +46,7 @@ class UploadedVideo(object):
         file_type = file_obj.content_type
         if file_type not in SUPPORTED_FILE_TYPES:
             raise ValueError("%s is not a supported mime type" % file_type)
-        extension = file_type.split("/")[-1]
+        extension = mimetypes.guess_extension(file_type)
         _uploaded_file = _UploadedVideo.objects.create(amazon_bucket=BUCKET_NAME,
                                                        user_id=user_id,
                                                        extension=extension)
@@ -75,9 +76,9 @@ class UploadedVideo(object):
 
     @property
     def amazon_key(self):
-        return "%s/%s.%s" % (self.user_id,
-                             self.id,
-                             self.extension)
+        return "%s/%s%s" % (self.user_id,
+                            self.id,
+                            self.extension)
 
     @property
     def id(self):
