@@ -26,6 +26,7 @@ class _UploadedVideo(models.Model):
     amazon_bucket = models.CharField(max_length=255)
     user_id = models.IntegerField()
     extension = models.CharField(max_length=6)
+    seconds = models.IntegerField()
 
 
 class UploadedVideo(object):
@@ -47,9 +48,12 @@ class UploadedVideo(object):
         if file_type not in SUPPORTED_FILE_TYPES:
             raise ValueError("%s is not a supported mime type" % file_type)
         extension = mimetypes.guess_extension(file_type)
+        # FIXME need to compute seconds at some point now before the site goes
+        # non-free
         _uploaded_file = _UploadedVideo.objects.create(amazon_bucket=BUCKET_NAME,
                                                        user_id=user_id,
-                                                       extension=extension)
+                                                       extension=extension,
+                                                       seconds=0)
         uploaded_file = cls._wrap(_uploaded_file)
         BotoUploader.upload_single_file_from_memory(file_obj, uploaded_file.amazon_key)
         uploaded_file.mark_uploaded()
@@ -95,3 +99,7 @@ class UploadedVideo(object):
     @property
     def date_taken(self):
         return self._uploaded_video.date_taken
+
+    @property
+    def seconds(self):
+        return self._uploaded_video.seconds
