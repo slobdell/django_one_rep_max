@@ -30,3 +30,7 @@ class User(object):
         _user.last_login = datetime.datetime.utcnow()
         _user.save()
         return cls._wrap(_user)
+
+    @property
+    def id(self):
+        return self._user.id
