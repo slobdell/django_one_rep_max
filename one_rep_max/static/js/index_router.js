@@ -5,7 +5,8 @@ UploadModalView = Backbone.View.extend({
         "click .close": "clickClose",
         "click #choose-file": "clickChooseFile",
         "change #upfile": "uploadFileChanged",
-        "click #upload-video-button-final": "postData"
+        "click #upload-video-button-final": "postData",
+        "hidden.bs.modal #myModal": "clickOutsideModal"
     },
     initialize: function(options){
         this.videoUploaded = false;
@@ -23,7 +24,22 @@ UploadModalView = Backbone.View.extend({
         $('body').css('position', this.initialPosition);
         Backbone.history.navigate("", {trigger: true});
     },
+    finishPostSuccess: function(){
+        this.$("#spinner").hide();
+        this.$("#upload-video-button-final").show();
+        // SBL TODO render a new view
+        alert("success");
+    },
+    finishPostFail: function(){
+        this.$("#spinner").hide();
+        this.$("#upload-video-button-final").show();
+        // SBL TODO display some kind of error message
+        alert("fail");
+    },
     postData: function(){
+        this.$("#spinner").show();
+        this.$("#upload-video-button-final").hide();
+        var self = this;
         $.ajax({
             url: '/api/upload_video/',
             data: this.formData,
@@ -32,10 +48,10 @@ UploadModalView = Backbone.View.extend({
             processData: false,
             type: 'POST',
             success: function(data){
-                alert("success");
+                self.finishPostSuccess();
             },
             error: function(data){
-                alert("fail");
+                self.finishPostFail();
             }
         });
     },
@@ -47,6 +63,7 @@ UploadModalView = Backbone.View.extend({
         this.formData.append('file', file);
         this.videoUploaded = true;
         this.render();
+        this.$("#choose-file").show();
     },
     clickCancelButton: function(){
         this.closeModal();
@@ -61,6 +78,10 @@ UploadModalView = Backbone.View.extend({
         }
         this.lastClicked = currentClickTime;
         this.$("#upfile").click();
+        this.$("#choose-file").hide();
+    },
+    clickOutsideModal: function(){
+        this.closeModal();
     },
     render: function(){
         var renderData = {
@@ -68,12 +89,19 @@ UploadModalView = Backbone.View.extend({
             videoUploaded: this.videoUploaded
         }
         this.$el.html(this.template(renderData));
+        this.$("#spinner").hide();
         this.$("#myModal").modal();
         $('body').css('overflow','hidden');
         $('body').css('position','fixed');
         if (!this.videoUploaded){
             this.$("#upload-video-button-final").hide();
         }
+        this.delegateEvents();
+
+        var self = this;
+        $(document).on('focus', '#myModal', function(e) {
+            self.$("#choose-file").show();
+        });
         return this;
     }
 });
