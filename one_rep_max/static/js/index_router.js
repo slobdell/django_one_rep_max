@@ -190,7 +190,7 @@ IndexRouter = Backbone.Router.extend({
                 $.ajax({
                     url: '/api/login/',
                     data: {
-                        facebook_service_id: facebook_id,
+                        facebook_service_id: facebook_id
                     },
                     cache: false,
                     dataType: 'json',
