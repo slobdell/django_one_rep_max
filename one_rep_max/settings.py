@@ -24,8 +24,8 @@ STATICFILES_DIRS = (
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
 
-DEBUG = False or True
-TEMPLATE_DEBUG = False or True
+DEBUG = False
+TEMPLATE_DEBUG = False
 if os.environ.get("I_AM_IN_DEV_ENV"):
     DEBUG = True
     TEMPLATE_DEBUG = True
