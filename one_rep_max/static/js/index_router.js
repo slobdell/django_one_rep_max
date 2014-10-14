@@ -192,9 +192,6 @@ IndexRouter = Backbone.Router.extend({
                     data: {
                         facebook_service_id: facebook_id,
                     },
-                    cache: false,
-                    contentType: false,
-                    processData: false,
                     type: 'POST',
                     success: function(data){
                         self.finishPostSuccess();
