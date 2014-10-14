@@ -198,7 +198,8 @@ IndexRouter = Backbone.Router.extend({
                     type: 'POST',
                     success: function(data){
                         self.loggedIn = true;
-                        alert("WORKED!");
+                        var view = new UploadVideoButtonView({router: self});
+                        view.render();
                     },
                     error: function(data){
                         alert("error");
