@@ -28,7 +28,8 @@ def upload_video(request):
 def login(request):
     if request.method != "POST":
         raise Http404
-    facebook_service_id = request.POST['facebook_service_id']
+    post_data = json.loads(request.body)
+    facebook_service_id = post_data['facebook_service_id']
     user = User.get_or_create_from_fb_id(facebook_service_id)
     request.session['user_id'] = user.id
     request.session['facebook_service_id'] = facebook_service_id
