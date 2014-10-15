@@ -1,3 +1,20 @@
+OrderSummaryView = Backbone.View.extend({
+    el: ".modal-content",
+    /*
+     * this should have start and stop point
+     *                  total cost
+     *                  image thumbnail
+     */
+    initialize: function(options){
+        // TODO el should be ".modal-content"
+        this.template = _.template($("#order_summary_view").html());
+    },
+    render: function(){
+        this.$el.empty().append(this.template());
+        this.$("#spinner").hide();
+    }
+});
+
 UploadModalView = Backbone.View.extend({
     el: "#button-fill-area",
     events: {
@@ -155,6 +172,7 @@ FacebookButtonView = Backbone.View.extend({
 
 IndexRouter = Backbone.Router.extend({
     routes: {
+        "summary": "orderSummaryView",
         "upload": "uploadView",
         "": "defaultRoute"
     },
@@ -167,6 +185,12 @@ IndexRouter = Backbone.Router.extend({
     */
     initialize: function(options){
         this.loggedIn = false;
+    },
+    orderSummaryView: function(){
+        var dependentView = new UploadModalView();
+        dependentView.render();
+        var view = new OrderSummaryView();
+        view.render();
     },
     uploadView: function(){
         var view = new UploadModalView();
