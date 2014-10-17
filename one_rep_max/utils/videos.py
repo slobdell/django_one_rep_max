@@ -18,6 +18,7 @@ def save_in_memory_file_to_local_storage(in_mem_file):
 
 
 def _save_frame_to_amazon(frame):
+    # TODO need to resize this image so that it's way smaller
     temp_path = "./tmp/%s.jpg" % str(uuid.uuid4())
     if not os.path.exists(os.path.dirname(temp_path)):
         os.makedirs(os.path.dirname(temp_path))
