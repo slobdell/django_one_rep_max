@@ -45,8 +45,7 @@ UploadModalView = Backbone.View.extend({
     finishPostSuccess: function(){
         this.$("#spinner").hide();
         this.$("#upload-video-button-final").show();
-        // SBL TODO render a new view
-        alert("success");
+        Backbone.history.navigate("summary", {trigger: true});
     },
     finishPostFail: function(){
         this.$("#spinner").hide();
@@ -240,9 +239,27 @@ IndexRouter = Backbone.Router.extend({
         this.defaultRoute();
     },
     forceStart: function(){
-        this.loggedIn = true;
         /* hacky dev case */
-        var view = new UploadVideoButtonView({router: this});
-        view.render();
+        // TODO make this unavailable in prod
+        var self = this;
+        var facebook_id = 1000000;
+        $.ajax({
+            url: '/api/login/',
+            data: {
+                facebook_service_id: facebook_id
+            },
+            cache: false,
+            dataType: 'json',
+            traditional: true,
+            type: 'POST',
+            success: function(data){
+                self.loggedIn = true;
+                var view = new UploadVideoButtonView({router: self});
+                view.render();
+            },
+            error: function(data){
+                alert("error");
+            }
+        });
     }
 });

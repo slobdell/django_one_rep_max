@@ -53,7 +53,6 @@ class BotoUploader(object):
                                        reduced_redundancy=False)
         key.make_public()
 
-        cls._remove_file(read_hard_drive_filename)
         return "%s/%s" % (BUCKET_NAME, write_amazon_filename)
 
     @classmethod

@@ -7,3 +7,4 @@
 *.cpp
 .virtualenv
 staticfiles
+tmp

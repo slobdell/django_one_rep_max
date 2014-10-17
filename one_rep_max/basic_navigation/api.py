@@ -5,6 +5,7 @@ from django.http import HttpResponse
 
 from one_rep_max.uploaded_videos.models import UploadedVideo
 from one_rep_max.users.models import User
+from one_rep_max.utils.videos import create_video_metadata
 
 
 def render_to_json(response_obj, context={}, content_type="application/json", status=200):
@@ -16,13 +17,16 @@ def upload_video(request):
     if request.method != "POST":
         raise Http404
     uploaded_file = request.FILES['file']
+    meta = create_video_metadata(uploaded_file)
 
-    user_id = 9999  # TODO make a user id
+    user_id = request.session['user_id']
     uploaded_video = UploadedVideo.create_from_file(uploaded_file, user_id)
 
-    return render_to_json({
+    render_data = {
         "id": uploaded_video.id
-    })
+    }
+    render_data.update(meta)
+    return render_to_json(render_data)
 
 
 def login(request):
