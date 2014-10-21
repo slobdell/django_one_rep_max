@@ -1,3 +1,6 @@
+setuptools
+distribute
+
 Django==1.7
 dj-static==0.0.6
 dj-database-url==0.3.0
