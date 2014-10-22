@@ -6,11 +6,27 @@ OrderSummaryView = Backbone.View.extend({
      *                  image thumbnail
      */
     initialize: function(options){
-        // TODO el should be ".modal-content"
         this.template = _.template($("#order_summary_view").html());
+        this.videoMinutes = parseInt(window.videoSeconds / 60);
+        this.videoMinutes = this.videoMinutes.toString();
+        this.videoSeconds = window.videoSeconds % 60 || 0;
+        this.videoSeconds = this.videoSeconds.toPrecision(4);
+        var tempString = this.videoSeconds.toString();
+        if (this.videoSeconds < 10){
+            tempString = "0" + tempString;
+        }
+        this.videoSeconds = tempString;
+        this.thumbnailUrl = window.thumbnailUrl || "";
+        this.dollarCost = window.dollarCost || "0.00";
     },
     render: function(){
-        this.$el.empty().append(this.template());
+        var renderData = {
+            videoMinutes: this.videoMinutes,
+            videoSeconds: this.videoSeconds,
+            thumbnailUrl: this.thumbnailUrl,
+            dollarCost: this.dollarCost
+        }
+        this.$el.empty().append(this.template(renderData));
         this.$("#spinner").hide();
     }
 });
@@ -42,7 +58,13 @@ UploadModalView = Backbone.View.extend({
         $('body').css('position', this.initialPosition);
         Backbone.history.navigate("", {trigger: true});
     },
-    finishPostSuccess: function(){
+    finishPostSuccess: function(videoMeta){
+        // FIXME is this bad?
+        window.videoId = videoMeta.id;
+        window.videoSeconds = videoMeta.video_seconds;
+        window.thumbnailUrl = videoMeta.thumbnail_url;
+        window.dollarCost = videoMeta.dollar_cost;
+
         this.$("#spinner").hide();
         this.$("#upload-video-button-final").show();
         Backbone.history.navigate("summary", {trigger: true});
@@ -64,8 +86,8 @@ UploadModalView = Backbone.View.extend({
             contentType: false,
             processData: false,
             type: 'POST',
-            success: function(data){
-                self.finishPostSuccess();
+            success: function(response){
+                self.finishPostSuccess(response);
             },
             error: function(data){
                 self.finishPostFail();
