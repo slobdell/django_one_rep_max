@@ -248,7 +248,6 @@ IndexRouter = Backbone.Router.extend({
         }
     },
     facebookStatusChangeCallback: function(response){
-        var previousLoginState = this.loggedIn;
         if (response.status === 'connected') {
             var self = this;
             FB.api('/v2.1/me', function(response) {
@@ -264,11 +263,9 @@ IndexRouter = Backbone.Router.extend({
                     type: 'POST',
                     success: function(data){
                         self.loggedIn = true;
-                        if (previousLoginState !== self.loggedIn){
-                            var currentRoute = this.routes[Backbone.history.fragment];
-                            if (currentRoute === "defaultRoute"){
-                                self.uploadVideoButtonView.render();
-                            }
+                        var currentRoute = self.routes[Backbone.history.fragment];
+                        if (currentRoute === "defaultRoute"){
+                            self.uploadVideoButtonView.render();
                         }
                     },
                     error: function(data){
