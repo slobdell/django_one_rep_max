@@ -7,7 +7,8 @@ OrderSummaryView = Backbone.View.extend({
      */
     initialize: function(options){
         this.template = _.template($("#order_summary_view").html());
-        this.videoMinutes = parseInt(window.videoSeconds / 60);
+        var videoSeconds = window.videoSeconds || 0;
+        this.videoMinutes = parseInt(videoSeconds / 60);
         this.videoMinutes = this.videoMinutes.toString();
         this.videoSeconds = window.videoSeconds % 60 || 0;
         this.videoSeconds = this.videoSeconds.toPrecision(4);
@@ -51,6 +52,7 @@ UploadModalView = Backbone.View.extend({
         this.maxTimeBetweenClicks = 3000;
         this.lastClicked =  new Date().getTime() - this.maxTimeBetweenClicks;
         this.clickable = true;
+        this.errorMessage = "";
     },
     closeModal: function(){
         this.$("#myModal").modal('hide');
@@ -59,6 +61,7 @@ UploadModalView = Backbone.View.extend({
         Backbone.history.navigate("", {trigger: true});
     },
     finishPostSuccess: function(videoMeta){
+        this.$("#uploading-text").hide();
         // FIXME is this bad?
         window.videoId = videoMeta.id;
         window.videoSeconds = videoMeta.video_seconds;
@@ -70,14 +73,16 @@ UploadModalView = Backbone.View.extend({
         Backbone.history.navigate("summary", {trigger: true});
     },
     finishPostFail: function(){
+        this.$("#uploading-text").hide();
         this.$("#spinner").hide();
         this.$("#upload-video-button-final").show();
-        // SBL TODO display some kind of error message
-        alert("fail");
+        this.errorMessage = "There was an error uploading your file.  If the problem persists, <a href='#contact'>contact us</a>.";
+        this.render();
     },
     postData: function(){
         this.$("#spinner").show();
         this.$("#upload-video-button-final").hide();
+        this.$("#uploading-text").show();
         var self = this;
         $.ajax({
             url: '/api/upload_video/',
@@ -97,10 +102,13 @@ UploadModalView = Backbone.View.extend({
     uploadFileChanged: function(){
         // this doesn't seem to work all the time for iPhone, can't pinpoint why...change event isnt firing
         var file = this.$('input[name="upfile"]')[0].files[0];
-        this.videoName = file.name;
-        this.formData = new FormData();
-        this.formData.append('file', file);
-        this.videoUploaded = true;
+        if (!(typeof file === "undefined")){
+            console.log("video is undefined, returning");
+            this.videoName = file.name;
+            this.formData = new FormData();
+            this.formData.append('file', file);
+            this.videoUploaded = true;
+        }
         this.render();
         this.$("#choose-file").show();
         this.clickable = true;
@@ -112,15 +120,19 @@ UploadModalView = Backbone.View.extend({
         this.closeModal();
     },
     clickChooseFile: function(){
+        console.log("CLICK CHOOSE FILE")
         var currentClickTime = new Date().getTime();
         if (currentClickTime - this.lastClicked < this.maxTimeBetweenClicks){
+            console.log("not enough time elapsed, returning");
             return;
         }
         if (!this.clickable){
+            console.log("not clickable, returning")
             return;
         }
         this.clickable = false;
         this.lastClicked = currentClickTime;
+        console.log("Firing click");
         this.$("#upfile").click();
         this.$("#choose-file").hide();
     },
@@ -130,10 +142,12 @@ UploadModalView = Backbone.View.extend({
     render: function(){
         var renderData = {
             videoName: this.videoName,
+            errorMessage: this.errorMessage,
             videoUploaded: this.videoUploaded
         }
         this.$el.html(this.template(renderData));
         this.$("#spinner").hide();
+        this.$("#uploading-text").hide();
         this.$("#myModal").modal();
         $('body').css('overflow','hidden');
         $('body').css('position','fixed');
@@ -178,7 +192,7 @@ FacebookButtonView = Backbone.View.extend({
         this.template = _.template($("#button_area_facebook").html())
     },
     clickFacebookConnect: function(){
-        var self = this;  // not sure if this is necessary
+        var self = this;
         var callback = function(response){
             self.router.facebookStatusChangeCallback(response);
         }
@@ -205,6 +219,7 @@ IndexRouter = Backbone.Router.extend({
     },
     */
     initialize: function(options){
+        this.devMode = options.devMode;
         this.loggedIn = false;
     },
     orderSummaryView: function(){
@@ -226,8 +241,12 @@ IndexRouter = Backbone.Router.extend({
             var view = new FacebookButtonView({router: this});
             view.render();
         }
+        if (this.devMode){
+            this.forceStart();
+        }
     },
     facebookStatusChangeCallback: function(response){
+        var previousLoginState = this.loggedIn;
         if (response.status === 'connected') {
             var self = this;
             FB.api('/v2.1/me', function(response) {
@@ -243,8 +262,10 @@ IndexRouter = Backbone.Router.extend({
                     type: 'POST',
                     success: function(data){
                         self.loggedIn = true;
-                        var view = new UploadVideoButtonView({router: self});
-                        view.render();
+                        if (previousLoginState !== self.loggedIn){
+                            var view = new UploadVideoButtonView({router: self});
+                            view.render();
+                        }
                     },
                     error: function(data){
                         alert("error");
@@ -258,7 +279,7 @@ IndexRouter = Backbone.Router.extend({
             this.loggedIn = false;
             // not logged in
         }
-        this.defaultRoute();
+        // this.defaultRoute();
     },
     forceStart: function(){
         /* hacky dev case */

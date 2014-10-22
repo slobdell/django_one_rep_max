@@ -252,10 +252,12 @@
 <script type="text/javascript" src="{% static 'js/index_router.js' %}"></script>
     <script>
     $(document).ready(function(){
-        var indexRouter = new IndexRouter();
         {% if dev %}
-            indexRouter.forceStart();
+            var devMode = true;
+        {% else %}
+            var devMode = false;
         {% endif %}
+        var indexRouter = new IndexRouter({devMode: devMode});
         Backbone.history.start();
 
         window.fbAsyncInit = function() {

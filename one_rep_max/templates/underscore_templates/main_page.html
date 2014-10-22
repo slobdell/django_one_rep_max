@@ -54,6 +54,12 @@
                                 <a id="choose-file" style="font-size: 18px;" href="javascript:void(0);" class="button large alt <% if (videoUploaded) { %>cancel<% } %>">
                                     Choose File
                                 </a>
+                                <p id="uploading-text">
+                                    Uploading...
+                                </p>
+                                <p id="error-area">
+                                    <%= errorMessage %>
+                                </p>
                             </form>
                         </div>
                         <div class="clearfix"></div>
