@@ -221,25 +221,27 @@ IndexRouter = Backbone.Router.extend({
     initialize: function(options){
         this.devMode = options.devMode;
         this.loggedIn = false;
+
+        this.orderSummaryView = null;
+        this.uploadModalView = new UploadModalView();
+        this.uploadVideoButtonView = new UploadVideoButtonView({router: this});
+        this.facebookButtonView = new FacebookButtonView({router: this});
     },
     orderSummaryView: function(){
-        var dependentView = new UploadModalView();
+        var dependentView = this.uploadModalView;
         dependentView.render();
-        var view = new OrderSummaryView();
-        view.render();
+        this.orderSummaryView = new OrderSummaryView();
+        this.orderSummaryView.render();
     },
     uploadView: function(){
-        var view = new UploadModalView();
-        view.render();
+        this.uploadModalView.render();
     },
     defaultRoute: function(path){
         if (this.loggedIn){
-            var view = new UploadVideoButtonView({router: this});
-            view.render();
+            this.uploadVideoButtonView.render();
         }
         else {
-            var view = new FacebookButtonView({router: this});
-            view.render();
+            this.facebookButtonView.render();
         }
         if (this.devMode){
             this.forceStart();
@@ -262,12 +264,12 @@ IndexRouter = Backbone.Router.extend({
                     type: 'POST',
                     success: function(data){
                         self.loggedIn = true;
-                        /*
                         if (previousLoginState !== self.loggedIn){
-                            var view = new UploadVideoButtonView({router: self});
-                            view.render();
+                            var currentRoute = this.routes[Backbone.history.fragment];
+                            if (currentRoute === "defaultRoute"){
+                                self.uploadVideoButtonView.render();
+                            }
                         }
-                        */
                     },
                     error: function(data){
                         alert("error");
@@ -299,8 +301,7 @@ IndexRouter = Backbone.Router.extend({
             type: 'POST',
             success: function(data){
                 self.loggedIn = true;
-                var view = new UploadVideoButtonView({router: self});
-                view.render();
+                self.uploadVideoButtonView.render();
             },
             error: function(data){
                 alert("error");
