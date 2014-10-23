@@ -3,6 +3,47 @@ function validateEmail(email) {
     return re.test(email);
 }
 
+/*
+destroy_view: function() {
+
+// COMPLETELY UNBIND THE VIEW
+//     this.undelegateEvents();
+//
+//         this.$el.removeData().unbind();
+//
+//             // Remove view from DOM
+//                 this.remove();
+//                     Backbone.View.prototype.remove.call(this);
+//
+//                     }
+*/
+
+
+ThankYouView = Backbone.View.extend({
+    el: ".modal-content",
+    events: {
+        'click #close-button': 'clickClose'
+    },
+    initialize: function(){
+        this.initialOverflow = 'visible';
+        this.initialPosition = 'static';
+        this.template = _.template($("#thankyou_view").html());
+    },
+    clickClose: function(){
+        this.$("#myModal").modal('hide');
+        $('body').css('overflow', this.initialOverflow);
+        $('body').css('position', this.initialPosition);
+        Backbone.history.navigate("", {trigger: true});
+    },
+    render: function(){
+        var renderData = {
+        }
+        this.$el.html(this.template(renderData));
+
+        return this;
+    }
+});
+
 OrderSummaryView = Backbone.View.extend({
     el: ".modal-content",
     events: {
@@ -46,7 +87,7 @@ OrderSummaryView = Backbone.View.extend({
                     var emailValid = validateEmail(self.emailValue);
                     if (emailValid){
                         self.hideSubmit = false;
-                        self.$("#finish-order").show();
+                        self.render();
                     }
                 }
             }
@@ -89,7 +130,7 @@ OrderSummaryView = Backbone.View.extend({
             type: 'POST',
             contentType: 'application/x-www-form-urlencoded;charset=utf-8',
             success: function(response){
-                alert("success");
+                Backbone.history.navigate('thankyou', {trigger: true});
             },
             error: function(data){
                 alert("error");
@@ -291,6 +332,7 @@ FacebookButtonView = Backbone.View.extend({
         FB.login(callback);
     },
     render: function(){
+        $("#account-link").hide();
         this.$el.html(this.template());
         return this;
     }
@@ -299,6 +341,7 @@ FacebookButtonView = Backbone.View.extend({
 
 IndexRouter = Backbone.Router.extend({
     routes: {
+        "thankyou": "thankYouView",
         "summary": "orderSummaryView",
         "upload": "uploadView",
         "": "defaultRoute"
@@ -315,9 +358,16 @@ IndexRouter = Backbone.Router.extend({
         this.loggedIn = false;
 
         this.orderSummaryView = null;
+        this.thankYouView = null;
         this.uploadModalView = new UploadModalView();
         this.uploadVideoButtonView = new UploadVideoButtonView({router: this});
         this.facebookButtonView = new FacebookButtonView({router: this});
+    },
+    thankYouView: function(){
+        var dependentView = this.uploadModalView;
+        dependentView.render();
+        this.thankYouView = new ThankYouView();
+        this.thankYouView.render();
     },
     orderSummaryView: function(){
         var dependentView = this.uploadModalView;
@@ -356,6 +406,7 @@ IndexRouter = Backbone.Router.extend({
                     type: 'POST',
                     success: function(data){
                         self.loggedIn = true;
+                        $("#account-link").show();
                         var currentRoute = self.routes[Backbone.history.fragment];
                         if (currentRoute === "defaultRoute"){
                             self.uploadVideoButtonView.render();
