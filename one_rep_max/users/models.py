@@ -31,6 +31,16 @@ class User(object):
         _user.save()
         return cls._wrap(_user)
 
+    @classmethod
+    def get_by_id(cls, id):
+        _user = _User.objects.get(id=id)
+        return cls._wrap(_user)
+
+    def update_email(self, email_address):
+        if self._user.email_address != email_address:
+            self._user.email_address = email_address
+            self._user.save()
+
     @property
     def id(self):
         return self._user.id

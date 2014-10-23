@@ -1,18 +1,24 @@
 import datetime
 
 from django.db import models
-from django_richenum.models import LaxIndexEnumField
 
 from one_rep_max.orders.constants import StateType
 from one_rep_max.orders.utils import get_dollar_cost_from_video_seconds
 
 
 class _Order(models.Model):
+
+    class Meta:
+        app_label = "orders"
+        db_table = "orders_order"
+
     user_id = models.IntegerField()
     create_date = models.DateTimeField()
-    state = LaxIndexEnumField(StateType, db_column="state_id")
+    state_id = models.IntegerField(default=StateType.QUEUED.index)
     dollar_cost = models.FloatField(null=True)
     uploaded_video_id = models.IntegerField()
+    start_seconds = models.FloatField()
+    end_seconds = models.FloatField()
 
 
 class Order(object):
@@ -24,12 +30,19 @@ class Order(object):
         return Order(_order)
 
     @classmethod
-    def create_from_uploaded_file(cls, uploaded_file):
-        _order = _Order.objects.create(user_id=uploaded_file.user_id,
+    def create(cls,
+               user_id,
+               uploaded_video_id,
+               start_seconds,
+               end_seconds):
+        delta_seconds = end_seconds - start_seconds
+        _order = _Order.objects.create(user_id=user_id,
+                                       uploaded_file_id=uploaded_video_id,
                                        create_date=datetime.datetime.utcnow(),
-                                       state=StateType.QUEUED,
-                                       dollar_cost=get_dollar_cost_from_video_seconds(uploaded_file.seconds),
-                                       uploaded_video_id=uploaded_file.id)
+                                       state_id=StateType.QUEUED.index,
+                                       start_seconds=start_seconds,
+                                       end_seconds=end_seconds,
+                                       dollar_cost=get_dollar_cost_from_video_seconds(delta_seconds))
         return cls._wrap(_order)
 
     def get_video_url(self):
@@ -39,6 +52,10 @@ class Order(object):
     def get_user_email(self):
         # fetch the user then return his/her email
         pass
+
+    @property
+    def state(self):
+        return StateType.from_index(self._order.state_id)
 
     def _change_state(self, state_type):
         self._order.state = state_type

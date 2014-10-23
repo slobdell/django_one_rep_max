@@ -2,7 +2,7 @@ import requests
 from .constants import API_KEY
 
 
-def _send_email_with_data(customer_email, subject, text):
+def send_email_with_data(customer_email, subject, text):
     domain = "onerepmaxcalculator.com"
     return requests.post(
         "https://api.mailgun.net/v2/%s/messages" % domain,
@@ -16,14 +16,14 @@ def _send_email_with_data(customer_email, subject, text):
 def send_test_email():
     text = "This is totally in prod"
     title = "prod email"
-    _send_email_with_data("scott.lobdell@gmail.com", title, text)
+    send_email_with_data("scott.lobdell@gmail.com", title, text)
 
 
 def send_order_email(customer_email, order):
     url_str = "\n".join(order.get_final_image_urls())
     text = "Thanks for your business!  Your pictures can be downloaded for the next week at the following URLs:"
     text += "\n%s" % url_str
-    _send_email_with_data(customer_email, "Digital Picture Delivery!", text)
+    send_email_with_data(customer_email, "Digital Picture Delivery!", text)
 
 
 def send_order_confirmation_email(customer_email, order):
@@ -32,4 +32,4 @@ def send_order_confirmation_email(customer_email, order):
     text += "for %s pictures.  " % order.num_pictures
     text += "Your images are now being processed to the image quality specified in your order.  "
     text += "If there are any issues with your order, your order ID is %s" % order.id
-    _send_email_with_data(customer_email, "Order Confirmation", text)
+    send_email_with_data(customer_email, "Order Confirmation", text)

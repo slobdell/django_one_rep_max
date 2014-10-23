@@ -1,5 +1,16 @@
+function validateEmail(email) {
+    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+}
+
 OrderSummaryView = Backbone.View.extend({
     el: ".modal-content",
+    events: {
+        "keyup #email-input": "changeEmailInput",
+        "change #email-input": "changeEmailInput",
+        "paste #email-input": "changeEmailInput",
+        "click #finish-order": "clickSubmit"
+    },
     /*
      * this should have start and stop point
      *                  total cost
@@ -12,6 +23,7 @@ OrderSummaryView = Backbone.View.extend({
         this.videoMinutes = this.videoMinutes.toString();
         this.videoSeconds = window.videoSeconds % 60 || 0;
         this.videoSeconds = this.videoSeconds.toPrecision(4);
+        this.videoId = window.videoId;
         var tempString = this.videoSeconds.toString();
         if (this.videoSeconds < 10){
             tempString = "0" + tempString;
@@ -19,16 +31,79 @@ OrderSummaryView = Backbone.View.extend({
         this.videoSeconds = tempString;
         this.thumbnailUrl = window.thumbnailUrl || "";
         this.dollarCost = window.dollarCost || "0.00";
+        this.hideSubmit = true;
+        this.emailValue = "";
+        this.pollValidEmail();
+    },
+    pollValidEmail: function(){
+        var emailValue = this.$("#email-input").val();
+        var emailValid = validateEmail(emailValue);
+        var self = this;
+        if (emailValid){
+            this.hideSubmit = false;
+            this.$("#finish-order").show();
+        }
+        setTimeout(function(){
+            self.pollValidEmail();
+        }, 1000);
+    },
+    clickSubmit: function(){
+        var emailValue = this.$("#email-input").val();
+        var startSeconds = this.$("#start-time").val();
+        var endSeconds = this.$("#stop-time").val();
+        var videoId = this.videoId;
+
+        $.ajax({
+            url: '/api/submit_order/',
+            data: {
+                emailValue: emailValue,
+                startSeconds: startSeconds,
+                endSeconds: endSeconds,
+                videoId: videoId
+            },
+            cache: false,
+            contentType: false,
+            processData: false,
+            type: 'POST',
+            success: function(response){
+                alert("success");
+            },
+            error: function(data){
+                alert("error");
+            }
+        });
+    },
+    changeEmailInput: function(e){
+        var emailValue = this.$("#email-input").val();
+        this.emailValue = emailValue;
+        var emailValid = validateEmail(emailValue);
+        if (emailValid){
+            this.hideSubmit = false;
+            this.$("#finish-order").show();
+        }
+        if (e.keyCode === 13 && emailValid){
+            this.clickSubmit();
+        }
+        // check for keycode 13
     },
     render: function(){
         var renderData = {
             videoMinutes: this.videoMinutes,
             videoSeconds: this.videoSeconds,
             thumbnailUrl: this.thumbnailUrl,
+            emailValue: this.emailValue,
             dollarCost: this.dollarCost
         }
         this.$el.empty().append(this.template(renderData));
+        var self = this;
+        setTimeout(function(){
+            self.$("#email-input").focus();
+        }, 500);
         this.$("#spinner").hide();
+        // only show if email address is valid
+        if(this.hideSubmit){
+            this.$("#finish-order").hide();
+        }
     }
 });
 
