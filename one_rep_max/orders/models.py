@@ -26,7 +26,8 @@ class Order(object):
     def __init__(self, _order):
         self._order = _order
 
-    def _wrap(self, _order):
+    @classmethod
+    def _wrap(cls, _order):
         return Order(_order)
 
     @classmethod
@@ -37,7 +38,7 @@ class Order(object):
                end_seconds):
         delta_seconds = end_seconds - start_seconds
         _order = _Order.objects.create(user_id=user_id,
-                                       uploaded_file_id=uploaded_video_id,
+                                       uploaded_video_id=uploaded_video_id,
                                        create_date=datetime.datetime.utcnow(),
                                        state_id=StateType.QUEUED.index,
                                        start_seconds=start_seconds,
@@ -56,6 +57,10 @@ class Order(object):
     @property
     def state(self):
         return StateType.from_index(self._order.state_id)
+
+    @property
+    def id(self):
+        return self._order.id
 
     def _change_state(self, state_type):
         self._order.state = state_type

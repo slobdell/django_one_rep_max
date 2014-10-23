@@ -34,15 +34,16 @@ def upload_video(request):
 def submit_order(request):
     if request.method != "POST":
         raise Http404
+    post_data = request.POST
 
     user_id = int(request.session['user_id'])
     user = User.get_by_id(user_id)
-    email_address = request.POST['emailAddress']
+    email_address = post_data['emailAddress']
     user.update_email(email_address)
 
-    uploaded_video_id = int(request.POST['uploadedVideoId'])
-    start_seconds = float(request.POST['startSeconds'])
-    end_seconds = float(request.POST['endSeconds'])
+    uploaded_video_id = int(post_data['videoId'])
+    start_seconds = float(post_data['startSeconds'])
+    end_seconds = float(post_data['endSeconds'])
 
     order = Order.create(user_id,
                          uploaded_video_id,
@@ -67,3 +68,11 @@ def logout(request):
     del request.session['user_id']
     del request.session['facebook_service_id']
     return HttpResponse(status=204)
+
+
+def user_info(request):
+    facebook_service_id = request.GET.get('service_id')
+    user = User.get_by_id(request.session['user_id'])
+    if facebook_service_id != user.facebook_service_id:
+        return HttpResponse()
+    return render_to_json(user.to_json())

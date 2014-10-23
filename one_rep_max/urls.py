@@ -9,4 +9,5 @@ urlpatterns = patterns('',
     url(r'^api/login', api.login, name="login"),
     url(r'^api/logout', api.login, name="logout"),
     url(r'^api/submit_order', api.submit_order, name="submit-order"),
+    url(r'^api/user_info/', api.user_info, name='user-info')
 )

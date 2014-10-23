@@ -34,6 +34,23 @@ OrderSummaryView = Backbone.View.extend({
         this.hideSubmit = true;
         this.emailValue = "";
         this.pollValidEmail();
+        this.getSavedEmail();
+    },
+    getSavedEmail: function(){
+        var self = this;
+        $.ajax({
+            url: '/api/user_info/?service_id=' + window.facebook_id,
+            success: function(response){
+                if (typeof response.email !== "undefined"){
+                    self.emailValue = response.email;
+                    var emailValid = validateEmail(self.emailValue);
+                    if (emailValid){
+                        self.hideSubmit = false;
+                        self.$("#finish-order").show();
+                    }
+                }
+            }
+        });
     },
     pollValidEmail: function(){
         var emailValue = this.$("#email-input").val();
@@ -47,24 +64,30 @@ OrderSummaryView = Backbone.View.extend({
             self.pollValidEmail();
         }, 1000);
     },
+    convertTimeStringToSeconds: function(timeString){
+        time_array = timeString.split(":");
+        var seconds = time_array[0] * 60 + time_array[1];
+        return seconds;
+    },
     clickSubmit: function(){
-        var emailValue = this.$("#email-input").val();
-        var startSeconds = this.$("#start-time").val();
-        var endSeconds = this.$("#stop-time").val();
+        var emailAddress= this.$("#email-input").val();
+        var startSeconds = this.convertTimeStringToSeconds(this.$("#start-time").val());
+        var endSeconds = this.convertTimeStringToSeconds(this.$("#stop-time").val());
         var videoId = this.videoId;
 
         $.ajax({
             url: '/api/submit_order/',
             data: {
-                emailValue: emailValue,
+                emailAddress: emailAddress,
                 startSeconds: startSeconds,
                 endSeconds: endSeconds,
                 videoId: videoId
             },
             cache: false,
-            contentType: false,
-            processData: false,
+            dataType: 'json',
+            traditional: true,
             type: 'POST',
+            contentType: 'application/x-www-form-urlencoded;charset=utf-8',
             success: function(response){
                 alert("success");
             },
@@ -84,7 +107,6 @@ OrderSummaryView = Backbone.View.extend({
         if (e.keyCode === 13 && emailValid){
             this.clickSubmit();
         }
-        // check for keycode 13
     },
     render: function(){
         var renderData = {
@@ -178,7 +200,6 @@ UploadModalView = Backbone.View.extend({
         // this doesn't seem to work all the time for iPhone, can't pinpoint why...change event isnt firing
         var file = this.$('input[name="upfile"]')[0].files[0];
         if (!(typeof file === "undefined")){
-            console.log("video is undefined, returning");
             this.videoName = file.name;
             this.formData = new FormData();
             this.formData.append('file', file);
@@ -195,19 +216,15 @@ UploadModalView = Backbone.View.extend({
         this.closeModal();
     },
     clickChooseFile: function(){
-        console.log("CLICK CHOOSE FILE")
         var currentClickTime = new Date().getTime();
         if (currentClickTime - this.lastClicked < this.maxTimeBetweenClicks){
-            console.log("not enough time elapsed, returning");
             return;
         }
         if (!this.clickable){
-            console.log("not clickable, returning")
             return;
         }
         this.clickable = false;
         this.lastClicked = currentClickTime;
-        console.log("Firing click");
         this.$("#upfile").click();
         this.$("#choose-file").hide();
     },
@@ -327,6 +344,7 @@ IndexRouter = Backbone.Router.extend({
             var self = this;
             FB.api('/v2.1/me', function(response) {
                 var facebook_id = response.id;
+                window.facebook_id = facebook_id;
                 $.ajax({
                     url: '/api/login/',
                     data: {

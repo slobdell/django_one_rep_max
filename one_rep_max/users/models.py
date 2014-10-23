@@ -37,10 +37,21 @@ class User(object):
         return cls._wrap(_user)
 
     def update_email(self, email_address):
-        if self._user.email_address != email_address:
-            self._user.email_address = email_address
+        if self._user.email != email_address:
+            self._user.email = email_address
             self._user.save()
 
     @property
     def id(self):
         return self._user.id
+
+    @property
+    def facebook_service_id(self):
+        return self._user.facebook_service_id
+
+    def to_json(self):
+        return {
+            "id": self._user.id,
+            "credits": self._user.credits,
+            "email": self._user.email
+        }
