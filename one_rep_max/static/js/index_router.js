@@ -17,7 +17,72 @@ destroy_view: function() {
 //
 //                     }
 */
+ContactView = Backbone.View.extend({
+    el: "#button-fill-area",
+    initialize: function(){
+        this.template = _.template($("#contact_view").html());
+    },
+    render: function(){
+        var renderData = {
+        }
+        this.$el.html(this.template(renderData));
+        var bottomEl = $("#submit-quandry");
+        var position = bottomEl.position();
+        window.scrollTo(0, position.top);
+    }
+});
 
+AccountSettingsView = Backbone.View.extend({
+    el: ".modal-content",
+    events: {
+        'click #close-button': 'clickClose',
+        "hidden.bs.modal #myModal": "clickOutsideModal"
+    },
+    initialize: function(){
+        this.initialOverflow = 'visible';
+        this.initialPosition = 'static';
+        this.template = _.template($("#account_view").html());
+
+        this.emailValue = '';
+        this.credits = 0.0
+
+        this.populateUserInfo();
+    },
+    clickClose: function(){
+        this.$("#myModal").modal('hide');
+        Backbone.history.navigate("", {trigger: true});
+        $('body').css('overflow', this.initialOverflow);
+        $('body').css('position', this.initialPosition);
+    },
+    clickOutsideModal: function(){
+        this.clickClose();
+    },
+    populateUserInfo: function(){
+        var self = this;
+        $.ajax({
+            url: '/api/user_info/?service_id=' + window.facebook_id,
+            success: function(response){
+                if (typeof response.email !== "undefined"){
+                    var emailValue = response.email;
+                    var emailValid = validateEmail(emailValue);
+                    if (emailValid){
+                        self.emailValue = emailValue;
+                    }
+                    self.render();
+                }
+            }
+        });
+    },
+    render: function(){
+        var renderData = {
+            email: this.emailValue,
+            credits: this.credits
+        }
+        this.$el.html(this.template(renderData));
+
+        return this;
+    }
+});
 
 ThankYouView = Backbone.View.extend({
     el: ".modal-content",
@@ -341,8 +406,10 @@ FacebookButtonView = Backbone.View.extend({
 
 IndexRouter = Backbone.Router.extend({
     routes: {
+        "account": "accountView",
         "thankyou": "thankYouView",
         "summary": "orderSummaryView",
+        "contact": "contactView",
         "upload": "uploadView",
         "": "defaultRoute"
     },
@@ -359,9 +426,20 @@ IndexRouter = Backbone.Router.extend({
 
         this.orderSummaryView = null;
         this.thankYouView = null;
+        this.accountSettingsView = null;
         this.uploadModalView = new UploadModalView();
         this.uploadVideoButtonView = new UploadVideoButtonView({router: this});
         this.facebookButtonView = new FacebookButtonView({router: this});
+        this.contactView = new ContactView();
+    },
+    contactView: function(){
+        this.contactView.render();
+    },
+    accountView: function(){
+        var dependentView = this.uploadModalView;
+        dependentView.render();
+        this.accountSettingsView = new AccountSettingsView();
+        this.accountSettingsView.render();
     },
     thankYouView: function(){
         var dependentView = this.uploadModalView;
@@ -431,6 +509,7 @@ IndexRouter = Backbone.Router.extend({
         // TODO make this unavailable in prod
         var self = this;
         var facebook_id = 1000000;
+        $("#account-link").show();
         $.ajax({
             url: '/api/login/',
             data: {
