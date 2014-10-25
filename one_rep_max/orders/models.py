@@ -2,6 +2,7 @@ import datetime
 
 from django.db import models
 
+from one_rep_max.orders.constants import OrientationType
 from one_rep_max.orders.constants import StateType
 from one_rep_max.orders.utils import get_dollar_cost_from_video_seconds
 
@@ -15,6 +16,7 @@ class _Order(models.Model):
     user_id = models.IntegerField()
     create_date = models.DateTimeField()
     state_id = models.IntegerField(default=StateType.QUEUED.index)
+    orientation_id = models.IntegerField(default=OrientationType.NONE.index)
     dollar_cost = models.FloatField(null=True)
     uploaded_video_id = models.IntegerField()
     start_seconds = models.FloatField()
@@ -41,6 +43,7 @@ class Order(object):
                                        uploaded_video_id=uploaded_video_id,
                                        create_date=datetime.datetime.utcnow(),
                                        state_id=StateType.QUEUED.index,
+                                       orientation_id=OrientationType.NONE.index,
                                        start_seconds=start_seconds,
                                        end_seconds=end_seconds,
                                        dollar_cost=get_dollar_cost_from_video_seconds(delta_seconds))
@@ -57,6 +60,10 @@ class Order(object):
     @property
     def state(self):
         return StateType.from_index(self._order.state_id)
+
+    @property
+    def orientation(self):
+        return OrientationType.from_index(self._order.orientation_id)
 
     @property
     def id(self):

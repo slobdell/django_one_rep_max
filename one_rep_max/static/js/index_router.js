@@ -36,23 +36,126 @@ AccountSettingsView = Backbone.View.extend({
     el: ".modal-content",
     events: {
         'click #close-button': 'clickClose',
-        "hidden.bs.modal #myModal": "clickOutsideModal"
+        'click #add-funds': 'clickAddFunds',
+        "hidden.bs.modal #myModal": "clickOutsideModal",
+        "click #update-email": "clickSubmit",
+        "keypress #settings-email": "pressEmail"
     },
-    initialize: function(){
+    initialize: function(options){
+        this.purchaseFlow = options.purchaseFlow;
         this.initialOverflow = 'visible';
         this.initialPosition = 'static';
         this.template = _.template($("#account_view").html());
+        this.hideSubmit = true;
 
         this.emailValue = '';
-        this.credits = 0.0
+        this.credits = "0.00";
+        this.error = "";
+        this.creditsAdded = false;
 
         this.populateUserInfo();
+    },
+    pressEmail: function(e){
+        var oldValue = this.hideSubmit;
+        this.hideSubmit = false;
+        if (this.hideSubmit != oldValue){
+            this.$("#update-email").show();
+        }
+
+        if (e.keyCode === 13){
+            this.clickSubmit();
+        }
+    },
+    clickSubmit: function(){
+        var emailValue = this.$("#settings-email").val();
+        this.emailValue = emailValue;
+        var emailValid = validateEmail(emailValue);
+        if (!emailValid){
+            this.error = "Enter a valid email address";
+            this.render();
+            return;
+        }
+        var self = this;
+        $.ajax({
+            url: '/api/user_info/',
+            data: {
+                emailAddress: this.emailValue
+            },
+            cache: false,
+            dataType: 'json',
+            traditional: true,
+            type: 'POST',
+            contentType: 'application/x-www-form-urlencoded;charset=utf-8',
+            success: function(response){
+                self.error = 'Email Updated <i style="color: #0A0;" class="icon-checkmark"></i>';
+                self.hideSubmit = true;
+                self.render();
+            },
+            error: function(data){
+                alert("error");
+            }
+        });
+    },
+    populatePage: function(userInfo){
+        this.credits = userInfo.credits || 0.0;
+        if (this.credits < 10){
+            this.credits = this.credits.toPrecision(3);
+        }
+        else {
+            this.credits = this.credits.toPrecision(4);
+        }
+        if (typeof userInfo.email !== "undefined"){
+            var emailValue = userInfo.email;
+            var emailValid = validateEmail(emailValue);
+            if (emailValid){
+                this.emailValue = emailValue;
+            }
+            this.render();
+        }
+    },
+    clickAddFunds: function(e){
+        var self = this;
+        var handler = StripeCheckout.configure({
+            key: $("#stripe-publish-key").val(),
+            image: $("#square-icon").val(),
+            email: this.$("#settings-email").val(),
+            token: function(token) {
+            self.$("#accounts-spinner").show();
+            $.ajax({
+                url: '/api/add_credits/',
+                data: {
+                    tokenId: token.id,
+                    tokenEmail: token.email
+                },
+                cache: false,
+                dataType: 'json',
+                traditional: true,
+                type: 'POST',
+                contentType: 'application/x-www-form-urlencoded;charset=utf-8',
+                success: function(response){
+                    var userInfoResponse = response;
+                    self.creditsAdded = true;
+                    self.populatePage(userInfoResponse);
+                    self.$("#accounts-spinner").hide();
+                },
+                error: function(data){
+                    alert("error");
+                    self.$("#accounts-spinner").hide();
+                }
+            });
+            }
+        });
+
+        handler.open({
+            name: 'OneRepMaxCalculator.com',
+            description: 'Video Processing Credits ($5.00)',
+            amount: 500
+        });
+        e.preventDefault();
     },
     clickClose: function(){
         this.$("#myModal").modal('hide');
         Backbone.history.navigate("", {trigger: true});
-        $('body').css('overflow', this.initialOverflow);
-        $('body').css('position', this.initialPosition);
     },
     clickOutsideModal: function(){
         this.clickClose();
@@ -62,23 +165,24 @@ AccountSettingsView = Backbone.View.extend({
         $.ajax({
             url: '/api/user_info/?service_id=' + window.facebook_id,
             success: function(response){
-                if (typeof response.email !== "undefined"){
-                    var emailValue = response.email;
-                    var emailValid = validateEmail(emailValue);
-                    if (emailValid){
-                        self.emailValue = emailValue;
-                    }
-                    self.render();
-                }
+                var userInfoResponse = response;
+                self.populatePage(userInfoResponse);
             }
         });
     },
     render: function(){
         var renderData = {
+            purchaseFlow: this.purchaseFlow,
+            creditsAdded: this.creditsAdded,
+            error: this.error,
             email: this.emailValue,
             credits: this.credits
         }
         this.$el.html(this.template(renderData));
+        this.$("#accounts-spinner").hide();
+        if (this.hideSubmit){
+            this.$("#update-email").hide();
+        }
 
         return this;
     }
@@ -96,8 +200,6 @@ ThankYouView = Backbone.View.extend({
     },
     clickClose: function(){
         this.$("#myModal").modal('hide');
-        $('body').css('overflow', this.initialOverflow);
-        $('body').css('position', this.initialPosition);
         Backbone.history.navigate("", {trigger: true});
     },
     render: function(){
@@ -259,8 +361,6 @@ UploadModalView = Backbone.View.extend({
     },
     closeModal: function(){
         this.$("#myModal").modal('hide');
-        $('body').css('overflow', this.initialOverflow);
-        $('body').css('position', this.initialPosition);
         Backbone.history.navigate("", {trigger: true});
     },
     finishPostSuccess: function(videoMeta){
@@ -271,9 +371,27 @@ UploadModalView = Backbone.View.extend({
         window.thumbnailUrl = videoMeta.thumbnail_url;
         window.dollarCost = videoMeta.dollar_cost;
 
-        this.$("#spinner").hide();
-        this.$("#upload-video-button-final").show();
-        Backbone.history.navigate("summary", {trigger: true});
+        this.goToNextView(window.dollarCost);
+    },
+    goToNextView: function(videoCost){
+        /* determine if we need to add money or if we can go to order summary */
+        var self = this;
+        $.ajax({
+            url: '/api/user_info/?service_id=' + window.facebook_id,
+            success: function(response){
+                self.$("#spinner").hide();
+                self.$("#upload-video-button-final").show();
+
+                var userInfoResponse = response;
+                var credits = userInfoResponse.credits;
+                if (credits >= videoCost){
+                    Backbone.history.navigate("summary", {trigger: true});
+                }
+                else {  // need to add funds
+                    Backbone.history.navigate("account/add", {trigger: true});
+                }
+            }
+        });
     },
     finishPostFail: function(){
         this.$("#uploading-text").hide();
@@ -294,6 +412,7 @@ UploadModalView = Backbone.View.extend({
             contentType: false,
             processData: false,
             type: 'POST',
+            timeout: 60000, // sets timeout to 60 seconds
             success: function(response){
                 self.finishPostSuccess(response);
             },
@@ -347,8 +466,6 @@ UploadModalView = Backbone.View.extend({
         this.$("#spinner").hide();
         this.$("#uploading-text").hide();
         this.$("#myModal").modal();
-        $('body').css('overflow','hidden');
-        $('body').css('position','fixed');
         if (!this.videoUploaded){
             this.$("#upload-video-button-final").hide();
         }
@@ -406,6 +523,7 @@ FacebookButtonView = Backbone.View.extend({
 
 IndexRouter = Backbone.Router.extend({
     routes: {
+        "account/add": "accountView",
         "account": "accountView",
         "thankyou": "thankYouView",
         "summary": "orderSummaryView",
@@ -436,9 +554,14 @@ IndexRouter = Backbone.Router.extend({
         this.contactView.render();
     },
     accountView: function(){
+        var url = Backbone.history.fragment;
+        var purchaseFlow = true;
+        if (url.indexOf("add") === -1){
+            purchaseFlow = false;
+        }
         var dependentView = this.uploadModalView;
         dependentView.render();
-        this.accountSettingsView = new AccountSettingsView();
+        this.accountSettingsView = new AccountSettingsView({purchaseFlow: purchaseFlow});
         this.accountSettingsView.render();
     },
     thankYouView: function(){

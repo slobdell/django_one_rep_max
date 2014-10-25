@@ -211,6 +211,8 @@
 		<div class="clearfix"></div>
 	</footer>
     <div id="fb-root"></div>
+    <input type="hidden" id="square-icon" value="{% static 'img/square_bench.jpg' %}"/>
+    <input type="hidden" id="stripe-publish-key" value="{{ publishable_key }}" />
 
 	<!-- Javascript/jQuery
 	================================================== -->
@@ -230,7 +232,9 @@
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/underscore-min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/backbone-min.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/index_router.js' %}"></script>
+    <script src="https://checkout.stripe.com/checkout.js"></script>
+
+    <script type="text/javascript" src="{% static 'js/index_router.js' %}"></script>
     <script>
     $(document).ready(function(){
         {% if dev %}

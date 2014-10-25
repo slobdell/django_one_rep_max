@@ -26,7 +26,8 @@ class _UploadedVideo(models.Model):
     amazon_bucket = models.CharField(max_length=255)
     user_id = models.IntegerField()
     extension = models.CharField(max_length=6)
-    seconds = models.IntegerField()
+    # SBL pretty sure I don't need any of the below logic
+    seconds = models.IntegerField()  # SBL dunno if I will use this
     start_seconds = models.IntegerField(null=True)
     end_seconds = models.IntegerField(null=True)
 
