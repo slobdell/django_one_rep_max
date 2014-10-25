@@ -832,6 +832,7 @@ header .selectnav {
   font-size: 12px;
 }
 .portfolio .item .mask {
+  cursor: pointer;
   position: absolute;
   top: 0;
   left: 0;
@@ -860,6 +861,7 @@ header .selectnav {
   top: -40px;
   left: 0;
 }
+
 .portfolio .item a.link {
   padding: 4px 10px;
   padding-top: 10px;
