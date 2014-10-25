@@ -73,7 +73,7 @@ def logout(request):
 
 def user_info(request):
     if request.method == "POST":
-        _update_email(request)
+        return _update_email(request)
     else:
         return _get_user_info(request)
 
