@@ -19,13 +19,49 @@ destroy_view: function() {
 */
 ContactView = Backbone.View.extend({
     el: "#button-fill-area",
+    events: {
+        "click #submit-quandry": "clickSubmit"
+    },
     initialize: function(){
         this.template = _.template($("#contact_view").html());
+    },
+    clickSubmit: function(){
+        var returnEmail = this.$("#return-email").val();
+        var emailValid = validateEmail(returnEmail);
+        if (!emailValid){
+            this.$("#email-error").show();
+            return;
+        }
+        var message = this.$("#editable-message").val();
+        var self = this;
+        this.$("#spinner").show();
+        this.$("#submit-quandry").hide();
+        $.ajax({
+            url: '/api/email/',
+            data: {
+                returnEmail: returnEmail,
+                message: message
+            },
+            cache: false,
+            dataType: 'json',
+            traditional: true,
+            type: 'POST',
+            contentType: 'application/x-www-form-urlencoded;charset=utf-8',
+            success: function(response){
+                self.$("#spinner").hide();
+                self.$("#message-container").html('Contact Form Submitted <i style="color: #0A0;" class="icon-checkmark"></i><br/><br/>');
+            },
+            error: function(data){
+                alert("error");
+            }
+        });
     },
     render: function(){
         var renderData = {
         }
         this.$el.html(this.template(renderData));
+        this.$("#email-error").hide();
+        this.$("#spinner").hide();
         var bottomEl = $("#submit-quandry");
         var position = bottomEl.position();
         window.scrollTo(0, position.top);

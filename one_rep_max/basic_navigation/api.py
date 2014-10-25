@@ -2,8 +2,10 @@ import json
 
 from django.http import Http404
 from django.http import HttpResponse
+from django.conf import settings
 
 from one_rep_max.mailgun.tasks import send_confirmation_email
+from one_rep_max.mailgun.utils import send_email_with_data
 from one_rep_max.orders.models import Order
 from one_rep_max.stripe.utils import charge_card
 from one_rep_max.uploaded_videos.models import UploadedVideo
@@ -110,3 +112,14 @@ def add_credits(request):
         }, status=400)
     user.add_credits(AMOUNT_TO_CHARGE)
     return render_to_json(user.to_json())
+
+
+def email(request):
+    if request.method != "POST":
+        raise Http404
+    return_email = request.POST['returnEmail']
+    message = return_email + "\n\n" + request.POST['message']
+    for to_email in settings.ADMIN_EMAILS:
+        send_email_with_data(to_email, "Customer Quandry", message)
+
+    return HttpResponse(status=204)

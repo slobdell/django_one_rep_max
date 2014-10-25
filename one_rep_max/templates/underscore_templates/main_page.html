@@ -151,16 +151,18 @@ Thanks for your order!  It will take a while to process your video, so in the me
 </script>
 
 <script type="text/html" id="contact_view">
-<div style="margin-top: 15px;">
-Return Email:<input id='return-email' type="text" style="width: 80%;">
-Message: <textarea rows="5" cols="50" id="editable_summary"></textarea>
-</div>
+    <div id="message-container" style="margin-top: 15px;">
+        Return Email:<input id='return-email' type="text" style="width: 80%;">
+<p id="email-error">Enter a valid Email address</p>
+        Message: <textarea rows="5" cols="50" id="editable-message"></textarea>
+    </div>
 <a id="cancel-quandry" style="margin-top: 5px; font-size: 18px;" class="button large alt cancel" href="#">
     Close Form
 </a>
 <a id="submit-quandry" style="margin-top: 5px; font-size: 18px;" href="javascript:void(0);" class="button large alt">
     Submit Quandry
 </a>
+<img style="width: 30px; display: inline-block; position: relative; margin: 13px;" id="spinner" src="{% static 'img/spinner.gif' %}" />
 </script>
 
 <script type="text/html" id="account_view">
