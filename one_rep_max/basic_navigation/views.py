@@ -13,7 +13,14 @@ def render_to_json(data, status=200):
 
 
 def home(request):
+    youtube_video_ids = (
+        'rKBq8mTLRpE',
+        'm-0tJu9aFE8',
+        'Y225kwSwc6c',
+        'gzDRxwPvCJc',
+    )
     render_data = {
+        "youtube_video_ids": youtube_video_ids,
         "dev": True if os.environ.get("I_AM_IN_DEV_ENV") else False,
         "publishable_key": get_publishable_key()
     }

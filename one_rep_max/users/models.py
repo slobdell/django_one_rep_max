@@ -27,8 +27,13 @@ class User(object):
         except ObjectDoesNotExist:
             _user = _User.objects.create(facebook_service_id=facebook_service_id,
                                          credits=0.0)
-        _user.last_login = datetime.datetime.utcnow()
-        _user.save()
+
+        # TODO move this to its own method
+        now = datetime.datetime.utcnow()
+        if (now - _user.last_login.replace(tzinfo=None)).total_seconds() > 15 * 60.0:
+            _user.last_login = datetime.datetime.utcnow()
+            _user.save()
+
         return cls._wrap(_user)
 
     @classmethod

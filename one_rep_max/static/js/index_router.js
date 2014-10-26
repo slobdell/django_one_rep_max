@@ -17,6 +17,20 @@ destroy_view: function() {
 //
 //                     }
 */
+YouTubeView = Backbone.View.extend({
+    el: ".modal-content",
+    initialize: function(options){
+        this.videoId = options.videoId;
+        this.template = _.template($("#youtube_view").html());
+    },
+    render: function(){
+        var renderData = {
+            videoId: this.videoId
+        }
+        this.$el.html(this.template(renderData));
+    }
+});
+
 ContactView = Backbone.View.extend({
     el: "#button-fill-area",
     events: {
@@ -88,6 +102,7 @@ AccountSettingsView = Backbone.View.extend({
         this.credits = "0.00";
         this.error = "";
         this.creditsAdded = false;
+        this.videoCost = window.videoCost;
 
         this.populateUserInfo();
     },
@@ -208,6 +223,7 @@ AccountSettingsView = Backbone.View.extend({
     },
     render: function(){
         var renderData = {
+            videoCost: this.videoCost,
             purchaseFlow: this.purchaseFlow,
             creditsAdded: this.creditsAdded,
             error: this.error,
@@ -424,6 +440,7 @@ UploadModalView = Backbone.View.extend({
                     Backbone.history.navigate("summary", {trigger: true});
                 }
                 else {  // need to add funds
+                    window.videoCost = videoCost;
                     Backbone.history.navigate("account/add", {trigger: true});
                 }
             }
@@ -560,6 +577,7 @@ FacebookButtonView = Backbone.View.extend({
 IndexRouter = Backbone.Router.extend({
     routes: {
         "account/add": "accountView",
+        "youtube/:videoId": "youtube",
         "account": "accountView",
         "thankyou": "thankYouView",
         "summary": "orderSummaryView",
@@ -581,6 +599,7 @@ IndexRouter = Backbone.Router.extend({
         this.orderSummaryView = null;
         this.thankYouView = null;
         this.accountSettingsView = null;
+        this.youtubeView = null;
         this.uploadModalView = new UploadModalView();
         this.uploadVideoButtonView = new UploadVideoButtonView({router: this});
         this.facebookButtonView = new FacebookButtonView({router: this});
@@ -588,6 +607,12 @@ IndexRouter = Backbone.Router.extend({
     },
     contactView: function(){
         this.contactView.render();
+    },
+    youtube: function(videoId){
+        var dependentView = this.uploadModalView;
+        dependentView.render();
+        this.youtubeView = new YouTubeView({videoId: videoId});
+        this.youtubeView.render();
     },
     accountView: function(){
         var url = Backbone.history.fragment;

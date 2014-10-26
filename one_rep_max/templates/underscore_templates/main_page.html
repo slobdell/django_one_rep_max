@@ -173,6 +173,11 @@ Thanks for your order!  It will take a while to process your video, so in the me
     <div class="modal-body" style="max-height: 280px; overflow-y: scroll;">
         <div class="row-fluid">
             <div class="col-sm-6">
+
+<% if (purchaseFlow && videoCost > credits) { %>
+Processing this video requires at least <span style="color: #B22;">$<%= videoCost %></span> credits in your account.<br/><br/>
+                <% } %>
+
                 Credits: <span style="color: #080;">$<%= credits %></span><br/><br/>
 Email Address: <input id='settings-email' type='text' value='<%= email %>' style="width: 70%; margin-top: 10px; background-color: #3A3A3A;" />
                 <p style="margin: 2% 0%;">
@@ -208,5 +213,25 @@ Email Address: <input id='settings-email' type='text' value='<%= email %>' style
         <% } %>
 
         <img style="width: 30px; display: inline-block; position: relative; margin: 13px;" id="accounts-spinner" src="{% static 'img/spinner.gif' %}" />
+    </div>
+</script>
+
+<script type="text/html" id="youtube_view">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span style="color: #FFF;" aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    </div>
+    <div class="modal-body">
+        <div class="row-fluid">
+            <div class="col-sm-12">
+                <div class="videoWrapper">
+                    <!-- Copy & Pasted from YouTube -->
+                    <iframe width="560" height="349" src="http://www.youtube.com/embed/<%= videoId %>?rel=0&hd=1" frameborder="0" allowfullscreen></iframe>
+                </div>
+
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <div class="modal-footer">
     </div>
 </script>
