@@ -3,20 +3,69 @@ function validateEmail(email) {
     return re.test(email);
 }
 
-/*
-destroy_view: function() {
+OrientationView = Backbone.View.extend({
+    el: ".modal-content",
+    events: {
+        "click #orientation-continue": 'clickContinue',
+        "click #rotateRight": "rotateRight",
+        "click #rotateLeft": "rotateLeft"
+    },
+    initialize: function(options){
+        this.template = _.template($("#orientation_view").html());
+        this.thumbnailUrl = window.thumbnailUrl || "https://s3.amazonaws.com/one-rep-max/thumbnails/f4f87eb7-ff12-47bc-a0a1-f7ce5127b204.jpg"; // JUST A TEST FOR NOW
+    },
+    clickContinue: function(){
+        if(window.purchaseFlow){
+            Backbone.history.navigate("account/add", {trigger: true});
+        }
+        else {
+            Backbone.history.navigate("summary", {trigger: true});
+        }
+    },
+    _rotate: function(nextClass){
+        var rotateEl = this.$("#image-to-rotate");
+        var classNames = [
+            'no-rotate',
+            'rotate90',
+            'rotate180',
+            'rotate270'
+        ];
+        for (var index in classNames){
+            var className = classNames[index];
+            if(rotateEl.hasClass(className)){
+                rotateEl.removeClass(className);
+                rotateEl.addClass(nextClass[className]);
+                break;
+            }
+        }
+    },
+    rotateRight: function(){
+        var nextClass = {
+            'no-rotate': 'rotate90',
+            'rotate90': 'rotate180',
+            'rotate180': 'rotate270',
+            'rotate270': 'no-rotate'
+        }
+        this._rotate(nextClass);
+    },
+    rotateLeft: function(){
+        var nextClass = {
+            'no-rotate': 'rotate270',
+            'rotate270': 'rotate180',
+            'rotate180': 'rotate90',
+            'rotate90': 'no-rotate'
+        }
+        this._rotate(nextClass);
+    },
+    render: function(){
+        var renderData = {
+            thumbnailUrl: this.thumbnailUrl
+        };
+        this.$el.html(this.template(renderData));
+        return this;
+    }
+});
 
-// COMPLETELY UNBIND THE VIEW
-//     this.undelegateEvents();
-//
-//         this.$el.removeData().unbind();
-//
-//             // Remove view from DOM
-//                 this.remove();
-//                     Backbone.View.prototype.remove.call(this);
-//
-//                     }
-*/
 YouTubeView = Backbone.View.extend({
     el: ".modal-content",
     initialize: function(options){
@@ -185,6 +234,7 @@ AccountSettingsView = Backbone.View.extend({
                 contentType: 'application/x-www-form-urlencoded;charset=utf-8',
                 success: function(response){
                     var userInfoResponse = response;
+                    window.purchaseFlow = false;
                     self.creditsAdded = true;
                     self.populatePage(userInfoResponse);
                     self.$("#accounts-spinner").hide();
@@ -436,13 +486,12 @@ UploadModalView = Backbone.View.extend({
 
                 var userInfoResponse = response;
                 var credits = userInfoResponse.credits;
-                if (credits >= videoCost){
-                    Backbone.history.navigate("summary", {trigger: true});
-                }
-                else {  // need to add funds
+                credits = credits || 0; // dev test case
+                if (credits < videoCost){
+                    window.purchaseFlow = true;
                     window.videoCost = videoCost;
-                    Backbone.history.navigate("account/add", {trigger: true});
                 }
+                Backbone.history.navigate("orientation", {trigger: true});
             }
         });
     },
@@ -576,6 +625,7 @@ FacebookButtonView = Backbone.View.extend({
 
 IndexRouter = Backbone.Router.extend({
     routes: {
+        "orientation": "orientationView",
         "account/add": "accountView",
         "youtube/:videoId": "youtube",
         "account": "accountView",
@@ -600,10 +650,17 @@ IndexRouter = Backbone.Router.extend({
         this.thankYouView = null;
         this.accountSettingsView = null;
         this.youtubeView = null;
+        this.orientationView = null;
         this.uploadModalView = new UploadModalView();
         this.uploadVideoButtonView = new UploadVideoButtonView({router: this});
         this.facebookButtonView = new FacebookButtonView({router: this});
         this.contactView = new ContactView();
+    },
+    orientationView: function(){
+        var dependentView = this.uploadModalView;
+        dependentView.render();
+        this.orientationView = new OrientationView();
+        this.orientationView.render();
     },
     contactView: function(){
         this.contactView.render();
@@ -713,3 +770,16 @@ IndexRouter = Backbone.Router.extend({
         });
     }
 });
+
+/*
+destroyView: function() {
+
+    // COMPLETELY UNBIND THE VIEW
+    this.undelegateEvents();
+    this.$el.removeData().unbind();
+
+    // Remove view from DOM
+    this.remove();
+    Backbone.View.prototype.remove.call(this);
+}
+*/

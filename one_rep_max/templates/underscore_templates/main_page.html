@@ -235,3 +235,41 @@ Email Address: <input id='settings-email' type='text' value='<%= email %>' style
     <div class="modal-footer">
     </div>
 </script>
+
+<script type="text/html" id="orientation_view">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span style="color: #FFF;" aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Video Orientation</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row-fluid">
+            <div class="col-sm-12">
+                <center>
+                    Rotate the video upright so we can begin processing.
+                </center>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="col-sm-4">
+                <br/>
+                <a href="javascript:void(0);" id="rotateLeft"><i style="margin-top: 60px; float: right; font-size: 1.5em;" class="icon-undo-2"></i></a>
+            </div>
+
+            <div class="col-sm-4" style="min-height: 200px;">
+                <% if (thumbnailUrl) { %>
+<img id='image-to-rotate' class="no-rotate" style="margin: auto; margin-top: 50px;" src="<%= thumbnailUrl %>" />
+                <% } %>
+            </div>
+            <div class="col-sm-4">
+                <br/>
+                <a href="javascript:void(0);" id="rotateRight"><i style="margin-top: 60px; float: left; font-size: 1.5em;" class="icon-redo-2"></i></a>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a id='orientation-continue' style="margin-top: 5px; font-size: 18px;" href="javascript:void(0);" class="button large alt">
+            Continue
+        </a>
+    </div>
+</script>
