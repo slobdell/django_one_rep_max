@@ -87,9 +87,13 @@ class UploadedVideo(object):
 
     @property
     def amazon_key(self):
-        return "%s/%s%s" % (self.user_id,
-                            self.id,
-                            self.extension)
+        return "uploads/%s/%s%s" % (self.user_id,
+                                    self.id,
+                                    self.extension)
+
+    @property
+    def amazon_url(self):
+        return "%s/%s/%s" % (self.BASE_URL, BUCKET_NAME, self.amazon_key)
 
     @property
     def id(self):

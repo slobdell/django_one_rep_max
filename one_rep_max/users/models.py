@@ -58,6 +58,10 @@ class User(object):
     def facebook_service_id(self):
         return self._user.facebook_service_id
 
+    @property
+    def email(self):
+        return self._user.email
+
     def to_json(self):
         return {
             "id": self._user.id,

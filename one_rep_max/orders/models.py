@@ -5,6 +5,8 @@ from django.db import models
 from one_rep_max.orders.constants import OrientationType
 from one_rep_max.orders.constants import StateType
 from one_rep_max.orders.utils import get_dollar_cost_from_video_seconds
+from one_rep_max.uploaded_videos.models import UploadedVideo
+from one_rep_max.users.models import User
 
 
 class _Order(models.Model):
@@ -50,13 +52,23 @@ class Order(object):
                                        dollar_cost=get_dollar_cost_from_video_seconds(delta_seconds))
         return cls._wrap(_order)
 
+    @classmethod
+    def get_by_id(cls, order_id):
+        _order = _Order.objects.get(id=order_id)
+        return cls._wrap(_order)
+
+    @property
+    def uploaded_video_url(self):
+        uploaded_video = UploadedVideo.get_by_id(self._order.uploaded_video_id)
+        return uploaded_video.amazon_url
+
     def get_video_url(self):
         # fetch the uploaded video and returns its url
         pass
 
     def get_user_email(self):
-        # fetch the user then return his/her email
-        pass
+        user = User.get_by_id(self._order.user_id)
+        return user.email
 
     @property
     def state(self):
@@ -88,3 +100,12 @@ class Order(object):
 
     def change_state_finished(self):
         self._change_state(StateType.FINISHED)
+
+    @property
+    def start__stop_seconds(self):
+        o = self._order
+        return o.start_seconds, o.end_seconds
+
+    @property
+    def user_id(self):
+        return self._order.user_id

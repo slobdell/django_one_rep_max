@@ -8,6 +8,7 @@ from one_rep_max.mailgun.tasks import send_confirmation_email
 from one_rep_max.mailgun.utils import send_email_with_data
 from one_rep_max.orders.models import Order
 from one_rep_max.stripe.utils import charge_card
+from one_rep_max.tasks import create_video_process_from_order
 from one_rep_max.uploaded_videos.models import UploadedVideo
 from one_rep_max.users.models import User
 from one_rep_max.utils.videos import create_video_metadata
@@ -55,6 +56,7 @@ def submit_order(request):
                          end_seconds,
                          orientation_id)
     send_confirmation_email(email_address, order.id)
+    create_video_process_from_order.delay(order.id)
     return HttpResponse(status=204)
 
 
