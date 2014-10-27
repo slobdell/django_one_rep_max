@@ -3,6 +3,13 @@ function validateEmail(email) {
     return re.test(email);
 }
 
+ROTATIONS = {
+    NONE: 1,
+    CLOCKWISE_90: 2,
+    CLOCKWISE_180: 3,
+    CLOCKWISE_270: 4
+};
+
 OrientationView = Backbone.View.extend({
     el: ".modal-content",
     events: {
@@ -15,6 +22,20 @@ OrientationView = Backbone.View.extend({
         this.thumbnailUrl = window.thumbnailUrl || "https://s3.amazonaws.com/one-rep-max/thumbnails/f4f87eb7-ff12-47bc-a0a1-f7ce5127b204.jpg"; // JUST A TEST FOR NOW
     },
     clickContinue: function(){
+        classToRotationValue = {
+            'no-rotate': ROTATIONS.NONE,
+            'rotate90': ROTATIONS.CLOCKWISE_90,
+            'rotate180': ROTATIONS.CLOCKWISE_180,
+            'rotate270': ROTATIONS.CLOCKWISE_270
+        };
+        var rotateEl = this.$("#image-to-rotate");
+        for (var className in classToRotationValue){
+            if(rotateEl.hasClass(className)){
+                window.rotation = classToRotationValue[className];
+                break;
+            }
+        }
+
         if(window.purchaseFlow){
             Backbone.history.navigate("account/add", {trigger: true});
         }
@@ -345,6 +366,7 @@ OrderSummaryView = Backbone.View.extend({
         this.emailValue = "";
         this.pollValidEmail();
         this.getSavedEmail();
+        this.rotation = window.rotation || ROTATIONS.NONE;
     },
     getSavedEmail: function(){
         var self = this;
@@ -384,6 +406,7 @@ OrderSummaryView = Backbone.View.extend({
         var startSeconds = this.convertTimeStringToSeconds(this.$("#start-time").val());
         var endSeconds = this.convertTimeStringToSeconds(this.$("#stop-time").val());
         var videoId = this.videoId;
+        var rotation = window.rotation || ROTATIONS.NONE;
 
         $.ajax({
             url: '/api/submit_order/',
@@ -391,6 +414,7 @@ OrderSummaryView = Backbone.View.extend({
                 emailAddress: emailAddress,
                 startSeconds: startSeconds,
                 endSeconds: endSeconds,
+                orientation: rotation,
                 videoId: videoId
             },
             cache: false,
@@ -427,6 +451,19 @@ OrderSummaryView = Backbone.View.extend({
             dollarCost: this.dollarCost
         }
         this.$el.empty().append(this.template(renderData));
+
+        classToRotationValue = {
+            'no-rotate': ROTATIONS.NONE,
+            'rotate90': ROTATIONS.CLOCKWISE_90,
+            'rotate180': ROTATIONS.CLOCKWISE_180,
+            'rotate270': ROTATIONS.CLOCKWISE_270
+        };
+        for (var className in classToRotationValue){
+            if(classToRotationValue[className] === this.rotation){
+                this.$("#final-thumbnail").addClass(className);
+            }
+        }
+
         var self = this;
         setTimeout(function(){
             self.$("#email-input").focus();

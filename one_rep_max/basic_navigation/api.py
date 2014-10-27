@@ -47,11 +47,13 @@ def submit_order(request):
     uploaded_video_id = int(post_data['videoId'])
     start_seconds = float(post_data['startSeconds'])
     end_seconds = float(post_data['endSeconds'])
+    orientation_id = int(post_data['orientation'])
 
     order = Order.create(user_id,
                          uploaded_video_id,
                          start_seconds,
-                         end_seconds)
+                         end_seconds,
+                         orientation_id)
     send_confirmation_email(email_address, order.id)
     return HttpResponse(status=204)
 

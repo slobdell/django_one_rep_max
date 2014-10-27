@@ -37,13 +37,14 @@ class Order(object):
                user_id,
                uploaded_video_id,
                start_seconds,
-               end_seconds):
+               end_seconds,
+               orientation_id):
         delta_seconds = end_seconds - start_seconds
         _order = _Order.objects.create(user_id=user_id,
                                        uploaded_video_id=uploaded_video_id,
                                        create_date=datetime.datetime.utcnow(),
                                        state_id=StateType.QUEUED.index,
-                                       orientation_id=OrientationType.NONE.index,
+                                       orientation_id=orientation_id,
                                        start_seconds=start_seconds,
                                        end_seconds=end_seconds,
                                        dollar_cost=get_dollar_cost_from_video_seconds(delta_seconds))
