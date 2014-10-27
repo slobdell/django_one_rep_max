@@ -3,6 +3,22 @@ function validateEmail(email) {
     return re.test(email);
 }
 
+function dollarCostFromSeconds(numSeconds){
+    var cost = 2.0 * numSeconds / 60.0;
+    if(cost<0){
+        return "0.00";
+    }
+    var displayCost = "";
+    if (cost < 10){
+        displayCost = cost.toPrecision(3);
+    }
+    else {
+        displayCost = cost.toPrecision(4);
+    }
+    return displayCost;
+}
+
+
 ROTATIONS = {
     NONE: 1,
     CLOCKWISE_90: 2,
@@ -338,6 +354,8 @@ OrderSummaryView = Backbone.View.extend({
     el: ".modal-content",
     events: {
         "keyup #email-input": "changeEmailInput",
+        "keyup #stop-time": "updateCost",
+        "keyup #start-time": "updateCost",
         "change #email-input": "changeEmailInput",
         "paste #email-input": "changeEmailInput",
         "click #finish-order": "clickSubmit"
@@ -397,9 +415,19 @@ OrderSummaryView = Backbone.View.extend({
         }, 1000);
     },
     convertTimeStringToSeconds: function(timeString){
-        time_array = timeString.split(":");
-        var seconds = time_array[0] * 60 + time_array[1];
+        timeArray = timeString.split(":");
+        var seconds = parseFloat(timeArray[0] * 60);
+        if(timeArray.length > 1 && timeArray[1]){
+            seconds += parseFloat(timeArray[1]);
+        }
         return seconds;
+    },
+    updateCost: function(){
+        var startSeconds = this.convertTimeStringToSeconds(this.$("#start-time").val());
+        var endSeconds = this.convertTimeStringToSeconds(this.$("#stop-time").val());
+        var deltaSeconds = endSeconds - startSeconds;
+        var displayDollars = dollarCostFromSeconds(deltaSeconds);
+        this.$("#dollar-cost").html("$" + displayDollars);
     },
     clickSubmit: function(){
         var emailAddress= this.$("#email-input").val();
