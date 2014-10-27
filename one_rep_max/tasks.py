@@ -57,5 +57,5 @@ def create_video_process_from_order(order_id):
     amazon_url = _upload_file(output_file, temp_path, order.user_id)
     send_order_completion_email(order.get_user_email(), amazon_url)
 
-    # os.remove(temp_path)
-    # os.remove(output_file)
+    os.remove(temp_path)
+    os.remove(output_file)
