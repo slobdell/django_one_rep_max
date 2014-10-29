@@ -3,6 +3,8 @@ import os
 import requests
 import uuid
 
+from barbell_video_processor.read_video import process
+
 from celery.task import task
 
 from one_rep_max.boto.boto_uploader import BotoUploader
@@ -28,12 +30,7 @@ def _download_file(amazon_url):
 
 
 def _process_video(input_video_path, orientation_index, start_seconds, end_seconds):
-    # placeholder
-    import shutil
-    output_file = input_video_path
-    extension = input_video_path.split(".")[-1]
-    output_file = "./tmp/%s_processed.%s" % (str(uuid.uuid4()), extension)
-    shutil.copy(input_video_path, output_file)
+    output_file = process(input_video_path, orientation_index, start_seconds, end_seconds)
     return output_file
 
 
