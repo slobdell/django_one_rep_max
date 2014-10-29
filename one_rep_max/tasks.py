@@ -3,7 +3,7 @@ import os
 import requests
 import uuid
 
-from barbell_video_processor.read_video import process
+from barbell_video_processor import read_video
 
 from celery.task import task
 
@@ -30,7 +30,7 @@ def _download_file(amazon_url):
 
 
 def _process_video(input_video_path, orientation_index, start_seconds, end_seconds):
-    output_file = process(input_video_path, orientation_index, start_seconds, end_seconds)
+    output_file = read_video.process(input_video_path, orientation_index, start_seconds, end_seconds)
     return output_file
 
 
@@ -53,6 +53,7 @@ def create_video_process_from_order(order_id):
 
     amazon_url = _upload_file(output_file, temp_path, order.user_id)
     send_order_completion_email(order.get_user_email(), amazon_url)
+    # TODO now I need to charge the user
 
     os.remove(temp_path)
     os.remove(output_file)
