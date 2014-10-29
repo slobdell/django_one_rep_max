@@ -684,7 +684,7 @@ FacebookButtonView = Backbone.View.extend({
         var callback = function(response){
             self.router.facebookStatusChangeCallback(response);
         }
-        FB.login(callback);
+        FB.login(callback, {scope: 'email'});
     },
     render: function(){
         $("#account-link").hide();
@@ -837,7 +837,8 @@ IndexRouter = Backbone.Router.extend({
         $.ajax({
             url: '/api/login/',
             data: {
-                facebook_service_id: facebook_id
+                facebook_service_id: facebook_id,
+                facebook_email: ''
             },
             cache: false,
             dataType: 'json',
