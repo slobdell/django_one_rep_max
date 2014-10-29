@@ -35,7 +35,8 @@ def _process_video(input_video_path, orientation_index, start_seconds, end_secon
 
 
 def _upload_file(source_file, path_with_extension, user_id):
-    amazon_key = "final/%s/%s" % (user_id, path_with_extension.split("/")[-1])
+    # a bit hacky...file type is always avi because of the other thing
+    amazon_key = "final/%s/%s.avi" % (user_id, (path_with_extension.split("/")[-1]).split(".")[0])
     final_url = BotoUploader.upload_single_file(source_file, amazon_key)
     amazon_url = "https://s3.amazonaws.com/%s" % final_url
     return amazon_url
