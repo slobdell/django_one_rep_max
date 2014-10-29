@@ -4,6 +4,7 @@ function validateEmail(email) {
 }
 
 function dollarCostFromSeconds(numSeconds){
+    return "0.00"
     var cost = 2.0 * numSeconds / 60.0;
     if(cost<0){
         return "0.00";
