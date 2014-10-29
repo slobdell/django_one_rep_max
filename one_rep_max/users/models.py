@@ -68,6 +68,10 @@ class User(object):
     def email(self):
         return self._user.email
 
+    def charge_account(self, amount):
+        self._user.credits -= amount
+        self._user.save()
+
     def to_json(self):
         return {
             "id": self._user.id,

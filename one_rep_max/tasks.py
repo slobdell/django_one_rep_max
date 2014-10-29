@@ -9,12 +9,8 @@ from celery.task import task
 
 from one_rep_max.boto.boto_uploader import BotoUploader
 from one_rep_max.orders.models import Order
+from one_rep_max.mailgun.tasks import notify_admin
 from one_rep_max.mailgun.tasks import send_order_completion_email
-
-
-@task
-def add(x, y):
-    return x + y
 
 
 def _download_file(amazon_url):
@@ -44,17 +40,27 @@ def _upload_file(source_file, path_with_extension, user_id):
 
 @task
 def create_video_process_from_order(order_id):
-    django.setup()
-    order = Order.get_by_id(order_id)
-    start_sec, end_sec = order.start__stop_seconds
+    try:
+        django.setup()
+        order = Order.get_by_id(order_id)
+        order.make_state_processing()
+        start_sec, end_sec = order.start__stop_seconds
 
-    temp_path = _download_file(order.uploaded_video_url)
+        temp_path = _download_file(order.uploaded_video_url)
 
-    output_file = _process_video(temp_path, order.orientation.index, start_sec, end_sec)
+        output_file = _process_video(temp_path, order.orientation.index, start_sec, end_sec)
 
-    amazon_url = _upload_file(output_file, temp_path, order.user_id)
-    send_order_completion_email(order.get_user_email(), amazon_url)
-    # TODO now I need to charge the user
+        amazon_url = _upload_file(output_file, temp_path, order.user_id)
+        order.make_state_complete_processing()
 
-    os.remove(temp_path)
-    os.remove(output_file)
+        send_order_completion_email(order.get_user_email(), amazon_url)
+        order.make_state_user_notified()
+        order.update_final_video_url(amazon_url)
+        order.charge()
+
+        os.remove(temp_path)
+        os.remove(output_file)
+    except Exception as e:
+        order.make_state_failed()
+        notify_admin(e)
+        raise e

@@ -23,6 +23,7 @@ class _Order(models.Model):
     uploaded_video_id = models.IntegerField()
     start_seconds = models.FloatField()
     end_seconds = models.FloatField()
+    final_video_url = models.CharField(max_length=255, default='')
 
 
 class Order(object):
@@ -109,3 +110,32 @@ class Order(object):
     @property
     def user_id(self):
         return self._order.user_id
+
+    def update_final_video_url(self, final_url):
+        # TODO refactor all this copy and paste
+        self._order.final_video_url = final_url
+        self._order.save()
+
+    def make_state_processing(self):
+        self._order.state_id = StateType.PROCESSING.index
+        self._order.save()
+
+    def make_state_complete_processing(self):
+        self._order.state_id = StateType.COMPLETE_PROCESSING.index
+        self._order.save()
+
+    def make_state_failed(self):
+        self._order.state_id = StateType.FAILED.index
+        self._order.save()
+
+    def make_state_user_notified(self):
+        self._order.state_id = StateType.USER_NOTIFIED.index
+        self._order.save()
+
+    def make_state_finished(self):
+        self._order.state_id = StateType.FINISHED.index
+        self._order.save()
+
+    def charge(self):
+        user = User.get_by_id(self._order.user_id)
+        user.charge_account(self._order.dollar_cost)
