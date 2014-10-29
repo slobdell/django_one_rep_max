@@ -1,6 +1,7 @@
 import django
 import os
 import requests
+import traceback
 import uuid
 
 from barbell_video_processor import read_video
@@ -61,6 +62,7 @@ def create_video_process_from_order(order_id):
         os.remove(temp_path)
         os.remove(output_file)
     except Exception as e:
+        stack_trace = traceback.format_exc()
         order.make_state_failed()
-        notify_admin(e)
+        notify_admin(e, stack_trace)
         raise e

@@ -25,8 +25,9 @@ def send_order_completion_email(email_address, final_url):
                          text)
 
 
-def notify_admin(exception):
-    text = "Exception: %s" % exception
+def notify_admin(exception, stack_trace):
+    text = "Exception: %s\n\n" % exception
+    text += stack_trace
     if hasattr(exception, "message"):
         text += "\n%s" % exception.message
     send_email_with_data(ADMIN_EMAIL, "OneRepMax Error!", text)
