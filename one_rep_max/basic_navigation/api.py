@@ -64,7 +64,9 @@ def login(request):
     if request.method != "POST":
         raise Http404
     facebook_service_id = request.POST['facebook_service_id']
+    facebook_email = request.POST['facebook_email']
     user = User.get_or_create_from_fb_id(facebook_service_id)
+    user.update_email_from_facebook(facebook_email)
     request.session['user_id'] = user.id
     request.session['facebook_service_id'] = facebook_service_id
     request.session.modified = True

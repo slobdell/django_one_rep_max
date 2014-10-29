@@ -435,6 +435,8 @@ OrderSummaryView = Backbone.View.extend({
         var endSeconds = this.convertTimeStringToSeconds(this.$("#stop-time").val());
         var videoId = this.videoId;
         var rotation = window.rotation || ROTATIONS.NONE;
+        this.$("#spinner").show();
+        this.$("#finish-order").hide();
 
         $.ajax({
             url: '/api/submit_order/',
@@ -451,9 +453,13 @@ OrderSummaryView = Backbone.View.extend({
             type: 'POST',
             contentType: 'application/x-www-form-urlencoded;charset=utf-8',
             success: function(response){
+                self.$("#spinner").hide();
+                self.$("#finish-order").show();
                 Backbone.history.navigate('thankyou', {trigger: true});
             },
             error: function(data){
+                self.$("#spinner").hide();
+                self.$("#finish-order").show();
                 alert("error");
             }
         });
@@ -773,34 +779,46 @@ IndexRouter = Backbone.Router.extend({
             this.forceStart();
         }
     },
+    updateProfilePicture: function(){
+        FB.api('/v2.1/me/picture?redirect=false', function(response){
+            var profilePictureUrl = response.data.url;
+            $('.profile-circular').css({'background-image':'url(' + profilePictureUrl +')'});
+        });
+    },
+    facebookGetMe: function(){
+        var self = this;
+        FB.api('/v2.1/me?fields=id,email', function(response) {
+            var facebook_id = response.id;
+            var facebookEmail = response.email;
+            window.facebook_id = facebook_id;
+            $.ajax({
+                url: '/api/login/',
+                data: {
+                    facebook_email: facebookEmail,
+                    facebook_service_id: facebook_id
+                },
+                cache: false,
+                dataType: 'json',
+                traditional: true,
+                type: 'POST',
+                success: function(data){
+                    self.loggedIn = true;
+                    $("#account-link").show();
+                    var currentRoute = self.routes[Backbone.history.fragment];
+                    if (currentRoute === "defaultRoute"){
+                        self.uploadVideoButtonView.render();
+                    }
+                },
+                error: function(data){
+                    alert("error");
+                }
+            });
+        });
+    },
     facebookStatusChangeCallback: function(response){
         if (response.status === 'connected') {
-            var self = this;
-            FB.api('/v2.1/me', function(response) {
-                var facebook_id = response.id;
-                window.facebook_id = facebook_id;
-                $.ajax({
-                    url: '/api/login/',
-                    data: {
-                        facebook_service_id: facebook_id
-                    },
-                    cache: false,
-                    dataType: 'json',
-                    traditional: true,
-                    type: 'POST',
-                    success: function(data){
-                        self.loggedIn = true;
-                        $("#account-link").show();
-                        var currentRoute = self.routes[Backbone.history.fragment];
-                        if (currentRoute === "defaultRoute"){
-                            self.uploadVideoButtonView.render();
-                        }
-                    },
-                    error: function(data){
-                        alert("error");
-                    }
-                });
-            });
+            this.facebookGetMe();
+            this.updateProfilePicture();
         } else if (response.status === 'not_authorized') {
             this.loggedIn = false;
             // logged into Facebook but not app

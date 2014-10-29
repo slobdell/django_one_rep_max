@@ -46,6 +46,12 @@ class User(object):
             self._user.email = email_address
             self._user.save()
 
+    def update_email_from_facebook(self, facebook_email):
+        if self._user.email:
+            return
+        self._user.email = facebook_email
+        self._user.save()
+
     def add_credits(self, credits_to_add):
         self._user.credits += credits_to_add
         self._user.save()
