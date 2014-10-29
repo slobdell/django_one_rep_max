@@ -789,7 +789,7 @@ IndexRouter = Backbone.Router.extend({
         var self = this;
         FB.api('/v2.1/me?fields=id,email', function(response) {
             var facebook_id = response.id;
-            var facebookEmail = response.email;
+            var facebookEmail = response.email || '';
             window.facebook_id = facebook_id;
             $.ajax({
                 url: '/api/login/',

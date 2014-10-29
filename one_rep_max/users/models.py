@@ -30,7 +30,7 @@ class User(object):
 
         # TODO move this to its own method
         now = datetime.datetime.utcnow()
-        if (now - _user.last_login.replace(tzinfo=None)).total_seconds() > 15 * 60.0:
+        if _user.last_login is None or (now - _user.last_login.replace(tzinfo=None)).total_seconds() > 15 * 60.0:
             _user.last_login = datetime.datetime.utcnow()
             _user.save()
 
