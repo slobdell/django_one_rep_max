@@ -6,6 +6,8 @@ import uuid
 
 from barbell_video_processor import read_video
 
+from celery import platforms
+from celery.signals import worker_process_init
 from celery.task import task
 
 from one_rep_max.boto.boto_uploader import BotoUploader
@@ -68,29 +70,9 @@ def create_video_process_from_order(order_id):
         raise e
 
 
-from celery import platforms
-from celery.signals import worker_process_init
-
-
-@task
-def deleteme():
-    for j in xrange(20):
-        print "this takes fucking forever"
-        import time
-        time.sleep(5)
-
-
 def cleanup_after_tasks(signum, frame):
-    print "THIS TOTALLY WORKED"
-    print "THIS TOTALLY WORKED"
-    print "THIS TOTALLY WORKED"
-    print "THIS TOTALLY WORKED"
-    print "THIS TOTALLY WORKED"
-    print "THIS TOTALLY WORKED"
-    print "THIS TOTALLY WORKED"
-    print "THIS TOTALLY WORKED"
-    print "THIS TOTALLY WORKED"
-    print "THIS TOTALLY WORKED"
+    # find orders in processing state and change them to fail
+    pass
 
 
 def install_pool_process_sighandlers(**kwargs):

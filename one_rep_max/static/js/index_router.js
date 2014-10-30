@@ -361,11 +361,6 @@ OrderSummaryView = Backbone.View.extend({
         "paste #email-input": "changeEmailInput",
         "click #finish-order": "clickSubmit"
     },
-    /*
-     * this should have start and stop point
-     *                  total cost
-     *                  image thumbnail
-     */
     initialize: function(options){
         this.template = _.template($("#order_summary_view").html());
         var videoSeconds = window.videoSeconds || 0;
