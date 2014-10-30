@@ -54,10 +54,10 @@ OrientationView = Backbone.View.extend({
         }
 
         if(window.purchaseFlow){
-            Backbone.history.navigate("account/add", {trigger: true});
+            Backbone.history.navigate("!account/add", {trigger: true});
         }
         else {
-            Backbone.history.navigate("summary", {trigger: true});
+            Backbone.history.navigate("!summary", {trigger: true});
         }
     },
     _rotate: function(nextClass){
@@ -456,7 +456,7 @@ OrderSummaryView = Backbone.View.extend({
             success: function(response){
                 self.$("#spinner").hide();
                 self.$("#finish-order").show();
-                Backbone.history.navigate('thankyou', {trigger: true});
+                Backbone.history.navigate('!thankyou', {trigger: true});
             },
             error: function(data){
                 self.$("#spinner").hide();
@@ -563,7 +563,7 @@ UploadModalView = Backbone.View.extend({
                     window.purchaseFlow = true;
                     window.videoCost = videoCost;
                 }
-                Backbone.history.navigate("orientation", {trigger: true});
+                Backbone.history.navigate("!orientation", {trigger: true});
             }
         });
     },
@@ -664,7 +664,7 @@ UploadVideoButtonView = Backbone.View.extend({
         this.template = _.template($("#button_area_upload").html());
     },
     clickUploadVideo: function(){
-        Backbone.history.navigate('upload', {trigger: true});
+        Backbone.history.navigate('!upload', {trigger: true});
     },
     render: function(){
         this.$el.html(this.template());
@@ -697,14 +697,14 @@ FacebookButtonView = Backbone.View.extend({
 
 IndexRouter = Backbone.Router.extend({
     routes: {
-        "orientation": "orientationView",
-        "account/add": "accountView",
-        "youtube/:videoId": "youtube",
-        "account": "accountView",
-        "thankyou": "thankYouView",
-        "summary": "orderSummaryView",
-        "contact": "contactView",
-        "upload": "uploadView",
+        "!orientation": "orientationView",
+        "!account/add": "accountView",
+        "!youtube/:videoId": "youtube",
+        "!account": "accountView",
+        "!thankyou": "thankYouView",
+        "!summary": "orderSummaryView",
+        "!contact": "contactView",
+        "!upload": "uploadView",
         "": "defaultRoute"
     },
     /*

@@ -1,6 +1,5 @@
 import json
 import os
-import cv2  # DELETEME this is just a test
 
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
@@ -25,3 +24,9 @@ def home(request):
         "publishable_key": get_publishable_key()
     }
     return render_to_response("basic_navigation/index.html", render_data)
+
+
+def sitemap(request):
+    with open("one_rep_max/templates/sitemap.xml", "rb") as f:
+        xml_content = f.read()
+    return HttpResponse(xml_content, content_type="text/xml")
