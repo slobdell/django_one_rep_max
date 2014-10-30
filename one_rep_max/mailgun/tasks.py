@@ -6,7 +6,7 @@ from .constants import ADMIN_EMAIL
 
 def send_confirmation_email(email_address, order_id):
     text = "Thanks for your order! A bunch of scientists from down in the lab are now doing a bunch of "
-    text += "sciency things to your video and making calculations.  When it's finished you'll be notified "
+    text += "sciency things to your video and making calculations.  When it's finished you'll be notified, "
     text += "but if there are any problems you can keep track of your order with:\n\n"
     text += "Order ID: %s" % order_id
     text += "\n\nThis might take over an hour, especially if a whole bunch of other meat heads are acting "
