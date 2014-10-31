@@ -150,14 +150,14 @@
 
                 {% for video_id in youtube_video_ids %}
 				<div class="four columns">
-                    <a href="#!youtube/{{ video_id }}">
+                    <a href="#!youtube/{{ video_id.0 }}">
 					<div class="item">
 						<div class="image-container">
 							<div class="mask"></div>
-<img src="https://i.ytimg.com/vi/{{ video_id }}/mqdefault.jpg" alt="">
+<img src="https://i.ytimg.com/vi/{{ video_id.0 }}/mqdefault.jpg" alt="">
 						</div>
-						<a href="#!youtube/{{ video_id }}" class="zoom box" title="495 lb estimation"><i class="icon-film"></i></a>
-						<div class="item-title"><a href="#!youtube/{{ video_id }}">495 lb Estimation</a></div>
+<a href="#!youtube/{{ video_id.0 }}" class="zoom box" title="{{ video_id.1 }} lb estimation"><i class="icon-film"></i></a>
+<div class="item-title"><a href="#!youtube/{{ video_id.0 }}">{{ video_id.1 }} lb Estimation</a></div>
 					</div>
 </a>
 				</div>

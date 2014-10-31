@@ -431,8 +431,8 @@ OrderSummaryView = Backbone.View.extend({
         var endSeconds = this.convertTimeStringToSeconds(this.$("#stop-time").val());
         var videoId = this.videoId;
         var rotation = window.rotation || ROTATIONS.NONE;
-        this.$("#spinner").show();
         this.$("#finish-order").hide();
+        this.$("#spinner").show();
 
         $.ajax({
             url: '/api/submit_order/',
