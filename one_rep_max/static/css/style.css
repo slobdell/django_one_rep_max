@@ -1908,3 +1908,20 @@ or wrap each row of columns in a <div class="row"> */
     -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
     -moz-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
 }
+
+.copy p{
+    font-size: 1em;
+}
+.copy ul{
+    margin-left: 5%;
+    margin-right: 5%;
+    list-style-type: disc;
+    font-size: 0.9em;
+}
+.copy h1, h2{
+    color: #ff4d4d;
+}
+.copy strong{
+    color: #FFF;
+    font-weight: bold;
+}

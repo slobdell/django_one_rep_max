@@ -27,6 +27,21 @@ ROTATIONS = {
     CLOCKWISE_270: 4
 };
 
+TemplateView = Backbone.View.extend({
+    el: "#button-fill-area",
+    initialize: function(){
+        this.template = null;
+    },
+    updateTemplate: function(templateSelector){
+        this.template = _.template($(templateSelector).html());
+    },
+    render: function(){
+        var goBackHTML = '<a id="close-button" style="margin-top: 5px; font-size: 18px;" href="#" class="button large alt cancel">Go Back</a>'
+        this.$el.html(this.template() + goBackHTML);
+        window.scrollTo(0, 300);
+        return this;
+    }
+});
 OrientationView = Backbone.View.extend({
     el: ".modal-content",
     events: {
@@ -700,6 +715,7 @@ IndexRouter = Backbone.Router.extend({
         "!summary": "orderSummaryView",
         "!contact": "contactView",
         "!upload": "uploadView",
+        "!about": "mainCopy",
         "": "defaultRoute"
     },
     /*
@@ -722,6 +738,11 @@ IndexRouter = Backbone.Router.extend({
         this.uploadVideoButtonView = new UploadVideoButtonView({router: this});
         this.facebookButtonView = new FacebookButtonView({router: this});
         this.contactView = new ContactView();
+        this.templateView = new TemplateView();
+    },
+    mainCopy: function(){
+        this.templateView.updateTemplate("#main_copy");
+        this.templateView.render();
     },
     orientationView: function(){
         var dependentView = this.uploadModalView;
