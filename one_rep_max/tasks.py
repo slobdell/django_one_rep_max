@@ -71,6 +71,7 @@ def create_video_process_from_order(order_id):
 
 
 def cleanup_after_tasks(signum, frame):
+    django.setup()
     Order.kill_processing_orders()
 
 
