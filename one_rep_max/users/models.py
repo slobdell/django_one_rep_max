@@ -3,6 +3,8 @@ import datetime
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 
+from one_rep_max.mailgun.tasks import notify_admin_signup
+
 
 class _User(models.Model):
     facebook_service_id = models.CharField(max_length=100)
@@ -27,6 +29,7 @@ class User(object):
         except ObjectDoesNotExist:
             _user = _User.objects.create(facebook_service_id=facebook_service_id,
                                          credits=0.0)
+            notify_admin_signup.delay(facebook_service_id)
 
         # TODO move this to its own method
         now = datetime.datetime.utcnow()

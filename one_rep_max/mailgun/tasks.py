@@ -34,5 +34,12 @@ def notify_admin(exception, stack_trace):
 
 
 @task
+def notify_admin_signup(facebook_service_id):
+    text = "Someone signed up!\n"
+    text += "Check out http://facebook.com/%s" % facebook_service_id
+    send_email_with_data(ADMIN_EMAIL, "OneRepMax SignUp :) $", text)
+
+
+@task
 def test_send_email():
     send_test_email()
