@@ -581,7 +581,7 @@ UploadModalView = Backbone.View.extend({
         this.$("#uploading-text").hide();
         this.$("#spinner").hide();
         this.$("#upload-video-button-final").show();
-        this.errorMessage = "There was an error uploading your file.  If the problem persists, <a href='#contact'>contact us</a>.";
+        this.errorMessage = "There was an error uploading your file.  If the problem persists, <a href='#!contact'>contact us</a>.";
         this.render();
     },
     postData: function(){
