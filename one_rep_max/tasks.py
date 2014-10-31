@@ -46,7 +46,7 @@ def create_video_process_from_order(order_id):
     try:
         django.setup()
         order = Order.get_by_id(order_id)
-        order.make_state_processing()
+        order.change_state_processing()
         start_sec, end_sec = order.start__stop_seconds
 
         temp_path = _download_file(order.uploaded_video_url)
@@ -54,10 +54,10 @@ def create_video_process_from_order(order_id):
         output_file = _process_video(temp_path, order.orientation.index, start_sec, end_sec)
 
         amazon_url = _upload_file(output_file, temp_path, order.user_id)
-        order.make_state_complete_processing()
+        order.change_state_complete_processing()
 
         send_order_completion_email(order.get_user_email(), amazon_url)
-        order.make_state_user_notified()
+        order.change_state_user_notified()
         order.update_final_video_url(amazon_url)
         order.charge()
 
@@ -65,14 +65,13 @@ def create_video_process_from_order(order_id):
         os.remove(output_file)
     except Exception as e:
         stack_trace = traceback.format_exc()
-        order.make_state_failed()
+        order.change_state_failed()
         notify_admin(e, stack_trace)
         raise e
 
 
 def cleanup_after_tasks(signum, frame):
-    # find orders in processing state and change them to fail
-    pass
+    Order.kill_processing_orders()
 
 
 def install_pool_process_sighandlers(**kwargs):

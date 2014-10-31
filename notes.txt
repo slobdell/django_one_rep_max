@@ -41,3 +41,7 @@ CELERY
         celery -A tasks worker --loglevel=info
         celery -A one_rep_max worker -l info
         celeryd -l info
+
+python -m one_rep_max.test
+
+python -m one_rep_max.scripts.restart_failed_orders

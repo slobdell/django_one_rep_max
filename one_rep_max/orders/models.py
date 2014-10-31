@@ -54,6 +54,19 @@ class Order(object):
         return cls._wrap(_order)
 
     @classmethod
+    def get_failed_orders(cls):
+        _orders = _Order.objects.filter(state_id=StateType.FAILED.index)
+        _orders = list(_orders)
+        return [cls._wrap(_order) for _order in _orders]
+
+    @classmethod
+    def kill_processing_orders(cls):
+        _orders = _Order.objects.filter(state_id=StateType.PROCESSING.index)
+        for _order in _orders:
+            _order.state_id = StateType.FAILED.index
+            _order.save()
+
+    @classmethod
     def get_by_id(cls, order_id):
         _order = _Order.objects.get(id=order_id)
         return cls._wrap(_order)
@@ -84,7 +97,8 @@ class Order(object):
         return self._order.id
 
     def _change_state(self, state_type):
-        self._order.state = state_type
+        print "Changing order %s to state %s" % (self.id, state_type.display_name)
+        self._order.state_id = state_type.index
         self._order.save()
 
     def change_state_processing(self):
@@ -114,26 +128,6 @@ class Order(object):
     def update_final_video_url(self, final_url):
         # TODO refactor all this copy and paste
         self._order.final_video_url = final_url
-        self._order.save()
-
-    def make_state_processing(self):
-        self._order.state_id = StateType.PROCESSING.index
-        self._order.save()
-
-    def make_state_complete_processing(self):
-        self._order.state_id = StateType.COMPLETE_PROCESSING.index
-        self._order.save()
-
-    def make_state_failed(self):
-        self._order.state_id = StateType.FAILED.index
-        self._order.save()
-
-    def make_state_user_notified(self):
-        self._order.state_id = StateType.USER_NOTIFIED.index
-        self._order.save()
-
-    def make_state_finished(self):
-        self._order.state_id = StateType.FINISHED.index
         self._order.save()
 
     def charge(self):
