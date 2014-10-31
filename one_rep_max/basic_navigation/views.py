@@ -14,8 +14,8 @@ def render_to_json(data, status=200):
 def home(request):
     youtube_video_ids = (
         'rKBq8mTLRpE',
-        'm-0tJu9aFE8',
-        'Y225kwSwc6c',
+        'm-0tJu9aFE8',  # still need to replace this one
+        'z3P3mCPxRtw',
         'dyisn-r6tuE',
     )
     render_data = {
