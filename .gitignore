@@ -8,4 +8,4 @@
 .virtualenv
 staticfiles
 tmp
-db.sqlite3
+*.sqlite3
