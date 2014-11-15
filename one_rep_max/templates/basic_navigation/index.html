@@ -30,10 +30,6 @@
 	<link rel="stylesheet" href="{% static 'css/swipebox.css' %}">
 
 	<link rel="stylesheet" href="{% static 'css/namespaced-bootstrap.css' %}">
-<!--
-	<link rel="stylesheet" href="{% static 'css/bootstrap-theme.min.css' %}">
--->
-
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,300,600,700' rel='stylesheet' type='text/css'>
 
 	<!--[if lt IE 9]>
@@ -46,7 +42,6 @@
 
 </head>
 <body class="home">
-    {% include "google_analytics.html" %}
     {% include "underscore_templates/main_page.html" %}
 
 	<!-- Header
@@ -243,6 +238,7 @@
         }(document, 'script', 'facebook-jssdk'));
     });
     </script>
+    {% include "google_analytics.html" %}
 
 
 <!-- End Document
