@@ -24,14 +24,18 @@
 
 	<!-- CSS
   ================================================== -->
+{% if 0 %}
 	<link rel="stylesheet" href="{% static 'css/style.css' %}">
 	<link rel="stylesheet" href="{% static 'css/ico-moon.css' %}">
 	<link rel="stylesheet" href="{% static 'css/flexslider.css' %}">
 	<link rel="stylesheet" href="{% static 'css/swipebox.css' %}">
 
 	<link rel="stylesheet" href="{% static 'css/namespaced-bootstrap.css' %}">
-	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,300,600,700' rel='stylesheet' type='text/css'>
+{% else %}
+	<link rel="stylesheet" href="{% static 'css/combined.min.css' %}">
 
+{% endif %}
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,300,600,700' rel='stylesheet' type='text/css'>
 	<!--[if lt IE 9]>
 		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
