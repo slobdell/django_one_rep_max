@@ -1,0 +1,222 @@
+{% load staticfiles %}
+
+    <!-- Basic Page Needs
+  ================================================== -->
+    <meta charset="utf-8">
+    <title>One Rep Max Calculator | Calculate an exact 1RM using computer vision</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="fragment" content="!">
+    <meta name="description" content="Your one rep max can accurately be computed with just a video using computer vision.  Upload a video to get started.">
+
+    <meta property="og:title" content="One Rep Max Calculator">
+    <meta property="og:image" content="{% static 'img/summary.jpg' %}"/>
+    <meta property="og:site_name" content="One Rep Max Calculator">
+    <meta property="og:description" content="Calculate your one rep max using computer vision, science, and techmology.">
+
+
+    <!-- Mobile Specific Metas
+  ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!-- CSS
+  ================================================== -->
+    <!-- Header
+    ================================================== -->
+    <header>
+        <div class="container">
+            <div class="logo">
+				<a href="#"><img src="{% static 'img/one_rep_max_logo.png' %}" alt="One Rep Max Calculator"></a>
+            </div>
+            <div class="right">
+                <nav class="main-nav">
+                    <ul class="nav-bar" id="nav-bar">
+                        <li class="has-flyout" id="facebook-picture">
+<div id="profile-picture" class="profile-circular"></div>
+                        </li>
+                        <li class="has-flyout" id="account-link">
+                            <a href="#!account">
+                                Account <i class="icon-cog-2"></i>
+                            </a>
+                        </li>
+                        <li class="has-flyout">
+                            <a href="#!contact">Contact <i class="icon-envelop"></i></a>
+                        </li>
+                        <li class="has-flyout">
+                            <a href="#!about">About</a>
+                        </li>
+                    </ul><select class="selectnav" id="selectnav1"><option value="">- Navigation -</option><option value="undefined"></option><option value="http://www.onerepmaxcalculator.com/#!account" selected="">
+                                Account
+                            </option><option value="http://www.onerepmaxcalculator.com/#!contact">Contact </option><option value="http://www.onerepmaxcalculator.com/#!about">About</option></select>
+                </nav>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </header>
+
+    <!-- Body
+    ================================================== -->
+    <div class="flexslider" style="margin-bottom: 10px;">
+        <ul class="slides">
+            <li>
+				<img src="{% static 'img/grip.jpg' %}" alt="Bench Press">
+                <div style="left: 100px;" class="flex-caption">
+                    Estimate a One-Rep-Max Using Computer Vision
+                </div>
+                <div style="left: 100px;" class="flex-caption-second">
+                    Your one rep max can accurately be computed with just a video.  If the bar can be tracked, then pixels can be converted to meters, and velocity can be determined.  If velocity is known, the a percent of your one rep max can be established.
+                </div>
+            </li>
+            <!-- add stuff if you want
+            <li>
+                <img src="https://one-rep-max-static.s3.amazonaws.com/img/ph-slide.jpg?Signature=Hvehtcknshni0ihgeUX5%2FPMalIk%3D&Expires=1416087454&AWSAccessKeyId=AKIAJD3VBP77KIYMCHNA" alt="">
+                <div class="flex-caption">
+                    Show off your creativity
+                </div>
+                <div class="flex-caption-second">
+                    Pellentesque arcu neque, convallis aliquet venenatis a, auctor sit amet lacus. Donec ultrices rutrum sem sed facilisis. Curabitur vitae viverra leo. Nullam pulvinar dictum nibh eu mollis. Quisque aliquam felis ac risus imperdiet viverra bibendum nunc accumsan.
+                </div>
+            </li>
+            -->
+        </ul>
+    </div>
+    <div class="clearfix"></div>
+    <div class="wrap">
+        <div class="container">
+<!-- SBL START -->
+            <div class="six columns bottom">
+                    <div id="toggle" class="bottom">
+                        <div class="toggle">
+                            <h5>How does it work?</h5>
+                            <div class="content">
+                                <p>
+                                    <!-- TODO change the style to have a disc, make the font size smaller -->
+                                    </p><ul style="font-size: 14px; list-style-type: disc;">
+                                        <li>Upload a stable, head-on video of a proper benchpress</li>
+                                        <li>Your video will spend some time being processed, and you'll be notified via e-mail once complete</li>
+                                        <li>The output video will display a scalar multiplier with each rep that represents how much weight you're capable of lifting</li>
+                                    </ul>
+                                <p></p>
+                            </div>
+                        </div>
+                        <div class="toggle">
+                        <h5>Why does it work?</h5>
+                            <div class="content">
+                                <p>
+                                    </p><ul style="font-size: 14px; list-style-type: disc;">
+                                        <li>The barbell in the uploaded video is tracked using computer vision</li>
+                                        <li>Olympic barbells have standard dimensions, so the relative height of your repetition can be extracted</li>
+                                        <li>The average velocity of a repetition can be calculating by using the above height and the time it took for the rep to complete</li>
+                                        <li>Average velocity is strongly correlated to a percent of a one rep maximum</li>
+                                    </ul>
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <div class="ten columns bottom">
+                <div id="button-fill-area">
+    <div id="message-container" style="margin-top: 15px;">
+        Return Email:<input id="return-email" style="width: 80%;" type="text">
+<p style="display: none;" id="email-error">Enter a valid Email address</p>
+        Message: <textarea rows="5" cols="50" id="editable-message"></textarea>
+    </div>
+<a id="cancel-quandry" style="margin-top: 5px; font-size: 18px;" class="button large alt cancel" href="#">
+    Close Form
+</a>
+<a id="submit-quandry" style="margin-top: 5px; font-size: 18px;" href="javascript:void(0);" class="button large alt">
+    Submit Quandary
+</a>
+</div>
+            </div>
+<!-- SBL END-->
+            <div class="clearfix"></div>
+
+            <div class="sixteen columns">
+                <h3 class="title">Sample Videos</h3>
+            </div>
+            <div class="clearfix"></div>
+            <div style="position: relative; overflow: hidden; height: 232px;" class="portfolio isotope">
+
+
+                <div style="position: absolute; left: 0px; top: 0px; transform: translate(0px, 0px);" class="four columns isotope-item">
+                    <a href="#!youtube/7EUZblF_ObA">
+                    </a><div class="item"><a href="#!youtube/7EUZblF_ObA">
+                        <div class="image-container">
+                            <div class="mask"></div>
+<img src="https://i.ytimg.com/vi/7EUZblF_ObA/mqdefault.jpg" alt="724 pount one rep max bench press estimation">
+                        </div>
+</a><a href="#!youtube/7EUZblF_ObA" class="zoom box" title="724 lb estimation"><i class="icon-film"></i></a>
+<div class="item-title"><a href="#!youtube/7EUZblF_ObA">724 lb Estimation</a></div>
+                    </div>
+
+                </div>
+
+                <div style="position: absolute; left: 0px; top: 0px; transform: translate(300px, 0px);" class="four columns isotope-item">
+                    <a href="#!youtube/eLYxnhlPFtc">
+                    </a><div class="item"><a href="#!youtube/eLYxnhlPFtc">
+                        <div class="image-container">
+                            <div class="mask"></div>
+<img src="https://i.ytimg.com/vi/eLYxnhlPFtc/mqdefault.jpg" alt="297 pount one rep max bench press estimation">
+                        </div>
+</a><a href="#!youtube/eLYxnhlPFtc" class="zoom box" title="297 lb estimation"><i class="icon-film"></i></a>
+<div class="item-title"><a href="#!youtube/eLYxnhlPFtc">297 lb Estimation</a></div>
+                    </div>
+
+                </div>
+
+                <div style="position: absolute; left: 0px; top: 0px; transform: translate(600px, 0px);" class="four columns isotope-item">
+                    <a href="#!youtube/z3P3mCPxRtw">
+                    </a><div class="item"><a href="#!youtube/z3P3mCPxRtw">
+                        <div class="image-container">
+                            <div class="mask"></div>
+<img src="https://i.ytimg.com/vi/z3P3mCPxRtw/mqdefault.jpg" alt="445 pount one rep max bench press estimation">
+                        </div>
+</a><a href="#!youtube/z3P3mCPxRtw" class="zoom box" title="445 lb estimation"><i class="icon-film"></i></a>
+<div class="item-title"><a href="#!youtube/z3P3mCPxRtw">445 lb Estimation</a></div>
+                    </div>
+
+                </div>
+
+                <div style="position: absolute; left: 0px; top: 0px; transform: translate(900px, 0px);" class="four columns isotope-item">
+                    <a href="#!youtube/dyisn-r6tuE">
+                    </a><div class="item"><a href="#!youtube/dyisn-r6tuE">
+                        <div class="image-container">
+                            <div class="mask"></div>
+<img src="https://i.ytimg.com/vi/dyisn-r6tuE/mqdefault.jpg" alt="661 pount one rep max bench press estimation">
+                        </div>
+</a><a href="#!youtube/dyisn-r6tuE" class="zoom box" title="661 lb estimation"><i class="icon-film"></i></a>
+<div class="item-title"><a href="#!youtube/dyisn-r6tuE">661 lb Estimation</a></div>
+                    </div>
+
+                </div>
+
+
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer
+    ================================================== -->
+    <footer>
+        <div class="social">
+            <ul>
+                <li><a href="#" class="icon-facebook"></a></li>
+                <li><a href="#" class="icon-twitter"></a></li>
+            </ul>
+        </div>
+        <div class="copy">
+            Copyright © 2014
+        </div>
+        <div class="clearfix"></div>
+    </footer>
+    <div class=" fb_reset" id="fb-root"><div style="position: absolute; top: -10000px; height: 0px; width: 0px;"><div><iframe src="http://static.ak.facebook.com/connect/xd_arbiter/QjK2hWv6uak.js?version=41#channel=f1f4e79005739ee&amp;origin=http%3A%2F%2Fwww.onerepmaxcalculator.com" style="border: medium none;" tabindex="-1" title="Facebook Cross Domain Communication Frame" aria-hidden="true" id="fb_xdm_frame_http" scrolling="no" allowtransparency="true" name="fb_xdm_frame_http" frameborder="0"></iframe><iframe src="https://s-static.ak.facebook.com/connect/xd_arbiter/QjK2hWv6uak.js?version=41#channel=f1f4e79005739ee&amp;origin=http%3A%2F%2Fwww.onerepmaxcalculator.com" style="border: medium none;" tabindex="-1" title="Facebook Cross Domain Communication Frame" aria-hidden="true" id="fb_xdm_frame_https" scrolling="no" allowtransparency="true" name="fb_xdm_frame_https" frameborder="0"></iframe></div></div><div style="position: absolute; top: -10000px; height: 0px; width: 0px;"><div></div></div></div>
+    <input type="hidden" id="square-icon" value="{% static 'img/square_bench.jpg' %}"/>
+    <input id="stripe-publish-key" value="pk_test_4VYAlh6AKX6wLlnMb9HpTKzG" type="hidden">
+
+    <!-- Javascript/jQuery
+    ================================================== -->
+
+<!-- End Document
+================================================== -->

@@ -1,0 +1,280 @@
+{% load staticfiles %}
+    <!-- Basic Page Needs
+  ================================================== -->
+    <meta charset="utf-8">
+    <title>One Rep Max Calculator | Calculate an exact 1RM using computer vision</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="fragment" content="!">
+    <meta name="description" content="Your one rep max can accurately be computed with just a video using computer vision.  Upload a video to get started.">
+
+    <meta property="og:title" content="One Rep Max Calculator">
+    <meta property="og:image" content="{% static 'img/summary.jpg' %}"/>
+    <meta property="og:site_name" content="One Rep Max Calculator">
+    <meta property="og:description" content="Calculate your one rep max using computer vision, science, and techmology.">
+
+
+    <!-- Mobile Specific Metas
+  ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!-- CSS
+  ================================================== -->
+<!--
+    <link rel="stylesheet" href="https://one-rep-max-static.s3.amazonaws.com/css/bootstrap-theme.min.css?Signature=I2dvGPkpKSbIkyul%2BnMS7%2BqHaZU%3D&Expires=1416087454&AWSAccessKeyId=AKIAJD3VBP77KIYMCHNA">
+-->
+
+
+    <!--[if lt IE 9]>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Favicons
+    ================================================== -->
+<link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
+</head>
+<body class="home modal-open">
+    <!-- Header
+    ================================================== -->
+    <header>
+        <div class="container">
+            <div class="logo">
+				<a href="#"><img src="{% static 'img/one_rep_max_logo.png' %}" alt="One Rep Max Calculator"></a>
+            </div>
+            <div class="right">
+                <nav class="main-nav">
+                    <ul class="nav-bar" id="nav-bar">
+                        <li class="has-flyout" id="facebook-picture">
+<div id="profile-picture" class="profile-circular"></div>
+                        </li>
+                        <li class="has-flyout" id="account-link">
+                            <a href="#!account">
+                                Account <i class="icon-cog-2"></i>
+                            </a>
+                        </li>
+                        <li class="has-flyout">
+                            <a href="#!contact">Contact <i class="icon-envelop"></i></a>
+                        </li>
+                        <li class="has-flyout">
+                            <a href="#!about">About</a>
+                        </li>
+                    </ul><select class="selectnav" id="selectnav1"><option value="">- Navigation -</option><option value="undefined"></option><option value="http://www.onerepmaxcalculator.com/#!account" selected="">
+                                Account
+                            </option><option value="http://www.onerepmaxcalculator.com/#!contact">Contact </option><option value="http://www.onerepmaxcalculator.com/#!about">About</option></select>
+                </nav>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </header>
+
+    <!-- Body
+    ================================================== -->
+    <div class="flexslider" style="margin-bottom: 10px;">
+        <ul class="slides">
+            <li>
+				<img src="{% static 'img/grip.jpg' %}" alt="Bench Press">
+                <div style="left: 100px;" class="flex-caption">
+                    Estimate a One-Rep-Max Using Computer Vision
+                </div>
+                <div style="left: 100px;" class="flex-caption-second">
+                    Your one rep max can accurately be computed with just a video.  If the bar can be tracked, then pixels can be converted to meters, and velocity can be determined.  If velocity is known, the a percent of your one rep max can be established.
+                </div>
+            </li>
+            <!-- add stuff if you want
+            <li>
+                <div class="flex-caption">
+                    Show off your creativity
+                </div>
+                <div class="flex-caption-second">
+                    Pellentesque arcu neque, convallis aliquet venenatis a, auctor sit amet lacus. Donec ultrices rutrum sem sed facilisis. Curabitur vitae viverra leo. Nullam pulvinar dictum nibh eu mollis. Quisque aliquam felis ac risus imperdiet viverra bibendum nunc accumsan.
+                </div>
+            </li>
+            -->
+        </ul>
+    </div>
+    <div class="clearfix"></div>
+    <div class="wrap">
+        <div class="container">
+<!-- SBL START -->
+            <div class="six columns bottom">
+                    <div id="toggle" class="bottom">
+                        <div class="toggle">
+                            <h5>How does it work?</h5>
+                            <div class="content">
+                                <p>
+                                    <!-- TODO change the style to have a disc, make the font size smaller -->
+                                    </p><ul style="font-size: 14px; list-style-type: disc;">
+                                        <li>Upload a stable, head-on video of a proper benchpress</li>
+                                        <li>Your video will spend some time being processed, and you'll be notified via e-mail once complete</li>
+                                        <li>The output video will display a scalar multiplier with each rep that represents how much weight you're capable of lifting</li>
+                                    </ul>
+                                <p></p>
+                            </div>
+                        </div>
+                        <div class="toggle">
+                        <h5>Why does it work?</h5>
+                            <div class="content">
+                                <p>
+                                    </p><ul style="font-size: 14px; list-style-type: disc;">
+                                        <li>The barbell in the uploaded video is tracked using computer vision</li>
+                                        <li>Olympic barbells have standard dimensions, so the relative height of your repetition can be extracted</li>
+                                        <li>The average velocity of a repetition can be calculating by using the above height and the time it took for the rep to complete</li>
+                                        <li>Average velocity is strongly correlated to a percent of a one rep maximum</li>
+                                    </ul>
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <div class="ten columns bottom">
+                <div id="button-fill-area">
+<div class="copy">
+    <h1>Why You Should Incorporate the One Rep Max Calculator into Your Training Program</h1>
+    <p>
+    Sure, you could actually just go to the gym and attempt a one rep max instead of hanging out on the internet and uploading videos of yourself, but there are a few problems there:
+    </p><ul>
+        <li>You're probably going to need a spotter in order to do this</li>
+        <li>Your whole workout is going to revolve around warming up for the said one rep max</li>
+        <li>Pick too high of a weight and you'll fail and then be that much more exhausted for your next set
+        <ul>
+        <li>Plus, you'll look stupid</li>
+        </ul></li>
+        <li>Pick too low of a weight and in the back of your mind you'll know that you could've done more</li>
+        <li>Performing a one rep max can be dangerous</li>
+        <li>You're going to find a hard time finding anyone that recommends performing a one rep max with regular frequency</li>
+    </ul>
+    <p></p>
+    <p>With all that said, <strong>knowing what your one rep max is can be incredibly valuable</strong>.
+    Namely:
+        </p><ul>
+            <li>Psychologically, an improvement in your one rep max can be a huge boost to your overall motivation</li>
+            <li>A stagnant or declining one rep max can indicate that your program sucks</li>
+            <li>Tracking your progress in general is important to refining and improving you training</li>
+            <li>A legitimate training program will probably recommend weight and rep ranges based off of percentages of your one rep max</li>
+        </ul>
+    <p></p>
+
+    <p>
+    But there's more than just knowing what your one rep max is.  What if you could in essence perform a one rep max without the same costs associated (i.e. safer, no spotter required, less energy expended, etc)?
+    </p><h2>Get Stronger Faster by Refining Your Training</h2>
+    <p></p>
+    <p>
+    Let's say that you benchpress about once a week.  Then let's say you started your workout after a warm up with a single rep of a comfortable weight but treat the weight as though you are attempting a one rep max.  Your training partner films you with his or her phone, submits the video here, and when your workout is done you can take a look at how much force you actually generated.  Based on the results, <strong>you can see the effects of diet, sleep, and time of day that you're training</strong> on your workout.  You also didn't expend nearly the same amount of energy as required by a real one rep max because the rep was done much faster, and you didn't have to keep applying the same amount of force over a longer duration of time.  But if you <strong>consistently measure your progress</strong>, you'll have initiated a feedback loop that can become invaluable to your training efforts.
+    </p>
+    <h2>Optimize Your Form</h2>
+    <p>
+    There's a lot more that goes into benchpressing than just pressing upward with the bar.
+        </p><ul>
+            <li>Where are your feet placed?</li>
+            <li>Where is your grip on the bar?</li>
+            <li>How are you gripping the bar?</li>
+            <li>How are your shoulder blades placed?</li>
+            <li>Where are your elbows during the lift?</li>
+            <li>How well are you controlling your breathing?</li>
+        </ul>
+    <p></p>
+
+    <p>
+    Optimizing your form can easily be compared to a science experiment.  But the essence of an experiment is that variables can be isolated and the process can be repeated.  This is impossible to do with a real one rep max, but again, if you can reduce the costs associated with performing one by lessening the energy output required on your part, you could invest some time in optimizing your form.  It generally takes years to optimize your form by yourself without a coach.
+    </p>
+    <h2>Impress the Ladies</h2>
+    <p>
+    Ok, first of all, you won't actually impress any ladies with your one rep max on bench.  More than likely, you'll just come across as an A-hole if you try to.
+    </p>
+    <p>But with that disclaimer out of the way, if you'd like to try and impress the ladies with your 1RM, this site is a great way to do it.  You can use comparitively light weight where you can maintain good form and not look stupid and all the whole spit out a number that demonstrates your true potential.
+    </p>
+</div>
+<a id="close-button" style="margin-top: 5px; font-size: 18px;" href="#" class="button large alt cancel">Go Back</a></div>
+            </div>
+<!-- SBL END-->
+            <div class="clearfix"></div>
+
+            <div class="sixteen columns">
+                <h3 class="title">Sample Videos</h3>
+            </div>
+            <div class="clearfix"></div>
+            <div style="position: relative; overflow: hidden; height: 232px;" class="portfolio isotope">
+
+
+                <div style="position: absolute; left: 0px; top: 0px; transform: translate(0px, 0px);" class="four columns isotope-item">
+                    <a href="#!youtube/7EUZblF_ObA">
+                    </a><div class="item"><a href="#!youtube/7EUZblF_ObA">
+                        <div class="image-container">
+                            <div class="mask"></div>
+<img src="https://i.ytimg.com/vi/7EUZblF_ObA/mqdefault.jpg" alt="724 pount one rep max bench press estimation">
+                        </div>
+</a><a href="#!youtube/7EUZblF_ObA" class="zoom box" title="724 lb estimation"><i class="icon-film"></i></a>
+<div class="item-title"><a href="#!youtube/7EUZblF_ObA">724 lb Estimation</a></div>
+                    </div>
+
+                </div>
+
+                <div style="position: absolute; left: 0px; top: 0px; transform: translate(300px, 0px);" class="four columns isotope-item">
+                    <a href="#!youtube/eLYxnhlPFtc">
+                    </a><div class="item"><a href="#!youtube/eLYxnhlPFtc">
+                        <div class="image-container">
+                            <div class="mask"></div>
+<img src="https://i.ytimg.com/vi/eLYxnhlPFtc/mqdefault.jpg" alt="297 pount one rep max bench press estimation">
+                        </div>
+</a><a href="#!youtube/eLYxnhlPFtc" class="zoom box" title="297 lb estimation"><i class="icon-film"></i></a>
+<div class="item-title"><a href="#!youtube/eLYxnhlPFtc">297 lb Estimation</a></div>
+                    </div>
+
+                </div>
+
+                <div style="position: absolute; left: 0px; top: 0px; transform: translate(600px, 0px);" class="four columns isotope-item">
+                    <a href="#!youtube/z3P3mCPxRtw">
+                    </a><div class="item"><a href="#!youtube/z3P3mCPxRtw">
+                        <div class="image-container">
+                            <div class="mask"></div>
+<img src="https://i.ytimg.com/vi/z3P3mCPxRtw/mqdefault.jpg" alt="445 pount one rep max bench press estimation">
+                        </div>
+</a><a href="#!youtube/z3P3mCPxRtw" class="zoom box" title="445 lb estimation"><i class="icon-film"></i></a>
+<div class="item-title"><a href="#!youtube/z3P3mCPxRtw">445 lb Estimation</a></div>
+                    </div>
+
+                </div>
+
+                <div style="position: absolute; left: 0px; top: 0px; transform: translate(900px, 0px);" class="four columns isotope-item">
+                    <a href="#!youtube/dyisn-r6tuE">
+                    </a><div class="item"><a href="#!youtube/dyisn-r6tuE">
+                        <div class="image-container">
+                            <div class="mask"></div>
+<img src="https://i.ytimg.com/vi/dyisn-r6tuE/mqdefault.jpg" alt="661 pount one rep max bench press estimation">
+                        </div>
+</a><a href="#!youtube/dyisn-r6tuE" class="zoom box" title="661 lb estimation"><i class="icon-film"></i></a>
+<div class="item-title"><a href="#!youtube/dyisn-r6tuE">661 lb Estimation</a></div>
+                    </div>
+
+                </div>
+
+
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer
+    ================================================== -->
+    <footer>
+        <div class="social">
+            <ul>
+                <li><a href="#" class="icon-facebook"></a></li>
+                <li><a href="#" class="icon-twitter"></a></li>
+            </ul>
+        </div>
+        <div class="copy">
+            Copyright © 2014
+        </div>
+        <div class="clearfix"></div>
+    </footer>
+    <input id="stripe-publish-key" value="pk_test_4VYAlh6AKX6wLlnMb9HpTKzG" type="hidden">
+
+    <!-- Javascript/jQuery
+    ================================================== -->
+
+
+<!-- End Document
+================================================== -->
+
+
