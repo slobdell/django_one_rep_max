@@ -19,6 +19,8 @@ def static_pages_for_crawlers(request):
     requested_page_to_static_file = {
         'account': 'account.html',
         'about': 'about.html',
+        'how': 'how.html',
+        'tips': 'tips.html',
         'contact': 'contact.html'
     }
     '''

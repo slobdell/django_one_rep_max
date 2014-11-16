@@ -1,4 +1,5 @@
 {% load staticfiles %}
+<html>
     <!-- Basic Page Needs
   ================================================== -->
     <meta charset="utf-8">
@@ -20,11 +21,6 @@
 
     <!-- CSS
   ================================================== -->
-<!--
-    <link rel="stylesheet" href="https://one-rep-max-static.s3.amazonaws.com/css/bootstrap-theme.min.css?Signature=I2dvGPkpKSbIkyul%2BnMS7%2BqHaZU%3D&Expires=1416087454&AWSAccessKeyId=AKIAJD3VBP77KIYMCHNA">
--->
-
-
     <!--[if lt IE 9]>
         <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -32,8 +28,9 @@
     <!-- Favicons
     ================================================== -->
 <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
-</head>
-<body class="home modal-open">
+
+<body class="home">
+
     <!-- Header
     ================================================== -->
     <header>
@@ -56,11 +53,16 @@
                             <a href="#!contact">Contact <i class="icon-envelop"></i></a>
                         </li>
                         <li class="has-flyout">
-                            <a href="#!about">About</a>
+                            <a href="#!">About</a>
+                            <ul class="flyout" style="left: -26px; display: none;">
+                                <li><a href="#!about">How you can benefit from using the calculator</a></li>
+                                <li><a href="#!how">How the calculator works</a></li>
+                                <li><a href="#!tips">Tips for getting an accurate one rep max</a></li>
+                            </ul>
                         </li>
-                    </ul><select class="selectnav" id="selectnav1"><option value="">- Navigation -</option><option value="undefined"></option><option value="http://www.onerepmaxcalculator.com/#!account" selected="">
+                    </ul><select class="selectnav" id="selectnav1"><option value="">- Navigation -</option><option value="undefined"></option><option value="http://www.onerepmaxcalculator.com/#!account">
                                 Account
-                            </option><option value="http://www.onerepmaxcalculator.com/#!contact">Contact </option><option value="http://www.onerepmaxcalculator.com/#!about">About</option></select>
+                            </option><option value="http://www.onerepmaxcalculator.com/#!contact">Contact </option><option value="http://www.onerepmaxcalculator.com/#!">About</option><option value="http://www.onerepmaxcalculator.com/#!about">→ How you can benefit from using the calculator</option><option value="http://www.onerepmaxcalculator.com/#!how">→ How the calculator works</option><option value="http://www.onerepmaxcalculator.com/#!tips" selected="">→ Tips for getting an accurate one rep max</option></select>
                 </nav>
             </div>
         </div>
@@ -82,6 +84,7 @@
             </li>
             <!-- add stuff if you want
             <li>
+                <img src="https://one-rep-max-static.s3.amazonaws.com/img/ph-slide.jpg?Signature=noWKOQ%2BNZz2AzurB80S6u8TfnlA%3D&Expires=1416170588&AWSAccessKeyId=AKIAJD3VBP77KIYMCHNA" alt="">
                 <div class="flex-caption">
                     Show off your creativity
                 </div>
@@ -129,60 +132,39 @@
             <div class="ten columns bottom">
                 <div id="button-fill-area">
 <div class="copy">
-    <h1>Why You Should Incorporate the One Rep Max Calculator into Your Training Program</h1>
-    <p>
-    Sure, you could actually just go to the gym and attempt a one rep max instead of hanging out on the internet and uploading videos of yourself, but there are a few problems there:
+    <h1>The Algorithm behind the One Rep Max Calculator</h1>
+<p>
+The computations behind the application here are extremely in-depth, but here's the up-front and concise explanation behind it:
     </p><ul>
-        <li>You're probably going to need a spotter in order to do this</li>
-        <li>Your whole workout is going to revolve around warming up for the said one rep max</li>
-        <li>Pick too high of a weight and you'll fail and then be that much more exhausted for your next set
-        <ul>
-        <li>Plus, you'll look stupid</li>
-        </ul></li>
-        <li>Pick too low of a weight and in the back of your mind you'll know that you could've done more</li>
-        <li>Performing a one rep max can be dangerous</li>
-        <li>You're going to find a hard time finding anyone that recommends performing a one rep max with regular frequency</li>
+        <li>An uploaded video is analyzed frame by frame to detect an olympic barbell in the image. This in itself can be a fairly intense process, and over time with enough detections we might be able to apply additional machine learning techniques to greatly enhance the algorithm and make it faster.</li>
+        <li>Finding the barbell in each frames gives us two things:
+            <ul>
+                <li>Since a standard olympic barbell 2.2 meters, we can convert pixels in the rest of the image to meters because of the known size of the bar.  This means that it's possible to determine the distance traveled in every single repetition.</li>
+                <li>A tracked barbell will also give us the height of the bar at every frame in the image.  From there it's trivial to determine the starting and stopping points of every repetition based on position differentials.</li>
+            </ul>
+        </li>
+        <li>After individual repetitions are identified, we can obtain the bar's velocity by combining the known distance in meters with the time it took to complete the repetition using the video's frame rate.
+        </li>
+        <li>Velocity correlates strongly to one rep max repetitions.  Various research papers can be found on that particular subject.</li>
     </ul>
-    <p></p>
-    <p>With all that said, <strong>knowing what your one rep max is can be incredibly valuable</strong>.
-    Namely:
-        </p><ul>
-            <li>Psychologically, an improvement in your one rep max can be a huge boost to your overall motivation</li>
-            <li>A stagnant or declining one rep max can indicate that your program sucks</li>
-            <li>Tracking your progress in general is important to refining and improving you training</li>
-            <li>A legitimate training program will probably recommend weight and rep ranges based off of percentages of your one rep max</li>
-        </ul>
-    <p></p>
+<p></p>
+<h2>Why was velocity used to obtain a one rep max?</h2>
+<p>
+If you're into physics, velocity doesn't seem like the intuitive choice to calculate a max.  It's possible for velocity to remain constant even with no force applied.  It would seem more intuitive to measure acceleration and obtain force applied and output a one rep max from there.  However, trial and error proved that this method doesn't work for a few different reasons:
+</p><ul>
+    <li>During the performance of any repetition with a weight, the instance acceleration at a given point may be drastically higher than what you're capable of in the rest of the rep.  For example, a person pressing 315 lbs may very well apply nearly 400 lbs of force during one portion of the lift.</li>
+    <li>Acceleration doesn't account for sticking points in the lift, which most certainly exist for anyone with bench pressing.</li>
+    <li>You are stronger directly after the eccentric portion of the lift.  You will not be as strong during the rest of the lift.</li>
+    <li>In any compound exercise, more than one muscle group is used to complete the lift.  So in a bench press, you certainly use your chest, but you also use your lats, shoulders, triceps, and forearms.  When you go through the motions of the lift, you transition from one muscle group to the other.</li>
+<li>Instantaneous acceleration won't account for proper form used during the lift.</li>
+    <li>If you look at a graph of the lift as it's performed, you'll see that the plotted points don't match closely to a quadratic equation at all (it's easy to see that acceleration is not constant throughout the lift).  Typically, there's a huge burst of acceleration at the beginning of the lift followed by steady motion through the rest of it. See an example chart of position over time of a bench press set:</li>
+    <img src="{% static 'img/bench_press_set.png' %}" alt="Bench Press Set">
+</ul>
+<p></p>
+<p>
+The case against acceleration is obvious, but the case for velocity is a lot less obvious.  Simply put, I found that a lot of research has already been done on this subject, and using velocity turned out to be the standard way to measure and estimate a one rep max, so we weren't going to try and recreate the wheel.  The difference between the research papers and this application, however, is that expensive sensors were used that weren't very commonplace.  This application attempts to use the same variables as the researchers, but computer vision is used instead.
+</p>
 
-    <p>
-    But there's more than just knowing what your one rep max is.  What if you could in essence perform a one rep max without the same costs associated (i.e. safer, no spotter required, less energy expended, etc)?
-    </p><h2>Get Stronger Faster by Refining Your Training</h2>
-    <p></p>
-    <p>
-    Let's say that you benchpress about once a week.  Then let's say you started your workout after a warm up with a single rep of a comfortable weight but treat the weight as though you are attempting a one rep max.  Your training partner films you with his or her phone, submits the video here, and when your workout is done you can take a look at how much force you actually generated.  Based on the results, <strong>you can see the effects of diet, sleep, and time of day that you're training</strong> on your workout.  You also didn't expend nearly the same amount of energy as required by a real one rep max because the rep was done much faster, and you didn't have to keep applying the same amount of force over a longer duration of time.  But if you <strong>consistently measure your progress</strong>, you'll have initiated a feedback loop that can become invaluable to your training efforts.
-    </p>
-    <h2>Optimize Your Form</h2>
-    <p>
-    There's a lot more that goes into benchpressing than just pressing upward with the bar.
-        </p><ul>
-            <li>Where are your feet placed?</li>
-            <li>Where is your grip on the bar?</li>
-            <li>How are you gripping the bar?</li>
-            <li>How are your shoulder blades placed?</li>
-            <li>Where are your elbows during the lift?</li>
-            <li>How well are you controlling your breathing?</li>
-        </ul>
-    <p></p>
-
-    <p>
-    Optimizing your form can easily be compared to a science experiment.  But the essence of an experiment is that variables can be isolated and the process can be repeated.  This is impossible to do with a real one rep max, but again, if you can reduce the costs associated with performing one by lessening the energy output required on your part, you could invest some time in optimizing your form.  It generally takes years to optimize your form by yourself without a coach.
-    </p>
-    <h2>Impress the Ladies</h2>
-    <p>
-    Ok, first of all, you won't actually impress any ladies with your one rep max on bench.  More than likely, you'll just come across as an A-hole if you try to.
-    </p>
-    <p>But with that disclaimer out of the way, if you'd like to try and impress the ladies with your 1RM, this site is a great way to do it.  You can use comparitively light weight where you can maintain good form and not look stupid and all the whole spit out a number that demonstrates your true potential.
-    </p>
 </div>
 <a id="close-button" style="margin-top: 5px; font-size: 18px;" href="#" class="button large alt cancel">Go Back</a></div>
             </div>
@@ -272,6 +254,7 @@
 
     <!-- Javascript/jQuery
     ================================================== -->
+
 
 
 <!-- End Document
