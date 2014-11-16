@@ -716,6 +716,8 @@ IndexRouter = Backbone.Router.extend({
         "!contact": "contactView",
         "!upload": "uploadView",
         "!about": "mainCopy",
+        "!how": "howCopy",
+        "!tips": "tipsCopy",
         "": "defaultRoute"
     },
     /*
@@ -742,6 +744,14 @@ IndexRouter = Backbone.Router.extend({
     },
     mainCopy: function(){
         this.templateView.updateTemplate("#main_copy");
+        this.templateView.render();
+    },
+    howCopy: function(){
+        this.templateView.updateTemplate("#how_and_why");
+        this.templateView.render();
+    },
+    tipsCopy: function(){
+        this.templateView.updateTemplate("#upload_tips");
         this.templateView.render();
     },
     orientationView: function(){

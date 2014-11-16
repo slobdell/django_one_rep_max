@@ -1,3 +1,6 @@
+{% load staticfiles %}
+
+<!-- why you should use this site -->
 <script type="text/html" id="main_copy">
 <div class="copy">
     <h1>Why You Should Incorporate the One Rep Max Calculator into Your Training Program</h1>
@@ -56,3 +59,81 @@
     </p>
 </div>
 </script>
+
+<!-- TODO make the static version of these pages -->
+<!-- How to upload a proper video -->
+<script type="text/html" id="upload_tips">
+<div class="copy">
+<h1>Calculating Your One Rep Max Accurately</h1>
+<p>
+You may greet this application with immediate skepticism, but the reality is that the algorithm behind the one rep max estimations is extremely sophisticated and works well.  However, it's a tool to augment your training and not the end-all be-all of training calculators, and it requires that you as the user provide clean inputs.
+</p>
+
+<p>
+You can check out <a href="#!how">exactly how the calculator estimates your max</a>, but here's all that you really need to know:
+<ul>
+    <li>Use a weight that's heavy enough to be challenging but light enough to lift without needing a spotter.</li>
+    <li>Even though the weight should be relatively light, <strong>treat the weight as though it is heavy and lift as hard as possible</strong>.  A one rep max is being estimated, and if you treat the weight like a warm-up, you'll get calculations accordingly.</li>
+    <li>The video needs to be <strong>stable</strong>.  A shaky video will result in inaccurate starting and ending points relative to one another.  This in essence changes the perceived distance the barbell traveled and will therefore give inaccurate readings for velocity which is what the algorithm is based off of (see <a href="#!how">the explanation of the calculator</a> algorithm for why velocity is used).</li>
+    <li>The video needs to be head on so that the barbell isn't angled in any way from the camera's perspective.</li>
+    <li>Don't use so much weight that the bar bends.  I know that you do that from time to time.</li>
+    <li>Only standard Olympic Barbells can be tracked.</li>
+    <li>The entire barbell needs to fit in the screen throughout the entire lift.  Otherwise the algorithm will fail.  Sorry.</li>
+    <li>The barbell should be at least half the width of the screen.  So don't film from 50 feet away or something crazy like that.</li>
+    <li>It also can't hurt to film in a well-lit area.</li>
+</ul>
+</p>
+
+<p>
+Between fast-twitch and slow-twitch muscle fibers, a one rep max will rely more heavily on your fast-twitch muscles and your motor neurons.  Check out <a href="http://www.t-nation.com/training/why-bodybuilders-are-more-jacked-than-powerlifters">why bodybuilders are more jacked than power lifters</a> for more information on this idea.  This is why a calculator like this one that relies on a single rep is more effective than the typical one rep max calculators that use a standard regression to determine a one rep max based on the number of repetitions you can perform of a given weight.  The one you typically see is something like:
+<ul>
+<li>max = weight / (1.0278 - (0.0278 * reps))</li>
+</ul>
+</p>
+<p>
+It is also for this reason that it's preferable to select a weight that is heavy.  This should make it easier to use type II fast twitch muscle fibers to mimic a real one rep max as much as possible.  Additionally, a lighter weight will result in a much faster rep, leaving less room for observation from the system and more room for error.
+</p>
+<!-- talk about what sort of weight to use, fast twitch slow twitch muscles, etc -->
+<!-- the assumptions this algorithm makes -->
+</div>
+</script>
+
+<!-- how the algorithm works -->
+<script type="text/html" id="how_and_why">
+<div class="copy">
+    <h1>The Algorithm behind the One Rep Max Calculator</h1>
+<p>
+The computations behind the application here are extremely in-depth, but here's the up-front and concise explanation behind it:
+    <ul>
+        <li>An uploaded video is analyzed frame by frame to detect an olympic barbell in the image. This in itself can be a fairly intense process, and over time with enough detections we might be able to apply additional machine learning techniques to greatly enhance the algorithm and make it faster.</li>
+        <li>Finding the barbell in each frames gives us two things:
+            <ul>
+                <li>Since a standard olympic barbell 2.2 meters, we can convert pixels in the rest of the image to meters because of the known size of the bar.  This means that it's possible to determine the distance traveled in every single repetition.</li>
+                <li>A tracked barbell will also give us the height of the bar at every frame in the image.  From there it's trivial to determine the starting and stopping points of every repetition based on position differentials.</li>
+            </ul>
+        </li>
+        <li>After individual repetitions are identified, we can obtain the bar's velocity by combining the known distance in meters with the time it took to complete the repetition using the video's frame rate.
+        </li>
+        <li>Velocity correlates strongly to one rep max repetitions.  Various research papers can be found on that particular subject.</li>
+    </ul>
+</p>
+<h2>Why was velocity used to obtain a one rep max?</h2>
+<p>
+If you're into physics, velocity doesn't seem like the intuitive choice to calculate a max.  It's possible for velocity to remain constant even with no force applied.  It would seem more intuitive to measure acceleration and obtain force applied and output a one rep max from there.  However, trial and error proved that this method doesn't work for a few different reasons:
+<ul>
+    <li>During the performance of any repetition with a weight, the instance acceleration at a given point may be drastically higher than what you're capable of in the rest of the rep.  For example, a person pressing 315 lbs may very well apply nearly 400 lbs of force during one portion of the lift.</li>
+    <li>Acceleration doesn't account for sticking points in the lift, which most certainly exist for anyone with bench pressing.</li>
+    <li>You are stronger directly after the eccentric portion of the lift.  You will not be as strong during the rest of the lift.</li>
+    <li>In any compound exercise, more than one muscle group is used to complete the lift.  So in a bench press, you certainly use your chest, but you also use your lats, shoulders, triceps, and forearms.  When you go through the motions of the lift, you transition from one muscle group to the other.</li>
+<li>Instantaneous acceleration won't account for proper form used during the lift.</li>
+    <li>If you look at a graph of the lift as it's performed, you'll see that the plotted points don't match closely to a quadratic equation at all (it's easy to see that acceleration is not constant throughout the lift).  Typically, there's a huge burst of acceleration at the beginning of the lift followed by steady motion through the rest of it. See an example chart of position over time of a bench press set:</li>
+    </li><img src="{% static 'img/bench_press_set.png' %}" alt="Bench Press Set"></li>
+</ul>
+</p>
+<p>
+The case against acceleration is obvious, but the case for velocity is a lot less obvious.  Simply put, I found that a lot of research has already been done on this subject, and using velocity turned out to be the standard way to measure and estimate a one rep max, so we weren't going to try and recreate the wheel.  The difference between the research papers and this application, however, is that expensive sensors were used that weren't very commonplace.  This application attempts to use the same variables as the researchers, but computer vision is used instead.
+</p>
+
+</div>
+</script>
+<!-- rep, max, weight, training...need to incorporate the words one rep max calculator -->
