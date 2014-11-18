@@ -49,10 +49,13 @@
 
 	<!-- Header
 	================================================== -->
+    <!-- added by Google Markup Helper -->
+    <span itemscope itemtype="http://schema.org/SoftwareApplication">
 	<header>
 		<div class="container">
 			<div class="logo">
 				<a href="#"><img src="{% static 'img/one_rep_max_logo.png' %}" alt="One Rep Max Calculator"></a>
+                <meta itemprop="name" content="[One Rep Max Calculator]">
 			</div>
 			<div class="right">
 				<nav class="main-nav">
@@ -161,7 +164,7 @@
 					<div class="item">
 						<div class="image-container">
 							<div class="mask"></div>
-<img src="https://i.ytimg.com/vi/{{ video_id.0 }}/mqdefault.jpg" alt="{{ video_id.1 }} pount one rep max bench press estimation">
+<img {% if forloop.first %}itemprop="screenshot" {% endif %} src="https://i.ytimg.com/vi/{{ video_id.0 }}/mqdefault.jpg" alt="{{ video_id.1 }} pount one rep max bench press estimation">
 						</div>
 <a href="#!youtube/{{ video_id.0 }}" class="zoom box" title="{{ video_id.1 }} lb estimation"><i class="icon-film"></i></a>
 <div class="item-title"><a href="#!youtube/{{ video_id.0 }}">{{ video_id.1 }} lb Estimation</a></div>
@@ -174,6 +177,9 @@
 			</div>
 		</div>
 	</div>
+    <!-- added by Google Markup thing -->
+    <meta itemprop="downloadUrl" content="http://onerepmaxcalculator.com/">
+    <meta itemprop="applicationCategory" content="fitness"></span>
 
 	<!-- Footer
 	================================================== -->
