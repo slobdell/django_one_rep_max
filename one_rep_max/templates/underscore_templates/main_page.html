@@ -281,3 +281,96 @@ Email Address: <input id='settings-email' type='text' value='<%= email %>' style
         </a>
     </div>
 </script>
+
+<script type="text/html" id="formulas">
+    <div style="margin-top: 20px;">
+    Reps:
+    <input style="display: inline-block; width: 50px; min-width: 50px;" type="text"  id="reps" value="5" />
+    <span style="margin-left: 5px;"> Weight:</span>
+    <input type="weight" style = "display: inline-block; width: 50px; min-width: 50px;" id="weight" value="225" /> lbs
+    <!--
+    <div>
+        <input style="display: inline-block; min-width: 0px; width: 5%;" type="radio" name="exercise" value="BenchPress" id="bench" checked="checked"/><label for="bench" style="cursor: pointer;">Bench Press</label><br/>
+        <input style="display: inline-block; min-width: 0px; width: 5%;" type="radio" name="exercise" value="Squat" id="squat"/><label for="squat" style="cursor: pointer;">Squat</label><br/>
+        <input style="display: inline-block; min-width: 0px; width: 5%;" type="radio" name="exercise" value="Deadlift" id="deadlift"/><label for="deadlift" style="cursor: pointer;">Deadlift</label><br/>
+    </div>
+    -->
+    <div id="results" style="margin-top: 10px;">
+        <div id="nfl-test">
+            <div style="display: inline-block; width: 50%">NFL Test (225 lbs only):</div>
+            <span id="fill"></span>
+        </div>
+        <div id="brzycki">
+            <div style="display: inline-block; width: 50%">Brzycki's Formula: </div>
+            <span id="fill"></span>
+        </div>
+        <div id="oconnor">
+            <div style="display: inline-block; width: 50%">
+                O'Connor Formula:
+            </div>
+            <span id="fill"></span>
+        </div>
+        <div id="mississippi">
+            <div style="display: inline-block; width: 50%">
+                Mississippi State(4-10 reps):
+            </div>
+            <span id="fill"></span>
+        </div>
+        <div id="epley">
+            <div style="display: inline-block; width: 50%">
+                Epley Formula:
+            </div>
+            <span id="fill"></span>
+        </div>
+        <div id="lander">
+            <div style="display: inline-block; width: 50%">
+                Lander Formula:
+            </div>
+            <span id="fill"></span>
+        </div>
+        <div id="unknown">
+            <div style="display: inline-block; width: 50%">
+                Weight * 0.03 * reps + weight:
+            </div>
+            <span id="fill"></span>
+        </div>
+        <div id="lombardi">
+            <div style="display: inline-block; width: 50%">
+                Lombardi Formula:
+            </div>
+            <span id="fill"></span>
+        </div>
+        <div id="mayhew">
+            <div style="display: inline-block; width: 50%">
+                Mayhew Formula:
+            </div>
+            <span id="fill"></span>
+        </div>
+        <div id="wathen">
+            <div style="display: inline-block; width: 50%">
+                Wathen Formula:
+            </div>
+            <span id="fill"></span>
+        </div>
+        <div id="nsca">
+            <div style="display: inline-block; width: 50%">
+                NSCA Formula:
+            </div>
+            <span id="fill"></span>
+        </div>
+
+        <div id="average">
+            <div style="color: #ff4d4d; display: inline-block; width: 50%">
+                Average:
+            </div>
+            <span id="fill" style="color: #ff4d4d"></span>
+        </div>
+    </div>
+    <!--
+    <div style="margin-top: 30px;">
+        Percent of 1RM: <input type="text" style = "display: inline-block; width: 50px; min-width: 50px;" id="percent" value="60" /> %
+        <div id="estimate"></div>
+    </div>
+    -->
+</div>
+</script>

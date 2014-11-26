@@ -27,6 +27,164 @@ ROTATIONS = {
     CLOCKWISE_270: 4
 };
 
+FormulaView = Backbone.View.extend({
+    el: "#button-fill-area",
+    events: {
+        "keyup #reps": "changeReps",
+        "keyup #weight": "changeWeight",
+        "keyup #percent": "changePercent"
+    },
+    initialize: function(){
+        this.template = _.template($("#formulas").html());
+        this.reps = 0;
+        this.weight = 0;
+    },
+    changeReps: function(evt){
+        // TODO input validation
+        this.reps = $("#reps").val();
+        if (this.reps === ""){
+            this.reps = 1;
+        }
+        this.reps = parseInt(this.reps, 10);
+        this.renderFormulas();
+    },
+    changePercent: function(evt){
+        this.percent = this.$("#percent").val();
+        this.percent = parseFloat(this.percent, 10);
+        this.renderEstimate();
+    },
+    changeWeight: function(evt){
+        this.weight = $("#weight").val();
+        if (this.weight === ""){
+            this.weight = 0;
+        }
+        this.weight = parseInt(this.weight, 10);
+        this.renderFormulas();
+    },
+    nflTest: function(reps, weight){
+        if (weight !== 225){
+            return null;
+        }
+        return (226.7 + (7.1 * reps)).toFixed(2);
+    },
+    brzycki: function(reps, weight){
+        return (100 * weight / (102.78 - (2.78 * reps))).toFixed(2);
+    },
+    oConnor: function(reps, weight){
+        return ((1 + (0.025 * reps)) * weight).toFixed(2);
+    },
+    mississippi: function(reps, weight){
+        if(reps < 4 || reps > 10){
+            return null;
+        }
+        if(reps <= 6){
+            return ((1.12 * weight) + (5.09 * reps) - 24.62).toFixed(2);
+        }
+        return ((1.16 * weight) + (1.68 * reps) - 1.89).toFixed(2);
+    },
+    epley: function(reps, weight){
+        return ((1 + (0.0333 * reps)) * weight).toFixed(2);
+    },
+    lander: function(reps, weight){
+        return (weight / (1.013 - 0.0267123 * reps)).toFixed(2);
+    },
+    lombardi: function(reps, weight){
+        return (Math.pow(reps, 0.10) * weight).toFixed(2);
+    },
+    unknown: function(reps, weight){
+        return ((weight * 0.03 * reps) + weight).toFixed(2);
+    },
+    mayhew: function(reps, weight){
+        return (100 * weight) / (52.2 + 41.9 * Math.pow(2.71828, reps * -0.055));
+    },
+    wathen: function(reps, weight){
+        return (100 * weight) / (48.8 + 53.8 * Math.pow(2.71828, reps * -0.075));
+    },
+    nsca: function(reps, weight){
+        // TODO this function is shit
+        if(reps > 10){
+            return null;
+        }
+        var coefficient = 1.0;
+        if (reps === 2){
+            coefficient = 1.035;
+        }
+        if (reps === 3){
+            coefficient = 1.08;
+        }
+        if (reps === 4){
+            coefficient = 1.115;
+        }
+        if (reps === 5){
+            coefficient = 1.15;
+        }
+        if (reps === 6){
+            coefficient = 1.18;
+        }
+        if (reps === 7){
+            coefficient = 1.22;
+        }
+        if (reps === 8){
+            coefficient = 1.255;
+        }
+        if (reps === 9){
+            coefficient = 1.29;
+        }
+        if (reps === 10){
+            coefficient = 1.325;
+        }
+        return weight * coefficient;
+    },
+    renderFormulas: function(){
+        var selectorToFunction = [
+            ["nfl-test", this.nflTest],
+            ["brzycki", this.brzycki],
+            ["mississippi", this.mississippi],
+            ["epley", this.epley],
+            ["nsca", this.nsca],
+            ["mayhew", this.mayhew],
+            ["lombardi", this.lombardi],
+            ["lander", this.lander],
+            ["wathen", this.wathen],
+            ["oconnor", this.oConnor],
+            ["unknown", this.unknown]
+        ];
+        var sum = 0.0;
+        var count = 0;
+        for(var i=0; i < selectorToFunction.length; i++){
+            var selector = selectorToFunction[i][0];
+            var func = selectorToFunction[i][1];
+
+            var estimatedWeight = func(this.reps, this.weight);
+            if (estimatedWeight !== null){
+                estimatedWeight = parseFloat(estimatedWeight, 10).toFixed(2);
+                sum = sum + parseFloat(estimatedWeight, 10);
+                this.$("#" + selector +" #fill").html(estimatedWeight + " lbs");
+                count++;
+            }
+            else{
+                this.$("#" + selector +" #fill").html("");
+            }
+        }
+        var average = (sum / count).toFixed(2);
+        this.$("#average #fill").html(average + " lbs");
+    },
+    renderEstimate: function(){
+        /*
+        var estimate = (average * 0.60).toFixed(2);
+        this.$("#estimate").html(estimate);
+        */
+    },
+    render: function(){
+        this.$el.html(this.template());
+        this.reps = parseInt($("#reps").val(), 10);
+        this.weight = parseInt($("#weight").val(), 10);
+        this.renderFormulas();
+        this.renderEstimate();
+    }
+});
+
+
 TemplateView = Backbone.View.extend({
     el: "#button-fill-area",
     initialize: function(){
@@ -718,6 +876,7 @@ IndexRouter = Backbone.Router.extend({
         "!about": "mainCopy",
         "!how": "howCopy",
         "!tips": "tipsCopy",
+        "!formulas": "formulas",
         "": "defaultRoute"
     },
     /*
@@ -741,6 +900,7 @@ IndexRouter = Backbone.Router.extend({
         this.facebookButtonView = new FacebookButtonView({router: this});
         this.contactView = new ContactView();
         this.templateView = new TemplateView();
+        this.formulaView = new FormulaView();
     },
     mainCopy: function(){
         this.templateView.updateTemplate("#main_copy");
@@ -753,6 +913,9 @@ IndexRouter = Backbone.Router.extend({
     tipsCopy: function(){
         this.templateView.updateTemplate("#upload_tips");
         this.templateView.render();
+    },
+    formulas: function(){
+        this.formulaView.render();
     },
     orientationView: function(){
         var dependentView = this.uploadModalView;
@@ -853,7 +1016,6 @@ IndexRouter = Backbone.Router.extend({
             this.loggedIn = false;
             // not logged in
         }
-        // this.defaultRoute();
     },
     forceStart: function(){
         /* hacky dev case */
