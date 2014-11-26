@@ -176,6 +176,7 @@ FormulaView = Backbone.View.extend({
         */
     },
     render: function(){
+        window.scrollTo(0, 300);
         this.$el.html(this.template());
         this.reps = parseInt($("#reps").val(), 10);
         this.weight = parseInt($("#weight").val(), 10);
