@@ -38,6 +38,8 @@ FormulaView = Backbone.View.extend({
         this.template = _.template($("#formulas").html());
         this.reps = 0;
         this.weight = 0;
+        this.average = 0.0;
+        this.percent = 0.0;
     },
     changeReps: function(evt){
         // TODO input validation
@@ -50,6 +52,9 @@ FormulaView = Backbone.View.extend({
     },
     changePercent: function(evt){
         this.percent = this.$("#percent").val();
+        if(this.percent === ""){
+            this.percent = 0.0;
+        }
         this.percent = parseFloat(this.percent, 10);
         this.renderEstimate();
     },
@@ -166,20 +171,20 @@ FormulaView = Backbone.View.extend({
                 this.$("#" + selector +" #fill").html("");
             }
         }
-        var average = (sum / count).toFixed(2);
-        this.$("#average #fill").html(average + " lbs");
+        this.average = (sum / count).toFixed(2);
+        this.$("#average #fill").html(this.average + " lbs");
     },
     renderEstimate: function(){
-        /*
-        var estimate = (average * 0.60).toFixed(2);
-        this.$("#estimate").html(estimate);
-        */
+        this.average = parseFloat(this.average, 10);
+        var estimate = (this.average * this.percent / 100.0).toFixed(2);
+        this.$("#estimate").html(estimate + " lbs");
     },
     render: function(){
         window.scrollTo(0, 300);
         this.$el.html(this.template());
         this.reps = parseInt($("#reps").val(), 10);
         this.weight = parseInt($("#weight").val(), 10);
+        this.percent = parseInt($("#percent").val(), 10);
         this.renderFormulas();
         this.renderEstimate();
     }
