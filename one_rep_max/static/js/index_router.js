@@ -30,6 +30,9 @@ ROTATIONS = {
 FormulaView = Backbone.View.extend({
     el: "#button-fill-area",
     events: {
+        "change #reps": "changeReps",
+        "change #weight": "changeWeight",
+        "change #percent": "changePercent",
         "keyup #reps": "changeReps",
         "keyup #weight": "changeWeight",
         "keyup #percent": "changePercent"
