@@ -156,6 +156,8 @@ FormulaView = Backbone.View.extend({
         ];
         var sum = 0.0;
         var count = 0;
+        var max = 0;
+        var min = 50000;
         for(var i=0; i < selectorToFunction.length; i++){
             var selector = selectorToFunction[i][0];
             var func = selectorToFunction[i][1];
@@ -166,12 +168,20 @@ FormulaView = Backbone.View.extend({
                 sum = sum + parseFloat(estimatedWeight, 10);
                 this.$("#" + selector +" #fill").html(estimatedWeight + " lbs");
                 count++;
+                if (estimatedWeight > max){
+                    max = estimatedWeight;
+                }
+                if (estimatedWeight < min){
+                    min = estimatedWeight;
+                }
             }
             else{
                 this.$("#" + selector +" #fill").html("");
             }
         }
         this.average = (sum / count).toFixed(2);
+        this.$("#min #fill").html(min + " lbs");
+        this.$("#max #fill").html(max + " lbs");
         this.$("#average #fill").html(this.average + " lbs");
     },
     renderEstimate: function(){
